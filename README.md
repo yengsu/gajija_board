@@ -20,7 +20,10 @@
    		chmod 707 datas/
    
  
- ## composer 설치 (해당 폴더의 파일참조:  Readme) 
+ ## composer로 library 설치 (해당 폴더의 파일참조:  Readme) 
+ 
+ composer 명령어 사용을 위한 가이드 참조 : https://www.lesstif.com/pages/viewpage.action?pageId=23757293
+ 
  
  1. 폴더:	app/lib/PhpOffice
   		composer require phpoffice/phpspreadsheet

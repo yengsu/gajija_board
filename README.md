@@ -30,9 +30,9 @@ group_concat_max_len=10240
  
 1. html 캐쉬 디렉토리
  
-   mkdir cache/dynamic
+   mkdir -R cache/dynamic
 
-   mkdir cache/template
+   mkdir -R cache/template
    ```sh   
    chmod -R 707 cache
    ```

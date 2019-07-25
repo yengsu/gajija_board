@@ -13,9 +13,11 @@ client_max_body_size 100M;
 php.ini 설정
 ------------------
 max_input_vars = 5120
+
 memory_limit = 256M
 
 post_max_size 100M
+
 upload_max_filesize 8M
 
 -----------------
@@ -54,7 +56,9 @@ group_concat_max_len=10240
 ## composer로 library 설치 (해당 폴더의 파일참조:  Readme) 
  
 composer 명령어 사용을 위한 설치가이드 참조 : 
+
    https://getcomposer.org/
+   
    https://www.lesstif.com/pages/viewpage.action?pageId=23757293
  
 1. phpOffice (참조 : https://github.com/PHPOffice/PhpSpreadsheet)

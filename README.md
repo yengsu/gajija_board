@@ -4,26 +4,27 @@
  
 ## 퍼미션설정 
  
-1. html 캐쉬처리 (707)
+1. html 캐쉬 디렉토리
  
-     홈디렉토리/cache/dynamic
-     홈디렉토리/cache/template
+   mkdir cache/dynamic
+
+   mkdir cache/template
      
-     chmod -R 707 cache
+   chmod -R 707 cache
   
-2. XSS방어관련 캐쉬처리 (707)  
+2. XSS방어 관련 캐쉬 디렉토리
  
      ; 캐쉬디렉토리 사용안하면 성능저하가 생김(디렉토리 변경시 참조: http://htmlpurifier.org/download#toclink1)
      
      chmod 707 app/lib/htmlpurifier/library/HTMLPurifier/DefinitionCache/Serializer
   
-3. temp디렉토리 (707)
+3. temp 디렉토리
  
-chmod 707 tmp/
+    chmod 707 tmp/
    
-4. 데이타 저장디렉토리 (707)
+4. 데이타 디렉토리
  
-chmod 707 datas/
+    chmod 707 datas/
    
  
 ## composer로 library 설치 (해당 폴더의 파일참조:  Readme) 

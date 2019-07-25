@@ -33,9 +33,9 @@ group_concat_max_len=10240
    mkdir cache/dynamic
 
    mkdir cache/template
-  ```sh   
-  chmod -R 707 cache
-  ```
+   ```sh   
+   chmod -R 707 cache
+   ```
 
 2. XSS방어 관련 캐쉬 디렉토리
  
@@ -57,9 +57,9 @@ group_concat_max_len=10240
  
 composer 명령어 사용을 위한 설치가이드 참조 : 
 
-   https://getcomposer.org/
+     https://getcomposer.org/
    
-   https://www.lesstif.com/pages/viewpage.action?pageId=23757293
+     https://www.lesstif.com/pages/viewpage.action?pageId=23757293
  
 1. phpOffice (참조 : https://github.com/PHPOffice/PhpSpreadsheet)
 

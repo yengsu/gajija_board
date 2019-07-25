@@ -1,4 +1,4 @@
-# gajija_board
+# Gajija_board
 
 ## Usage
 

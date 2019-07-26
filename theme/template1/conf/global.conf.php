@@ -2,7 +2,7 @@
 ;die();
 ;/*
 [company]
-secret = "Gajija#_9504" ; 암호화/복호화 Key
+secret = "test007#_18768a" ; 암호화/복호화 Key
 oid = 1; 업체 UNIQUE코드(미구현)
 title = ":::: 홈페이지 방문을 환영합니다. ::::"
 ckeywords = ""
@@ -39,8 +39,8 @@ main = "@main"
 ; Master Email info
 [email]
 author="고객지원센타"
-email="olivetreemail1440@gmail.com"
-pwd="smarthan1440"
+email="test@gmail.com"
+pwd="test007"
 
 [email_template]
 basedir="datas/templates/email/";  ; 저장경로

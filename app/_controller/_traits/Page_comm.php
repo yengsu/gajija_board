@@ -101,12 +101,15 @@ trait Page_comm{
 		// 관리자 아니면 노출처리 된것만 출력
 		if( ! (int)$_SESSION['ADM'] ) {
 		
-			for($i=0,$l=count($datas['base']); $i < $l; $i++){
-				if( !(int) $datas['base'][$i]['imp'] ) {
-					array_splice($datas["base"], $i, 1);//unset($datas["base"][$i]) ;
-					
-					$l=count($datas['base']);
-					$i-- ;
+			if( !empty($datas) )
+			{
+				for($i=0,$l=count($datas['base']); $i < $l; $i++){
+					if( !(int) $datas['base'][$i]['imp'] ) {
+						array_splice($datas["base"], $i, 1);//unset($datas["base"][$i]) ;
+						
+						$l=count($datas['base']);
+						$i-- ;
+					}
 				}
 			}
 		}

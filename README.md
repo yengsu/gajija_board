@@ -59,7 +59,17 @@ group_concat_max_len=10240
    ```
 
 ## composer로 library 설치 (해당 폴더의 파일참조:  Readme) 
- 
+
+Windows 환경인 경우
+
+Git Bash 사용을 위해 설치 : https://git-scm.com/downloads
+
+설치후 아래 해당하는 폴더에 들어가서 오른쪽 마우스 클릭하여 "Git Bash Here" 를 선택함.
+
+그런 후 아래 내용을 참조하여 진행하세요.
+
+
+
 composer 명령어 사용을 위한 설치가이드 참조 : 
 
      https://getcomposer.org/

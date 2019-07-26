@@ -5,6 +5,8 @@ dist/.tmb
 cache/
 datas/
 
+conf/database.conf.php
+
 /.buildpath
 /.tmb
 /tmp/

@@ -70,6 +70,11 @@ Git Bash 사용을 위해 설치 : https://git-scm.com/downloads
 
 
 
+php.ini (확장모듈 요구사항)
+```sh
+extension=php_fileinfo.dll
+```
+
 composer 명령어 사용을 위한 설치가이드 참조 : 
 
      https://getcomposer.org/

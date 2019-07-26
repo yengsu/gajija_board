@@ -58,6 +58,12 @@ group_concat_max_len=10240
    chmod -R 707 theme/template1/html/_attach/
    ```
 
+## db 설정
+
+conf/database.conf.dev.php 를
+
+conf/database.conf.php 로 변경한 후 파일내용을 수정해주세요.
+
 ## composer로 library 설치 (해당 폴더의 파일참조:  Readme) 
 
 Windows 환경인 경우

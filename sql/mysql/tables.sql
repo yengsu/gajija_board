@@ -178,6 +178,16 @@ CREATE TABLE `grants` (
   KEY `idx_kind_code` (`group_name`,`kind_code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='권한부여';
 
+DROP TABLE IF EXISTS `member_grade`;
+CREATE TABLE `member_grade` (
+  `serial` int(11) NOT NULL AUTO_INCREMENT,
+  `oid` int(11) DEFAULT '0' COMMENT '업체코드',
+  `grade_code` int(11) unsigned DEFAULT '0' COMMENT '등급코드',
+  `grade_name` varchar(45) DEFAULT '',
+  `benefit_point_rate` float DEFAULT '0' COMMENT '등급혜택: 실결제금액의 %포인트 적립',
+  PRIMARY KEY (`serial`),
+  KEY `idx_grade_code` (`oid`,`grade_code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='회원 등급 설정';
 
 DROP TABLE IF EXISTS `member`;
 CREATE TABLE `member` (
@@ -236,19 +246,6 @@ CREATE TABLE `member_config` (
   PRIMARY KEY (`oid`),
   UNIQUE KEY `uniq_oid` (`oid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='회원 환경설정';
-
-
-DROP TABLE IF EXISTS `member_grade`;
-CREATE TABLE `member_grade` (
-  `serial` int(11) NOT NULL AUTO_INCREMENT,
-  `oid` int(11) DEFAULT '0' COMMENT '업체코드',
-  `grade_code` int(11) unsigned DEFAULT '0' COMMENT '등급코드',
-  `grade_name` varchar(45) DEFAULT '',
-  `benefit_point_rate` float DEFAULT '0' COMMENT '등급혜택: 실결제금액의 %포인트 적립',
-  PRIMARY KEY (`serial`),
-  KEY `idx_grade_code` (`oid`,`grade_code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='회원 등급 설정';
-
 
 DROP TABLE IF EXISTS `member_sns`;
 CREATE TABLE `member_sns` (

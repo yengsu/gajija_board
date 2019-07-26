@@ -1,0 +1,263 @@
+<script src="https://www.google.com/recaptcha/api.js"></script>
+<script src="/js/func/Validate.js"></script>
+<script src="/js/jquery/jquery.countdown.min.js"></script>
+<script src="/theme/{C.THEME}/js/jquery/mbr/jquery.mbr.join.js"></script>
+<script type="text/javascript">
+var baseURL = '{Doc["baseURL"]}';
+</script>
+
+<!-- <style type="text/css">
+#formWrite .form-group {
+	margin-bottom:0.6rem;
+}
+section.members {
+		width:896px !important;
+	}
+@media  (min-width: 900px) {
+	section.members {
+		width:896px !important;
+	}
+}
+@media  (max-width: 900px) {
+	section.members {
+		width:85% !important;
+	}
+	section.members label[for="magree_news"]{
+		display:inline;
+	}
+	section.members label[for="magree_policy"]{
+		display:inline;
+	}
+	section.members div.form-group > label {
+	    padding-left: 0;
+	    font-weight: bold;
+    }
+}
+</style> -->
+<style type="text/css">
+.join_wrap { min-width:450px; max-width:1000px; margin:0px auto;}
+
+.join_wrap .form-inline{
+	flex-grow: 1  !important;
+    -webkit-flex-grow: 1  !important;
+    align-items: center;
+    padding:5px 0px;
+}
+
+/* 자동 사이즈확장 */
+.join_wrap .form-inline > .data{
+	display: flex;
+	flex-grow: 1  !important;
+    -webkit-flex-grow: 1  !important;
+}
+/* 입력(input) 폼 최소사이즈 */
+.join_wrap input[type="text"], input[type="password"], input[type="email"] {
+    min-width: 16.4em;
+	flex-grow: 1;
+    -webkit-flex-grow: 1;
+}
+
+/* 타이틀 사이즈 */
+.join_wrap .form-inline > .title{
+	width: 130px;
+	padding:0;
+}
+@media  (max-width: 900px) {
+	/* 회원가입 블럭 wrap 초기화 */
+	.join_wrap { 
+		min-width:initial;
+		max-width:initial; 
+	}
+	.join_wrap .join-container{
+		display: -webkit-box;
+	    display: -webkit-flex;
+	    display: -ms-flexbox;
+	    
+		-webkit-box-direction: normal;
+	    -webkit-flex-direction: column;
+	    -ms-flex-direction: column;
+	    flex-direction: column;;
+	}
+	/* 회원가입 타이틀 마진 조정 */
+	.wrap-title{
+		margin:10px !important;
+		text-align:center;
+	}
+	/* 입력양식 초기화 */ 
+	.join_wrap .join-container .join{
+		width:initial;
+		margin: 0px auto;
+	}
+	/* 광고영역 왼쪽 마진 제거 */
+	.join_wrap .join_ad{
+		margin:0 !important;
+	}
+	/* 입력영역 타이틀영역 줄이기 */
+	.join_wrap .form-inline > .title{
+		width: 90px;
+		padding:0;
+	}
+	/* 입력폼 최저폭값 및 확장하기 */
+	.join_wrap input[type="text"], input[type="password"], input[type="email"] {
+	    min-width: 16.4em;
+	}
+	.join_wrap #muserid {
+		min-width: 13em;
+	}
+	/* 체크박스 좀더 크게 */
+	input[type=checkbox].checkbox{
+		font-size:1.7em;
+	}
+}
+</style>
+
+<section class="members loginBg joinBg flex1 mb-5" style="margin: 0px auto;">
+    
+    <!-- 회원가입 폼 -->
+	    <div class="member_wrap join_wrap">
+	      
+	      <h2 class="wrap-title m-30">회원가입</h2>
+
+		  <div class="join-container row">
+		      <div class="join">
+		      
+		        <form id="formWrite" name="formWrite" action="{Doc["baseURL"]}/{Doc["Action"]}{? Doc["CODE"]}/{Doc["CODE"]}{/}{Doc["queryString"]}" method="post" enctype="multipart/form-data">
+					
+						<div class="form-inline">
+				            <label for="frm_writer" class="column title">아이디</label>
+				            <div class="data">
+				            	<div class="InputAddOn grow1">
+					            	<input type="text" class="InputAddOn-field" id="muserid" name="muserid" placeholder="이메일 주소" required autocomplete="off">
+				            		<div class="InputAddOn-item">
+				            			<a href="#" id="btn-museridChk">중복체크</a>
+				            		</div>
+					            </div>
+				            </div>
+						</div>
+						<div id="Auth-block" class="form-inline hide">
+							<label class="col-form-label col-sm-4"></label>
+							<div class="data">
+								<div class="input-group">
+				            		<input type="text"  style="border: 2px solid #e28a8a;" id="MAuthCode" name="MAuthCode" placeholder="인증번호" autocomplete="off">
+				            		<div class="input-group-append">
+				            			<a href="#" id="btn-AuthConfirm" class="btn btn-default" style="padding:9px 10px; border: 1px solid #e28a8a; background: #e28a8a; color: #fff;">확인</a>
+									</div>
+									<div class="join-time "  style="border:0;">남은시간 <span id="Lifetime-count" style="color:red;font-weight:bold;"></span></div>
+								</div>
+							</div>
+						</div>
+			           <div class="form-inline">
+				            <label for="frm_writer" class="title">비밀번호</label>
+				            <div class="data">
+				            	<input type="password" data-minlength="6" id="muserpw" name="muserpw" placeholder="비밀번호 영문,숫자,특수문자 6~15자" autocomplete="off" required>
+				            </div>
+						</div>
+			           
+			           <div class="form-inline">
+				            <label for="frm_writer" class="title">비밀번호 확인</label>
+				            <div class="data">
+				            	<input type="password" id="muserpw_confirm" name="muserpw_confirm" placeholder="비밀번호 확인" autocomplete="off" required>
+				            </div>
+						</div>
+			           
+			           <div class="form-inline">
+				            <label for="frm_writer" class="title">이름</label>
+				            <div class="data">
+				            	<input type="text" id="musername" name="musername" placeholder="이름" required autocomplete="off">
+				            </div>
+						</div>
+						<!-- <div class="form-inline">
+				            <label for="frm_writer" class="col-form-label col-sm-4">닉네임</label>
+				            <div class="data">
+				            	<input type="text"  id="musernick" name="musernick" placeholder="닉네임(별명)" required autocomplete="off">
+				            </div>
+						</div> -->
+						<div class="joinSex form-inline">
+							<label for="frm_writer" class="title">성별</label>
+				            <div class="data" style="padding-top: 0.5em;">
+				            
+					              	<input type="radio" class="radio radio-danger" id="msex-female" name="msex" value="2" required>
+					              	<label for="msex-female"> 여 </label>
+					              	<input type="radio" class="radio radio-danger m-l-20" id="msex-man" name="msex" value="1" required>
+					              	<label for="msex-man"> 남 </label>
+					            
+				            </div>
+						</div>
+						
+			           <div class="form-inline">
+				            <label for="frm_writer" class="title">휴대폰 번호</label>
+				            <div class="data">
+				            	<input type="text" id="mhp" name="mhp" placeholder="휴대폰 번호" required autocomplete="off">
+				            </div>
+						</div>
+						<div class="form-inline">
+				            <label for="frm_writer" class="title">프로필 사진</label>
+				            <div class="data">
+				            	<input type="file"  id="profile_photo" name="profile_photo" placeholder="프로필 사진" required autocomplete="off">
+				            </div>
+						</div>
+					  <!-- <div class="form-inline">
+			            <input type="text" class=" ios-no-shadow pull-left" style="width:70%" id="mhp" name="mhp" placeholder="휴대폰 번호" required autocomplete="off">
+			            <a href="#" id="btn-smsAuthSend" class="btn btn-default pull-right" style="width:29%; padding:9px 10px;">인증번호 발송</a>
+			          </div> -->
+			          
+			          <div class="form-group join-chk" style="display:inline-block;">
+			            <div class="checkbox">
+			              <input type="checkbox" class="checkbox checkbox-danger" id="magree_news" name="magree_news" value="1">
+			              <label for="magree_news">E-MAIL, SMS를 통한 이벤트정보 수신에 동의합니다.</label>
+			            </div>
+			            <div class="checkbox m-t-10 m-b-20">
+			              <input type="checkbox" class="checkbox checkbox-danger" id="magree_policy" name="magree_policy" value="1" required>
+			              <label for="magree_policy"><a href="/Customer/policy" class="policy-bt" data-toggle="modal" data-target="#privacyView">개인 정보 보호 정책</a> 및 <a href="/Customer/clause" class="policy-bt" data-toggle="modal" data-target="#termView">이용 약관</a>에 동의합니다.</label>
+			            </div>
+			          </div>
+			          <div class="g-recaptcha" data-sitekey="{CAPTCHA_KEY //Captcha 사이트키}" style="margin: 0px 0px;"></div>
+			          <div class="form-inline m-20 join-bt h-center text-center">
+						<button type="reset" class="btn btn-secondary">취소</button>
+						<button type="button"  id="btn-submit" class="btn btn-dark">회원가입</button>
+			          </div>
+			          
+		        </form>
+		      </div>
+	      
+	      	  <div class="join_ad text-center grow1 " style="min-height: 20px;max-height: 510px;border: 1px solid #ccc; margin: 0px 10px; padding:0;">광고</div>
+      	 </div>
+	      
+		</div>
+
+</section>
+
+
+<!--Terms and Conditions Popup-->
+<div id="termView" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h2 class="modal-title" id="myLargeModalLabel">이용약관</h2>
+      </div>
+      <div class="modal-body">
+        내용 준비 중입니다.
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+<!--Privacy Policy Popup-->
+<div id="privacyView" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h2 class="modal-title" id="myLargeModalLabel">개인 정보 보호 정책</h2>
+      </div>
+      <div class="modal-body">
+        내용 준비 중입니다.
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>

@@ -1,0 +1,36 @@
+<script src="/js/func/Validate.js"></script>
+<script type="text/javascript">
+var baseURL = '{Doc["baseURL"]}';
+
+$(document).ready(function(){
+	$('#mbrFrmReqPw').submit(function(){
+		if( $('input[name="secPwd"]', $(this)).val() == '' ){
+			alert('비밀번호를 입력해주세요.'); //Please enter your email address correctly.
+			$('input[name="secPwd"]', $(this)).focus();
+			return false ;
+		}
+	});
+});
+</script>
+
+<section class="board mt-1 mb-5" style="width:40% !important; margin: 0px auto;">
+  
+	<h2 class="mt-4 mb-4">비밀번호 입력</h2>
+	<div class="member-content">
+	<!--비밀번호 찾기 폼-->
+		<div class="pw-wrap">
+			<div style="width: 400px;">
+				<form id="mbrFrmReqPw" method="post" action="{Doc["baseURL"]}/{Doc["Action"]}{? Doc["CODE"]}/{Doc["CODE"]}{/}{Doc["queryString"]}" class="form-material form-horizontal">
+					<!-- <p class="memberTl-sub text-center m-b-30">비밀번호를 입력하십시오.</p> -->
+					<div class="form-group">
+						<input type="password" class="form-control form-control-line" id="secPwd" name="secPwd" placeholder="비밀번호를 입력하세요." required autocomplete="off">
+					</div>
+					<div class="form-group text-center m-t-30">
+						<button type="submit" id="btnSecPwd" class="btn btn-dark btn-send" style="width:49%;">확인</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+  
+</section>

@@ -1,0 +1,826 @@
+<link href="/dist/nest/adm.menu.css" rel="stylesheet">
+<script src="/dist/nest/jquery.nestable.ys.js"></script>
+<script src="/dist/nest/jquery.nestable-menu.ys.js"></script>
+
+
+<script src="/dist/editor/ckeditor/ckeditor.js"></script>
+<script src="/dist/editor/ckeditor/config.adm.js"></script>
+<script src="/dist/editor/ckeditor/adapters/jquery.js"></script>
+    
+<script type="text/javascript">
+var postFormEle = "#formEdit" ;
+var baseURL = '{Doc["baseURL"]}' ;
+
+$.extend( get_nestable_opts.prototype.config, {
+		//maxDepth : 4,//{INDENT_LIMIT+1 //set depth},
+		collapseAll : false, // open, close
+		afterInit: function ( event ) {
+			Menu_handle.prototype.init(event.el, event);
+		}
+		{? JS_CATEGORY_OPT}
+		,property : {JS_CATEGORY_OPT}
+		{/}
+		{? JS_CATEGORY_DATA}
+		,res_data : {JS_CATEGORY_DATA}
+		{/}
+
+
+});
+
+$(function () {
+	//-------------------------------------------------
+	//nestable start
+	$('.nestable').nestable(get_nestable_opts.prototype.config)
+	.on('beforeDragStart', get_nestable_opts.prototype.evt.beforeDragStart)
+	.on('dragEnd', get_nestable_opts.prototype.evt.dragEnd) ;
+	//-------------------------------------------------
+	// goods_opt - form post sumit
+	$( postFormEle ).submit({'frm':postFormEle}, Menu_handle.prototype.optSubmit_handler) ;
+
+	// goods_opt - ajax form submit
+	$('.all_regist').bind('click', Menu_handle.prototype.opt_requestAjax_handler) ;
+	//-------------------------------------------------
+
+	/* var ScrollFollow = function(Ele){
+			var element = $(Ele),
+		    originalY = element.offset().top;
+
+			var topMargin = 0;
+
+			// Should probably be set in CSS; but here just for emphasis
+			element.css('position', 'relative');
+
+			$(window).on('scroll', function(event) {
+			    var scrollTop = $(window).scrollTop();
+			    //console.log(scrollTop, originalY, window.outerHeight/2);
+			    if(originalY == 0)
+		    	{
+				    if(scrollTop < originalY) var aTop = 0;
+				    else var aTop = scrollTop - originalY + topMargin;
+		    	}
+			    else{
+			    	//if(scrollTop < originalY) var aTop = scrollTop + topMargin ;
+				   if(scrollTop >= originalY) var aTop = scrollTop + topMargin ;
+				   else var aTop = scrollTop;
+				   //var aTop = scrollTop + topMargin ;
+		    	}
+			    element.css('top', aTop);
+			    //element.stop(false, false).animate({
+			   //     top: aTop
+			    //}, 300);
+			});
+	};
+	ScrollFollow('#nest-edit-block'); */
+	
+	//------------------------------------------------
+	
+	$("#myTabs li").click(function(){
+	     var tabid = $(this).find("a").attr("href");
+	     $("#myTabs li,#myTabs li a, #myTabContent div.tab-pane").removeClass("active");   // removing active class from tab
+
+	     $(".tab-pane").addClass('hide');   // hiding open tab
+	     $(tabid).removeClass('hide');    // show tab
+	     $(this).addClass("active"); //  adding active class to clicked tab
+	     $(this).children('a').addClass("active");
+
+	  });
+
+//---------------------------------------
+	//======================================
+	//		Editor
+	//======================================
+	var editor1 = $( '.wys' ).ckeditor(CKEDITOR_config);
+	CKEDITOR.config.height = 300;
+	CKEDITOR.config.width = 'auto';
+	CKEDITOR.config.allowedContent =true;
+	//--------------------------------------
+	/*
+	var editor1 = CKEDITOR.replace('attach_top_cont', config) ;
+	var editor2 = CKEDITOR.replace('attach_bottom_cont', config) ; 
+	*/
+	//console.log(editor1);
+	//
+	/* $('button[id^="btnFileSearch"]', document.getElementById('formEdit')).on('click', function(e){
+		//newWindow('/module/editor/elFinder/elfinder_doc.php?mode=tpl&FuncNum=set_attach_main', 'mnu_file_search', 800, 600, 1, 1) ;
+		var tmp = this.id.split('-');
+		if(tmp[1] !== undefined && tmp[2] !== undefined)
+		{
+			if( $('[name="'+tmp[2]+'"]').length < 1 ) return false;
+			
+			var kind = tmp[1];
+			var inputObj = tmp[2];
+			
+			var basedir = ''; // 기본 저장경로 
+			if( $(this).attr('data-basedir') !== undefined ) 
+				param_basedir = "&basedir="+encodeURIComponent($(this).attr('data-basedir')) ;
+			else param_basedir = '';
+			
+			newWindow('/module/plugin/file_manager/elFinder/base.php?mode='+kind+'&FuncNum=set_attach_main&formEle='+inputObj+param_basedir, 'mnu_file_search', 800, 600, 1, 1) ;
+		}
+		e.preventDefault();
+	}); */
+	$('button[id^="btnFileSearch"]', document.getElementById('frmEdit')).on('click', function(e){
+
+		var tmp = this.id.split('-');
+
+		if(tmp[1] !== undefined && tmp[2] !== undefined)
+		{
+			if( $('[name="'+tmp[2]+'"]').length < 1 ) return false;
+			
+			var kind = tmp[1];
+			var inputObj = tmp[2];
+
+			var basedir = ''; // 기본 저장경로
+			var func = $(this).attr('data-func') ;
+			if(typeof eval(func) !== 'function') func = '';
+			
+			if( $(this).attr('data-basedir') !== undefined )
+				param_basedir = "&basedir="+encodeURIComponent($(this).attr('data-basedir')) ;
+			else param_basedir = '';
+			
+			newWindow('/dist/components/file_manager/elFinder/template_select.php?mode='+kind+'&FuncNum='+func+'&formEle='+inputObj+param_basedir, 'mnu_file_search', 800, 600, 1, 1) ;
+		}
+		e.preventDefault();
+	});
+	
+});
+function callFunction(func, mod, formEle, basedir, file){
+	/*
+    file object
+    	baseUrl : "/html/_attach/"
+    	mime : "text/html"
+    	name : "4.body.top.htm"
+    	path : "_attach\4.body.top.htm"
+    	size : "135"
+    	url : "/html/_attach/4.body.top.htm"
+    */
+   
+    //if(mod == 'tpl') 
+    filename = file.url ;//file.url.substr(1) ;
+    if(mod == 'body_attach') filename = filename.replace(basedir, "") ;
+    if(typeof eval(func) === 'function')
+    {
+		    (function(func, mod, formEle, filename){
+				eval(func+"('"+mod+"','"+formEle+"','"+filename+"')");
+		    }(func, mod, formEle, filename));
+			//eval("OFUNC."+func+"('"+fileUrl+"')");
+    }
+}
+function inputSetVal(mod, ele, file){
+	$('[name="'+ele+'"]', document.getElementById('formEdit')).val(file) ;
+}
+function set_attach_main(mod, ele, file){
+	//if(mod == 'tpl')
+	//{
+		var requestURL = null ;
+		requestURL = '{Doc["baseURL"]}/getFile' ;
+
+		setTimeout(function() {
+			$.ajax({
+					url : requestURL,
+					type : 'POST',
+					dataType : 'json',
+					cache : false,
+					aysnc : false, // true(동기), false(비동기)
+					data : {'file': file},
+					beforeSend : function(xhr, settings){	// 기본적으로 생성,수정 처리시 표시
+						$('#file-manager-progress').html("<span style='color:red;'> Loading ...</span>") ;
+					},
+					success : function(data){
+						/* CKEDITOR.instances['memo'].setData(data,function(){
+							$('#file-manager-progress').empty();
+							 this.updateElement();
+						}); */
+						//$("#frmEdit").find('textarea[name="'+ele+'"]').val( data ) ;
+					},
+					complete: function(e){
+						$('#file-manager-progress').empty();
+						if(e.status === 200){
+							$('#file-manager-progress').empty();
+							CKEDITOR.instances[ele+'_cont'].editable().setHtml( e.responseJSON );
+							//$("#frmEdit").find('textarea[name="'+ele+'"]').val( e.responseJSON) ;
+						}
+					}
+			});
+		},200);
+	//}
+	//$('[name="'+ele+'"]', document.getElementById('frmEdit')).val(file) ;
+}
+function set_attach_main1(mod, ele, file){
+	if(mod == 'body_attach')
+	{
+		var requestURL = null ;
+		requestURL = '{Doc["baseURL"]}/getFile' ;
+
+		$.ajax({
+						url : requestURL,
+						type : 'POST',
+						dataType : 'json',
+						cache : false,
+						aysnc : false, // true(동기), false(비동기)
+						data : {'file': file},
+						beforeSend : function(xhr, settings){	// 기본적으로 생성,수정 처리시 표시
+							//$('#status-progress').html("<span style='color:red;'> 처리중...</span>") ;
+						}, 
+						complete: function(e){
+							
+							if(e.status === 200){
+								$("#formEdit").find('textarea[name="'+ele+'_cont"]').val( e.responseJSON) ;
+							}
+						}
+				});
+		/*
+		servRequest(
+				'getFile', 
+				'json', 
+				{'file': file},
+				function(res){
+					$("#formEdit").find('textarea[name="'+ele+'"]').val( res.file) ;
+		});*/
+	}
+	//console.log('file', file);
+	$('[name="'+ele+'"]', document.getElementById('formEdit')).val(file) ;
+}
+</script>
+<style type="text/css">
+#nest-edit-block{ display:none;}
+.left-wrap {
+	/* width:450px; */
+}
+.cate-wrap {
+    border: 3px solid #dadada;
+    overflow: hidden;
+    margin-top: 10px;
+    width: 450px;
+}
+.cate-inner {
+    overflow: hidden;
+    margin: 20px 30px 20px 20px;
+}
+#nest-edit-block{
+    margin-left: 30px;
+}
+/*#################################################*/
+#myTabContent {
+	border-left: 1px solid #ccc;
+    padding-left: 14px;
+} 
+.panel-body label{
+	    max-width: 11%;
+}
+
+.panel-body .nav {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-left: 0;
+  margin-bottom: 0;
+  list-style: none;
+}
+.panel-body .tab-pane {
+	padding:20px;
+}
+.panel-body .nav-link {
+  display: block;
+  padding: 0.5em 1em;
+}
+
+.panel-body .nav-link:focus, .nav-link:hover {
+  text-decoration: none;
+}
+
+.panel-body .nav-link.disabled {
+  color: #636c72;
+  cursor: not-allowed;
+}
+
+.panel-body .nav-tabs {
+  border-bottom: 1px solid #ddd;
+}
+
+.panel-body .nav-tabs .nav-item {
+  margin-bottom: -1px;
+}
+
+.panel-body .nav-tabs .nav-link {
+  border: 1px solid transparent;
+  border-top-right-radius: 0.25rem;
+  border-top-left-radius: 0.25rem;
+}
+
+.panel-body .nav-tabs .nav-link:focus, .panel-body .nav-tabs .nav-link:hover {
+  border-color: #eceeef #eceeef #ddd;
+}
+
+.panel-body .nav-tabs .nav-link.disabled {
+  color: #636c72;
+  background-color: transparent;
+  border-color: transparent;
+}
+
+.panel-body .nav-tabs .nav-link.active,
+.panel-body .nav-tabs .nav-item.show .nav-link {
+  color: #464a4c;
+  background-color: #fff;
+  border-color: #ddd #ddd #fff;
+}
+
+.panel-body .nav-tabs .dropdown-menu {
+  margin-top: -1px;
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+}
+
+.text-blue{ 
+	color: rgba(0, 112, 255, 0.92);
+	vertical-align: middle;
+    padding-top: calc(.5rem - 1px * 2);
+    padding-bottom: calc(.5rem - 1px * 2); 
+}
+.cate-wrap .active {
+	background-color:rgba(226, 218, 111, 0.2);;
+}
+.loading-progress{
+	position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* width: 100px;
+    height: 32px; */
+    line-height: 27px;
+    margin: auto;
+    z-index: 1000;
+    text-align: center;
+    font-size: 1.1em;
+    font-weight:bold;
+    background-color:rgba(255, 255, 255, 0.7);
+    /* border: 1px solid #948585;
+    border-radius: .6em; */
+}
+.loading-progress .msg{
+    position: relative;
+    top: 40%;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100px;
+    height: 32px;
+    margin: auto;
+    background-color: #fff;
+    border: 1px solid #948585;
+    border-radius: .6em;
+}
+</style>
+		<div id="top" class="container">
+			<h1 class="title pull-left">메뉴 관리</h1>
+			<div class="location pull-left">
+				<span>Nest메뉴</span>
+			</div>
+		</div>
+
+			<div class="subCon form-inline">
+				<div class="left-wrap">
+
+					<div id="FrmGoodsOpts-base" data-kind='1'>
+					<div id="goods-opt-base" class="nestable dd">
+
+								<div class="opt-header">
+									<div style="display:inline-block;border:0;background:none;">
+										<menu class="nestable-menu" style="margin:0;">
+									        <button type="button" data-action="expand-all" class="btn btn-expand btn-xs"> 펼치기 <i class="fa fa-chevron-down" aria-hidden="true"></i></button>
+									        <button type="button" data-action="collapse-all" class="btn btn-fold btn-xs"> 접기 <i class="fa fa-chevron-up" aria-hidden="true"></i></button>
+									        <button type="button" class="btn_optAdd btn_optAdd_new btn btn-addc btn-xs"> 추가하기 <i class="fa fa-plus" aria-hidden="true"></i></button>
+									        <button type="button" class="btn btn_Refresh btn-xs"> 새로고침 <i class="fas fa-sync-alt" aria-hidden="true"></i></button>
+							    		</menu>
+									</div>
+					     </div>
+					<div class="cate-wrap" style="overflow:scroll;height:650px;">
+					  <!-- <div style="position:absolute;top:0;">loading....</div> -->
+					  <div class="cate-inner" style="position:relative;">
+					<!--{? CATEGORY_LIST}-->
+						<!--{@ CATEGORY_LIST}-->
+
+								<!--{? .tag_first_start_g // open first ol}-->
+								    <ol class="dd-list">
+								<!--{/}-->
+
+								<!--{? .tag_close_d // close li}-->
+								        </li>
+
+								<!--{: .tag_start_g // open ol}-->
+								    <ol class="dd-list">
+
+								<!--{: .tag_close_dg //close li ol}-->
+
+									<!--{@ range(1, .tag_close_dg) //close li ol}-->
+										</li>
+									</ol>
+									<!--{/}-->
+									</li>
+								<!--{/}-->
+								{? .indent == 0 }
+											<li class="dd-item dd3-item  dd-hide" data-id="{.serial}" data-serial="{.serial}">
+												<div class="dd3-content" style="padding-right:0;">
+													<div class="opt_name-text rootNode">메뉴</div>
+													<!-- <input type="hidden" name="title" value="{.title}" > -->
+												</div>
+								    {:}
+
+								        <li class="dd-item dd3-item" data-id="{.serial}" data-serial="{.serial}">
+								        	<!-- <div class="{? .indent > 0}dd-handle {/}dd3-handle">{.key_}</div> -->
+								        	<div class="{? .indent > 0}dd-handle {/}dd3-handle"></div>
+
+											<div class="dd3-content">
+												<div class="btns-opt">
+									        		{? .indent < DATA.base_maxDepth}<i class="btn_optAdd fa fa-plus-circle text-info" title="추가"></i>{/}
+													<i class="btn_optDel fa fa-minus-circle text-danger" style="margin-left:5px;" title="제거"></i>
+												</div>
+												<div class="opt-form"><!--  style="width:200px;"> -->
+													<span class="opt_name-text">{.title}</span>
+													{*<input type="text" name="title" value="{.title}" style="width:100%;" class="form-control" preholder="옵션명을 입력해 주세요." autocomplete="off">*}
+												</div>
+											</div>
+								{/}
+								<!--{? .tag_end_close_dg // close last li ol}-->
+									<!--{@ range(1, .tag_end_close_dg) //close last li ol}-->
+											</li>
+										</ol>
+									<!--{/}-->
+									</li>
+								<!--{/}-->
+								<!--{? .tag_end_close_g // close last ol}-->
+									</ol>
+								<!--{/}-->
+
+
+						<!--{/}-->
+
+					<!--{:}-->
+
+								    <ol class="dd-list">
+										<li class="dd-item dd3-item  dd-hide" data-id="1" data-serial="">
+												<div class="dd3-content" style="padding-right:0;">
+													<div class="opt_name-text rootNode">메뉴</div>
+
+													<input type="hidden" name="title" value="HOME" >
+													<div class="dd-content-wrap" style="float:right;margin-left:10px;">
+
+													</div>
+
+												</div>
+										</li>
+								    </ol>
+					<!--{/}-->
+
+					</div>
+					</div>
+				</div>
+
+				</div> <!--End .cate-inner -->
+			</div> <!--End .cate-wrap -->
+
+			<!-- <div id="nest-edit-block" class="right-table pull-right">
+				<form id="frmGoodsCate" class="form-horizontal" action="{Doc["baseURL"]}/{Doc["Action"]}{? Doc["CODE"]}/{Doc["CODE"]}{/}{Doc["queryString"]}" method="post" name="frmDiscount" class="register" enctype="multipart/form-data">
+					<table class="formTable table table-hover">
+					  <tbody>
+						<tr class="form-text">
+						  <th>상위 카테고리</th>
+						  <td id="cate-field-path">1st Category</td>
+						</tr>
+						<tr>
+						  <th><label class="control-label">현재 카테고리</label></th>
+						  <td><input type="text" name="title" class="form-control" placeholder="2nd Category"></td>
+						</tr>
+						<tr class="form-text">
+						  <th>등록 상품수</th>
+						  <td><span class="goods-childContain-cnt" style="color:red;font-weight:bold; font-size:initial;"></span> 개가 등록되어 있습니다.(하위 카테고리까지 포함)</td>
+						</tr>
+						<tr>
+						  <th><label class="control-label">상품진열타입</label></th>
+						  <td>
+							<select id="orderBy" name="orderBy" class="form-control">
+								<option value="ts_ea desc">판매순</option>
+								<option value="serial desc">신상품순</option>								
+								<option value="sell_price desc">높은 가격순</option>
+								<option value="sell_price asc">낮은 가격순</option>								
+								<option value="ts_ea asc">상품만족도 높은 순</option>
+							</select>
+						  </td>
+						</tr>
+						<tr class="form-text">
+						  <th>노출 유무</th>
+						  <td>
+						  	<div class="checkbox pull-left text-left">
+								<input id="main_v" name="imp" value="1" type="checkbox" checked>
+								<label for="main_v"> 노출 </label>
+							</div>
+						  </td>
+						</tr>
+					  </tbody>
+					</table>
+					<button type="submit" id="btnDelete" name="btnDelete" class="btn btn-danger waves-effect waves-light pull-right">삭제</button>
+					<button type="submit" id="btnRegist" name="btnRegist" class="btn btn-basic btn-save pull-right"><i class="fa fa-check" aria-hidden="true"></i>저장</button>
+
+				</form>
+
+			</div> -->
+			
+			<div id="nest-edit-block"  style="flex: 0 1 80%;margin-left:20px;">
+				
+					<div class="panel panel-info">
+						<div class="panel-heading">
+							<!-- <h5>메뉴 편집</h5> -->
+				           	
+				           	<div class="panel-heading-btn">
+                                
+                            </div>
+				        </div>
+				        
+				        <div class="panel-body">
+				        
+				        <!--  TAB Pannel start -->
+							<div class="row-flex">
+							    <ul id="myTabs" class="nav nav-tabs" role="tablist">
+							      <li class="nav-item"><a class="nav-link active" role="tab" data-toggle="tab" href="#baseTab" id="base-tab">기본옵션</a></li>
+							      <li class="nav-item"><a class="nav-link" role="tab" data-toggle="tab" href="#attach_topTab" id="attach_top-tab">본문 TOP</a></li>
+							      <li class="nav-item"><a class="nav-link" role="tab" data-toggle="tab" href="#attach_bottomTab" id="attach_bottom-tab">본문 BOTTOM</a></li>
+							      <!-- <li role="presentation" class=""><a href="#file_managerTab" role="tab" id="file_manager-tab">File Manager</a></li> -->
+							    </ul>
+							    <form id="formEdit" class="form-horizontal">
+									<div id="myTabContent" class="tab-content">
+					<!--  TAB 1 -->
+									      <div class="tab-pane" id="baseTab" role="tabpanel">
+									        
+									        	<div class="form-group">
+		                             				<label class="col-flex">메뉴코드</label>
+		                             				<div class="form-inline">
+		                               					<input type="text" id="form_serial" name="serial" readonly style="height:1rem;border:0;">
+		                               				</div>
+		                           				</div>
+		                              			<div class="form-group">
+		                             				<label class="col-flex">상위그룹</label>
+		                             				<div class="form-inline">
+		                               					<input type="text" name="" placeholder="상위그룹 입력해주세요.">
+		                               				</div>
+		                           				</div>
+		                           				<!-- <div class="form-group row">
+		                             				<label class="col-form-label col-2">메뉴코드</label>
+		                             				<div class="col-10">
+		                               					<input type="text" id="form_mcode" name="mcode" placeholder="메뉴코드 입력해주세요.">
+		                               				</div>
+		                           				</div> -->
+		                           				<div class="form-group">
+		                             				<label class="col-flex">권한부여</label>
+		                             				<div class="form-inline">
+		
+														<div class="form-inline">
+															<label class="col-flex" style="margin: 0px 15px;text-align:left !important;">읽기</label>
+															<div class="form-inline">
+																<select id="grant_read" name="grant_read" class="form-control form-control-sm">
+																	<option value="">등급선택</option>
+																	<option value=''>──────</option>
+					                                                {@MBR_GRADES}
+					                                                <option value="{.grade_code}">{.grade_name}</option>
+					                                                {/}
+				                                            	</select> 
+				                                            	<small class="text-blue m-l-10 align-self-center">하위메뉴포함해서 적용.</small>
+															</div>
+															
+														</div>
+														<!-- <div class="form-inline">
+															<label class="col-flex" style="margin: 0px 15px;text-align:left !important;">쓰기</label>
+															<div class="form-inline">
+																<select id="grant_write" name="grant_write" class="form-control form-control-sm">
+																
+																	<option value="">등급선택</option>
+																	<option value=''>──────</option>
+					                                                {@MBR_GRADES}
+					                                                <option value="{.grade_code}">{.grade_name}</option>
+					                                                {/}
+				                                            	</select>
+															</div>
+														</div> -->
+
+		                               				</div>
+		                           				</div>
+		                           				<!-- <div class="form-group">
+		                             				<label for="form_mytype" class="col-flex">메뉴형태</label>
+		                             				<div class="form-inline">
+		                               					<input type="text" id="form_mytype" name="mtype" placeholder="메뉴형태 입력해주세요.">
+		                               					<select id="form_layout" name="mnu_" class="form-control form-control-sm">
+															<option value="">일반</option>
+															<option value="member">회원</option>
+															<option value="board">게시판</option>
+		                                            	</select>
+		                               				</div>
+		                           				</div> -->
+		                           				<div class="form-group">
+		                             				<label for="form_layout" class="col-flex">레이아웃</label>
+		                             				<div class="form-inline">
+		                               					<select id="form_layout" name="layout" class="form-control form-control-sm">
+			                                                <option value="">레이아웃 선택</option>
+			                                                {@LAYOUTS}
+			                                                <option value="{.value_}">{.value_}</option>
+			                                                {/}
+															<!-- <option value="blank">blank</option>
+															<option value="main">main</option>
+															<option value="sub1">sub1</option> -->
+		                                            	</select>
+		                               				</div>
+		                           				</div>
+		                              			<div class="form-group">
+		                             				<label for="form_tpl" class="col-flex">템플릿 선택</label>
+		                             				<div class="form-inline">
+		                             				
+		                             					<!-- <div class="input-group">
+			                             					 <span class="input-group-btn">
+														        <button id="btnFileSearch-tpl-tpl" data-basedir="html/" class="btn btn-success btn-sm" type="button"><span class="fa fa-search"></span></button>
+														     </span>
+		                               						<input type="text" id="form_tpl" name="tpl" placeholder="템플릿 파일 입력해주세요.">
+		                               					</div> -->
+		                             					<div class="InputAddOn">
+													        <button class="btn InputAddOn-item" id="btnFileSearch-tpl-tpl" data-basedir="html/" data-func="inputSetVal" type="button">
+													        	<span class="fa fa-search"></span>
+													        </button>
+		                               						<input type="text" id="form_tpl" name="tpl" class="InputAddOn-field" style="width: 25.6em;" placeholder="템플릿 파일 입력해주세요.">
+		                               					</div>
+		                             					<!-- <input type="text" id="form_tpl" name="tpl" placeholder="템플릿 입력해주세요."> -->
+		                               				</div>
+		                           				</div>
+		                           				<div class="form-group">
+		                             				<label for="form_title" class="col-flex">메뉴명</label>
+		                             				<div class="form-inline">
+		                               					<input type="text" id="form_title"  name="title" placeholder="메뉴명 입력해주세요.">
+		                               				</div>
+		                           				</div>
+		                           				<div class="form-group">
+		                             				<label for="form_url" class="col-flex">URL</label>
+		                             				<div class="form-inline">
+		                               					<input type="text" id="form_url" name="url" placeholder="URL 입력해주세요.">
+		                               				</div>
+		                           				</div>
+		                           				<div class="form-group">
+		                             				<label for="url_target" class="col-flex">URL Target</label>
+		                             				<div class="form-inline">
+		                               					<input type="text" id="url_target" name="url_target" placeholder="URL Target 입력해주세요">
+		                               				</div>
+		                           				</div>
+		                           				 <!-- form-group input-group"> -->
+		                           				<div class="form-group">
+		                             				<label for="used_checkbox" class="col-flex">사용유무</label>
+		                             				<div class="form-inline">
+		                             				
+		                             					<div class="form-check">
+		                             						<input class="checkbox checkbox-danger" type="checkbox" id="used_checkbox"  name="used"  value="1">
+															<label for="used_checkbox">
+																사용함
+															</label>
+															<small class="text-blue m-l-10 align-self-center">하위메뉴포함해서 적용.</small>
+														</div>
+
+		                               				</div>
+		                           				</div>
+		                           				<div class="form-group">
+		                             				<label for="imp_checkbox" class="col-flex">노출유무</label>
+		                             				<div class="form-inline">
+		                             				
+		                             					<div class="form-check">
+		                             						<input class="checkbox checkbox-danger" type="checkbox" id="imp_checkbox"  name="imp"  value="1">
+															<label for="imp_checkbox">
+																노출함
+															</label>
+															<small class="text-blue m-l-10 align-self-center">하위메뉴포함해서 적용.</small>
+														</div>
+		                             				
+		                               					<!-- <div class="checkbox checkbox-danger">
+									                        <input id="imp_checkbox" name="imp" type="checkbox"  value="1">
+									                        <label for="imp_checkbox">
+									                            노출함
+									                        </label>
+									                    </div> -->
+		                               				</div>
+		                           				</div>
+
+									        
+									      </div>
+				<!--  TAB 2 -->
+									      <div class="tab-pane hide" id="attach_topTab" role="tabpanel">
+									        
+									        	<div class="form-group">
+		                             				<label class="col-flex">TOP 기본위치 : </label>
+		                             				<div class="form-inline" style="text-align:left !important;">
+		                               					{ATTACH_BaseDir //첨부파일경로}
+		                               				</div>
+		                           				</div>
+									        	<div class="form-group">
+		                             				<label class="col-flex">TOP 파일</label>
+		                             				<div class="form-inline">
+		                             					<div class="InputAddOn">
+													        <button class="btn InputAddOn-item" id="btnFileSearch-body_attach-attach_top" data-basedir="{ATTACH_BaseDir //첨부파일경로}" data-func="set_attach_main" type="button">
+													        	<span class="fa fa-search"></span>
+													        </button>
+		                               						<input type="text" id="attach_top" name="attach_top" class="InputAddOn-field" style="width: 28em;" placeholder="본문상단 파일 입력해주세요.">
+		                               						<div class="InputAddOn-item" style="text-align:left !important;background:none;border:0;border-left:1px solid hsla(31,15%,50%,.25);">
+				                               					(미입력시 자동 파일생성 : <span style="color:#C60018;font-weight:bold;">코드.body.top.htm</span>)
+				                               				</div>
+		                               					</div>
+		                               				</div>
+		                               				
+		                               				
+		                           				</div>
+		                           				<div class="form-group">
+		                             				<div class="form-inline">
+		                               					<textarea class="wys"  cols="80" rows="30"  id="attach_top_cont" name="attach_top_cont"></textarea>
+		                               				</div>
+		                           				</div>
+									      </div>
+				<!--  TAB 3 -->
+									      <div class="tab-pane hide" id="attach_bottomTab" role="tabpanel">
+									        
+									        	<div class="form-group">
+		                             				<label class="col-flex">BOTTOM 기본위치 : </label>
+		                             				<div class="form-inline" style="text-align:left !important;">
+		                               					{ATTACH_BaseDir //첨부파일경로}
+		                               				</div>
+		                               				
+		                           				</div>
+									        	<div class="form-group">
+		                             				<label class="col-flex">BOTTOM 파일</label>
+		                             				<div class="form-inline">
+		                             					<!-- <div class="input-group">
+														    <button id="btnFileSearch-body_attach-attach_bottom" data-basedir="{ATTACH_BaseDir //첨부파일경로}" class="btn btn-success btn-sm" type="button"><span class="fa fa-search"></span></button>
+		                               						<input type="text" id="attach_bottom" name="attach_bottom" placeholder="본문하단 파일 입력해주세요.">
+		                               					</div> -->
+		                               					
+		                               					
+		                               					<div class="InputAddOn">
+													        <button class="btn InputAddOn-item" id="btnFileSearch-body_attach-attach_bottom" data-basedir="{ATTACH_BaseDir //첨부파일경로}" data-func="set_attach_main" type="button">
+													        	<span class="fa fa-search"></span>
+													        </button>
+		                               						<input type="text" id="attach_bottom" name="attach_bottom" class="InputAddOn-field" style="width: 28em;" placeholder="본문하단 파일 입력해주세요.">
+		                               						<div class="InputAddOn-item" style="text-align:left !important;border:0;background:none;border-left:1px solid hsla(31,15%,50%,.25);">
+				                               					(미입력시 자동 파일생성 : <span style="color:#C60018;font-weight:bold;">코드.body.bottom.htm</span>)
+				                               				</div>
+		                               					</div>
+		                               				</div>
+		                               				
+		                               				<!-- <div class="col-form-label col-5" style="text-align:left !important;">
+		                               					(미입력시 자동 파일생성 : <span style="color:#C60018;font-weight:bold;">코드.body.bottom.htm</span>)
+		                               				</div> -->
+		                           				</div>
+									        	<div class="form-group">
+		                             				<div class="form-inline">
+		                               					<textarea class="wys"  cols="80" rows="30"  id="attach_bottom_cont" name="attach_bottom_cont"></textarea>
+		                               				</div>
+		                           				</div>
+		                           				
+									      </div>
+				<!--  TAB 4 -->
+									     <!--  <div role="tabpanel" class="tab-pane in" id="file_managerTab" aria-labelledby="file_manager-tab">
+									        
+									        	<div class="file-manager"></div>
+		                           				
+									      </div> -->
+				<!--  TAB end -->
+
+								    </div>
+								    <div class="form-group">
+		                                        <div class="form-inline">
+		                                          <button id="btnUpdate" class="btn">수정하기</button>
+		                                          <button id="btnDelete" class="btn m-l-10">삭제하기</button>
+		                                        </div>
+	                                </div> 
+								</form>
+							</div>				        
+						 <!--  TAB Pannel end -->
+									
+				        </div>
+					</div>
+				</div>
+		</div> <!--End #subCon-->
+
+		<!-- ========================================================================== -->
+		<!--  Template                                                                                                         -->
+		<!-- ========================================================================== -->
+		    <div id="optTmpFrm" style="display:none;">
+				<li class="dd-item dd3-item" data-id="" data-serial="">
+			       	<div class="dd-handle dd3-handle"></div>
+
+					<div class="dd3-content">
+
+						<div class="opt-form" style="width:200px;"><input type="text" name="title" value="" style="width:100%;" class="nest-form form-control" preholder="할인 타이틀명을 입력해주세요." autocomplete="off"></div>
+						<div class="dd-content-wrap">
+
+							<span class="btns-opt">
+				        		<i class="btn_optAdd fa fa-plus-circle fa-lg text-info" title="추가"></i>
+								<i class="btn_optDel fa fa-minus-circle fa-lg text-danger" style="margin-left:5px;" title="제거"></i>
+							</span>
+							<div class="opt-frm">
+							</div>
+						</div>
+					</div>
+				</li>
+			</div>
+			<!-- ========================================================================== -->

@@ -1,0 +1,155 @@
+<!-- Highlight Start -->
+<script type="text/javascript" src="/dist/components/highlight/highlight.pack.js"></script>
+<link type="text/css" rel="stylesheet" href="/dist/components/highlight/styles/googlecode.css"/>
+<script>hljs.initHighlightingOnLoad();</script>
+<!-- Highlight End -->
+
+<style type="text/css">
+/* .contents p { margin-bottom:0;} */
+</style>
+
+<div class="container-fluid" >
+<!-- <input type="hidden" name="property" value="{PROPERTY}"> -->
+	<div class="row">
+		<!-- <div class="col-lg-12"> -->
+			<h3>{DATA.title}</h1>
+			<hr>
+			{@ DATA.attachFiles}
+				링크 : <a href="/{DATA.attach_path}{DATA.attachFiles[.key_]}" target="_blank">첨부파일{.key_+1}</a><br/>
+			{/}
+			<br/>
+			<div class="contents">
+				{DATA.memo}
+			</div>
+			
+			<p>
+				닉네임: {? DATA.lev_ico //회원레벨 icon}<i class="fa {DATA.lev_ico} fa-lg text-danger"></i>{/} {DATA.usernick}
+			</p>
+			<hr>
+		<!-- </div> -->
+	</div>
+
+<!-- <h1>게시판 {Doc["formType"]}</h1>
+<fieldset>
+	<legend>게시판 {Doc["formType"]}</legend>
+	
+	<p>
+		<label for="frm_oid">frm_oid</label>
+		{DATA.oid}
+	</p>
+	<p>
+		<label for="frm_mcode">frm_mcode</label>
+		{DATA.mcode}
+	</p>
+
+	<p>
+		<label for="frm_mbr_id">frm_mbr_id 명</label>
+		{DATA.mbr_id}
+	</p>
+	<p>
+		<label for="frm_writer">frm_writer 명</label>
+		{DATA.writer}
+	</p>
+	<p>
+		<label for="frm_pwd">frm_pwd 명</label>
+		{DATA.pwd}
+	</p>
+	<p>
+		<label for="frm_title">frm_title 명</label>
+		{DATA.title}
+	</p>
+	<p>
+		<label for="frm_usehtml">frm_usehtml 명</label>
+		{DATA.usehtml}
+	</p>
+	<p>
+		<label for="frm_memo">frm_memo 명</label>
+		{DATA.memo}
+	</p>
+	
+
+</fieldset> -->
+{? Doc["Action"]=="edit"}
+<script type="text/javascript">
+$(document).ready(function(){
+	//var events = $('.elements a').map(function() {
+	var events = $('#btn_brdDelete').map(function() {
+	    var onclick = $(this).attr('onclick');
+	    $(this).removeAttr('onclick');
+	    return onclick;
+	}).get();
+	
+	//$(this).attr("onClick", events[0]) ;
+	$("#btn_brdDelete").on("click", function(e){
+		(e.preventDefault) ? e.preventDefault() : e.returnValue = false;
+
+		if (window.confirm('정말 삭제하시겠습니까?')) {
+			location.href = "{Doc["baseURL"]}/delete{? Doc["CODE"]}/{Doc["CODE"]}{/}{Doc["queryString"]}" ;
+		}
+	});
+});
+</script>
+<div class="row" style="padding-bottom:20px;">
+	<button type="button" id="btn_brdUpdate" class="btn btn-sm btn-primary" onClick="location.href='{Doc["baseURL"]}/edit{? Doc["CODE"]}/{Doc["CODE"]}{/}{Doc["queryString"]}';">편집하기</button>
+
+	{? Board_conf['mbr_type'] == 1}
+	<button type="button" id="btn_brdDelete" class="btn btn-sm btn-primary" onClick="location.href='{Doc["baseURL"]}/delete{? Doc["CODE"]}/{Doc["CODE"]}{/}{Doc["queryString"]}';">삭제하기</button>
+	{:  //비밀번호 입력란}
+	
+	<button type="button" id="btn_brdDeletes" class="btn btn-sm btn-primary forget" data-toggle="modal" data-target=".forget-modal">삭제하기</button>
+	<div class="modal fade forget-modal" tabindex="-1" role="dialog" aria-labelledby="myForgetModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+			<form name="frmRemove" action="{Doc["baseURL"]}/delete{? Doc["CODE"]}/{Doc["CODE"]}{/}{Doc["queryString"]}" method="post" >
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">×</span>
+						<span class="sr-only">Close</span>
+					</button>
+					<h4 class="modal-title">게시물 삭제</h4>
+				</div>
+				<div class="modal-body">
+					<p>비밀번호를 입력해주세요.</p>
+					<input type="password" name="frm_userpw" id="frm_userpw" class="form-control" autocomplete="off">
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">취소</button>
+					<button type="submit" class="btn btn-sm btn-sm btn-custom">확인</button>
+				</div>
+			</form>
+			</div> <!-- /.modal-content -->
+		</div> <!-- /.modal-dialog -->
+	</div> <!-- /.modal -->
+	{/}
+
+{/}
+
+	<button type="button" id="btn_brdList" class="btn btn-sm btn-primary" onClick="location.href='{Doc["baseURL"]}/lst{Doc["queryString"]}';">목록보기</button>
+</div>
+
+<form name="frmMove" action="{Doc["baseURL"]}/moveComments{? Doc["CODE"]}/{Doc["CODE"]}{/}{Doc["queryString"]}" method="post" >
+<div class="row form-inline text-center col-xs-12">
+	<div class="form-group ">
+		<label class="sr-only" for="search_keyword">이동할 노드 serial</label>
+		<input type="text" class="form-control" id="frm_mvOrig" name="frm_mvOrig" placeholder="이동할 Serial 입력해주세요.">
+	</div>
+	<div class="form-group ">
+		<label class="sr-only" for="search_keyword">이동될 위치 serial</label>
+		<input type="text" class="form-control" id="frm_mvTarget" name="frm_mvTarget" placeholder="이동될 위치 Serial 입력해주세요.">
+	</div>
+	<button type="submit" class="btn btn-sm btn-primary">이동시키기</button>
+</div>
+</form>
+			
+			
+			
+{*
+######################################################
+코멘트 작성 & 리스트 출력
+######################################################
+*}
+{#COMMENTS}
+<hr>
+</div>
+{#BOARD_LIST}
+

@@ -1,0 +1,386 @@
+<script src="/dist/editor/ckeditor/ckeditor.js"></script>
+<script src="/dist/editor/ckeditor/config.adm.js"></script>
+<script src="/dist/editor/ckeditor/adapters/jquery.js"></script>
+
+<style type="text/css">
+	#formEdit label {
+    	max-width: 9%;
+   	}
+   	.text-blue{ 
+		color: rgba(0, 112, 255, 0.92);
+		vertical-align: middle;
+	    padding-top: calc(.5rem - 1px * 2);
+	    padding-bottom: calc(.5rem - 1px * 2); 
+	}
+	
+	ol.breadcrumb:before, ol.breadcrumb > li{ font-size:1.2em;font-weight:bold;}
+	ol.breadcrumb:before{
+		content: 'Home > ';
+		color:#adaaaa;
+		
+	}
+	ol.breadcrumb > li:not(:last-child){
+		color:#adaaaa;
+		
+	}
+	ol.breadcrumb > li:not(:last-child):after{
+		content: ' > ';
+	}
+</style>
+<script type="text/javascript">
+$(function () {
+	//======================================
+	//		Editor
+	//======================================
+	var editor1 = $( '.wys' ).ckeditor(CKEDITOR_config);
+	CKEDITOR.config.height = 350;
+	CKEDITOR.config.width = 'auto';
+	CKEDITOR.config.allowedContent =true;
+	//--------------------------------------
+	$('button[id^="btnFileSearch"]', document.getElementById('frmEdit')).on('click', function(e){
+
+		var tmp = this.id.split('-');
+
+		if(tmp[1] !== undefined && tmp[2] !== undefined)
+		{
+			if( $('[name="'+tmp[2]+'"]').length < 1 ) return false;
+			
+			var kind = tmp[1];
+			var inputObj = tmp[2];
+
+			var basedir = ''; // 기본 저장경로
+			var func = $(this).attr('data-func') ;
+			if(typeof eval(func) !== 'function') func = '';
+			
+			if( $(this).attr('data-basedir') !== undefined )
+				param_basedir = "&basedir="+encodeURIComponent($(this).attr('data-basedir')) ;
+			else param_basedir = '';
+			
+			newWindow('/dist/components/file_manager/elFinder/template_select.php?mode='+kind+'&FuncNum='+func+'&formEle='+inputObj+param_basedir, 'mnu_file_search', 800, 600, 1, 1) ;
+		}
+		e.preventDefault();
+	});
+});
+function callFunction(func, mod, formEle, basedir, file){
+	/*
+    file object
+    	baseUrl : "/html/_attach/"
+    	mime : "text/html"
+    	name : "4.body.top.htm"
+    	path : "_attach\4.body.top.htm"
+    	size : "135"
+    	url : "/html/_attach/4.body.top.htm"
+    */
+   
+    //if(mod == 'tpl') 
+    filename = file.url ;//file.url.substr(1) ;
+    if(mod == 'body_attach') filename = filename.replace(basedir, "") ;
+    if(typeof eval(func) === 'function')
+    {
+		    (function(func, mod, formEle, filename){
+				eval(func+"('"+mod+"','"+formEle+"','"+filename+"')");
+		    }(func, mod, formEle, filename));
+			//eval("OFUNC."+func+"('"+fileUrl+"')");
+    }
+}
+function inputSetVal(mod, ele, file){
+	$('[name="'+ele+'"]', document.getElementById('formEdit')).val(file) ;
+}
+function set_attach_main(mod, ele, file){
+	//if(mod == 'tpl')
+	//{
+		var requestURL = null ;
+		requestURL = '{Doc["baseURL"]}/getFile' ;
+
+		setTimeout(function() {
+			$.ajax({
+					url : requestURL,
+					type : 'POST',
+					dataType : 'json',
+					cache : false,
+					aysnc : false, // true(동기), false(비동기)
+					data : {'file': file},
+					beforeSend : function(xhr, settings){	// 기본적으로 생성,수정 처리시 표시
+						$('#file-manager-progress').html("<span style='color:red;'> Loading ...</span>") ;
+					},
+					success : function(data){
+						/* CKEDITOR.instances['memo'].setData(data,function(){
+							$('#file-manager-progress').empty();
+							 this.updateElement();
+						}); */
+						//$("#frmEdit").find('textarea[name="'+ele+'"]').val( data ) ;
+					},
+					complete: function(e){
+						$('#file-manager-progress').empty();
+						if(e.status === 200){
+							$('#file-manager-progress').empty();
+							CKEDITOR.instances[ele+'_cont'].editable().setHtml( e.responseJSON );
+							//$("#frmEdit").find('textarea[name="'+ele+'"]').val( e.responseJSON) ;
+						}
+					}
+			});
+		},200);
+	//}
+	//$('[name="'+ele+'"]', document.getElementById('frmEdit')).val(file) ;
+}
+</script>
+<div class="body">
+	<div class="wrap row-flex">
+	
+		<h2>메뉴 편집</h2>
+		
+		<div class="p-t-20">
+		    <form id="formEdit" class="form-horizontal" action="{Doc["baseURL"]}/{Doc["Action"]}{? Doc["CODE"]}/{Doc["CODE"]}{/}{Doc["queryString"]}" method="post" name="brdWriteFrm" class="register" enctype="multipart/form-data">
+		        <div class="form-group">
+		            <label for="frm_mcode" class="col-flex">페이지 경로</label>
+		            <div class="form-inline">
+						<ol class="breadcrumb ">
+						{? MNU // 메뉴 경로 출력} 
+							{@ MNU //선택된 메뉴경로}
+							 <li class="d-inline-block"><span class="active">{.title}</span></li>
+							{/} 
+						{/}
+						</ol>
+					</div>
+		        </div>
+		        <div class="form-group">
+		            <label for="frm_mcode" class="col-flex">메뉴코드 (mcode)</label>
+		            <div class="form-inline">
+						<input type="text" class="form-control form-control-sm" id="frm_mcode" name="mcode" value="{DATA.mcode}" placeholder="메뉴코드 입력해주세여.">
+					</div>
+		        </div>
+		        <div class="form-group">
+		            <label for="frm_oid" class="col-flex">업체코드 (oid)</label>
+		            <div class="form-inline">
+						<input type="text" class="form-control form-control-sm" id="frm_oid" name="oid" value="{DATA.oid}" placeholder="업체코드 입력해주세여.">
+					</div>
+		        </div>
+		        <!-- <div class="form-group row align-items-center">
+		            <label for="frm_mcode" class="col-form-label col-2">메뉴코드 (mcode)</label>
+		            <div class="col-4">
+						<input type="text" class="form-control form-control-sm" id="frm_mcode" name="mcode" value="{DATA.mcode}" placeholder="메뉴코드 입력해주세여.">
+					</div>
+		        </div> -->
+		        <div class="form-group">
+					                             				<label class="col-flex">권한부여</label>
+					                             				<div class="form-inline">
+					                             				
+					
+																	<div class="form-inline row">
+																			<label style="margin: 0px 15px; text-align:left !important;">읽기</label>
+																			<div class="input-group text-left">
+																				<select id="grant_read" name="grant_read" class="form-control form-control-sm">
+																					<option value="">등급선택</option>
+																					<option value=''>──────</option>
+									                                                {@MBR_GRADES}
+									                                                <option value="{.grade_code}" {? .grade_code == DATA.grant_read}selected{/}>{.grade_name}</option>
+									                                                {/}
+								                                            	</select>
+																			</div>
+																			<small class="text-blue m-l-10 align-self-center">하위메뉴포함해서 적용.</small>
+																	</div>
+																	<!-- <div class="form-inline row">
+																			<label style="margin: 0px 15px; text-align:left !important;">쓰기</label>
+																			<div class="input-group">
+																				<select id="grant_write" name="grant_write" class="form-control form-control-sm">
+																					<option value="">등급선택</option>
+																					<option value=''>──────</option>
+									                                                {@MBR_GRADES}
+									                                                <option value="{.grade_code}" {? .grade_code == DATA.grant_write}selected{/}>{.grade_name}</option>
+									                                                {/}
+								                                            	</select>
+																			</div>
+																	</div> -->
+		
+					                               				</div>
+					                           				</div>
+		        <div class="form-group">
+		            <label for="frm_title" class="col-flex">메뉴명 (title)</label>
+		            <div class="form-inline">
+						<input type="text" class="form-control form-control-sm" id="frm_title" name="title" value="{DATA.title}" placeholder="메뉴명 입력해주세여.">
+					</div>
+		        </div>
+		        <div class="form-group">
+		            <label for="frm_url" class="col-flex">URL (url)</label>
+		            <div class="form-inline">
+						<input type="text" class="form-control form-control-sm" id="frm_url" name="url" value="{DATA.url}" placeholder="URL 주소 입력해주세여.">
+					</div>
+		        </div>
+		        <div class="form-group">
+		            <label for="frm_url_target" class="col-flex">URL target (url_target)</label>
+		            <div class="form-inline">
+						<input type="text" class="form-control form-control-sm" id="frm_url_target" name="url_target" value="{DATA.url_target}" placeholder="URL target 입력해주세여.">
+					</div>
+		        </div>
+		        <div class="form-group">
+		            <label for="frm_layout" class="col-flex">레이아웃 (layout)</label>
+		            <div class="form-inline">
+						<!-- <input type="text" class="form-control form-control-sm" id="frm_layout" name="layout" value="{DATA.layout}" placeholder="레이아웃 입력해주세여."> -->
+						<select name="layout" class="form-control form-control-sm">
+							<option value="">레이아웃 선택</option>
+						{@LAYOUTS}
+							<option value="{.value_}" {? .value_ == DATA.layout}selected{/}>{.value_}</option>
+						{/}
+						</select>
+					</div>
+		        </div>
+		        <div class="form-group">
+		            <label for="frm_tpl" class="col-flex">템플릿 (tpl)</label>
+					<div class="form-inline">
+		       			<!-- <div class="input-group">
+		                	<span class="input-group-btn">
+					        	<button id="btnFileSearch-tpl-tpl" data-basedir="html/" class="btn btn-success btn-sm" type="button"><span class="fa fa-search"></span></button>
+					     	</span>
+		                    <input type="text" id="frm_tpl" name="tpl" value="{DATA.tpl}" class="form-control form-control-sm" placeholder="템플릿 파일 입력해주세요.">
+						</div> -->
+						
+						<div class="InputAddOn">
+					        <button class="btn InputAddOn-item" id="btnFileSearch-tpl-tpl" data-basedir="html/" data-func="inputSetVal" type="button">
+					        	<span class="fa fa-search"></span>
+					        </button>
+							<input type="text" id="form_tpl" name="tpl" value="{DATA.tpl}" class="InputAddOn-field" style="width: 25.6em;" placeholder="템플릿 파일 입력해주세요.">
+						</div>
+					</div>
+		        </div>
+		        <!-- <div class="form-group row align-items-center">
+					<label for="tpl_cont" class="col-form-label col-2"></label>
+		           	<div class="col-lg-7" >
+						<textarea class="wys"  cols="100" rows="20"  id="tpl_cont" name="tpl_cont">{DATA.tpl_cont}</textarea>
+					</div>
+				</div> -->
+		        <div class="form-group">
+		        
+		            <label for="frm_used" class="col-flex">사용유무 (used)</label>
+		            <div class="form-inline">
+		            
+						<div class="form-check">
+							<input class="checkbox checkbox-danger" type="checkbox" id="frm_used"  name="used"  value="1" {? DATA.used}checked=""{/}>
+							<label for="frm_used">
+								사용함
+							</label>
+							<small class="text-blue m-l-10 align-self-center">하위메뉴포함해서 적용.</small>
+						</div>
+		            
+						<!-- <div class="checkbox checkbox-primary">
+							<input class="form-control form-control-sm"  id="frm_used" type="checkbox" name="used" value="1" {? DATA.used}checked=""{/}>
+							<label for="frm_indent">사용함</label>
+						</div> -->
+					</div>
+		        </div>
+		        <div class="form-group">
+		            <label for="frm_imp" class="col-flex">노출유무 (imp)</label>
+		            <div class="form-inline">
+		            	<div class="form-check">
+		            		<input class="checkbox checkbox-danger" type="checkbox" id="frm_imp"  name="imp"  value="1" {? DATA.imp}checked=""{/}>
+							<label for="frm_imp">
+								사용함
+							</label>
+							<small class="text-blue m-l-10 align-self-center">하위메뉴포함해서 적용.</small>
+						</div>
+		            
+						<!-- <div class="checkbox checkbox-danger">
+							<input class="form-control form-control-sm"  id="frm_imp" type="checkbox" name="imp" value="1" {? DATA.imp}checked=""{/}>
+							<label for="frm_indent">사용함</label>
+						</div> -->
+					</div>
+		        </div>
+		        <div class="form-group">
+		            <label for="attach_top" class="col-flex">본문 상단파일 (attach_top)</label>
+		            <!-- <div class="form-inline">
+						<input type="text" class="form-control form-control-sm" id="frm_attach_top" name="attach_top" value="{DATA.attach_top}" placeholder="본문 상단파일 입력해주세여.">
+					</div> -->
+					<div class="row-flex p-t-10">
+						<div class="control-label" style="text-align:left !important;">본문상단 기본위치 : <span style="font-family: sans-serif; font-size: 100%;font-weight:bold;">{ATTACH_BaseDir}</span></div>
+						<div class="form-group">
+			       			<div class="form-inline">
+			       				<!-- <span class="input-group-btn">
+			       					<button id="btnFileSearch-body_attach-attach_top" data-basedir="{ATTACH_BaseDir //첨부파일경로}" class="btn btn-success btn-sm" type="button"><span class="fa fa-search"></span></button>
+			       				</span>
+			       				<input type="text" id="attach_top" name="attach_top" value="{DATA.attach_top}" class="form-control form-control-sm" placeholder="본문상단 파일 입력해주세요.">
+			       				<div class="control-label col-lg-5" style="text-align:left !important;">
+									(미입력시 자동 파일생성 : <span style="color:#C60018;font-weight:bold;">코드.body.top.htm</span>)
+								</div> -->
+								
+								
+								<div class="InputAddOn">
+							        <button class="btn InputAddOn-item"id="btnFileSearch-body_attach-attach_top" data-basedir="{ATTACH_BaseDir //첨부파일경로}" data-func="set_attach_main" type="button">
+							        	<span class="fa fa-search"></span>
+							        </button>
+									<input type="text" id="attach_top" name="attach_top" value="{DATA.attach_top}" class="InputAddOn-field" style="width: 25.6em;" placeholder="본문상단 파일 입력해주세요.">
+								</div>
+								<div class="control-label col-lg-5" style="padding-left:10px;text-align:left !important;line-height: 2.3em;">
+									(미입력시 자동 파일생성 : <span style="color:#C60018;font-weight:bold;">코드.body.top.html</span>)
+								</div>
+			       			</div>
+			       			
+						</div>
+						<div class="form-inline" >
+							<textarea class="wys"  cols="100" rows="20"  id="attach_top_cont" name="attach_top_cont">{DATA.attach_top_cont}</textarea>
+						</div>
+					</div>
+					
+		        </div>
+		        <!-- <div class="form-group">
+		            <label for="frm_attach_bottom" class="col-flex">본문 하단파일 (attach_bottom)</label>
+		            <div class="form-inline" >
+						<input type="text" class="form-control form-control-sm" id="frm_attach_bottom" name="attach_bottom" value="{DATA.attach_bottom}" placeholder="본문 하단파일 입력해주세여.">
+						<div class="control-label" style="text-align:left !important;">{ATTACH_BaseDir}</div>
+						<div class="input-group">
+							<span class="input-group-btn">
+								<button id="btnFileSearch-body_attach-attach_bottom" data-basedir="{ATTACH_BaseDir //첨부파일경로}" class="btn btn-success btn-sm" type="button"><span class="fa fa-search"></span></button>
+							</span>
+							<input type="text" id="frm_attach_bottom" name="attach_bottom" value="{DATA.attach_bottom}" class="form-control form-control-sm" placeholder="본문하단 파일 입력해주세요.">
+						</div>
+					</div>
+					<div class="control-label col-lg-5" style="text-align:left !important;">
+						(미입력시 자동 파일생성 : <span style="color:#C60018;font-weight:bold;">코드.body.bottom.htm</span>)
+					</div>
+		        </div> -->
+		        
+		        
+		        
+		        <div class="form-group">
+		            <label for="frm_attach_bottom" class="col-flex">본문 하단파일 (attach_bottom)</label>
+					<div class="row-flex p-t-10">
+						<div class="control-label" style="text-align:left !important;">본문하단 기본위치 : <span style="font-family: sans-serif; font-size: 100%;font-weight:bold;">{ATTACH_BaseDir}</span></div>
+						<div class="form-group">
+			       			<div class="form-inline">
+								
+								<div class="InputAddOn">
+							        <button class="btn InputAddOn-item" id="btnFileSearch-body_attach-attach_bottom" data-basedir="{ATTACH_BaseDir //첨부파일경로}" data-func="set_attach_main" type="button">
+							        	<span class="fa fa-search"></span>
+							        </button>
+									<input type="text" id="frm_attach_bottom" name="attach_bottom" value="{DATA.attach_bottom}" class="InputAddOn-field" style="width: 25.6em;" placeholder="본문상단 파일 입력해주세요.">
+								</div>
+								<div class="control-label col-lg-5" style="padding-left:10px;text-align:left !important;line-height: 2.3em;">
+									(미입력시 자동 파일생성 : <span style="color:#C60018;font-weight:bold;">코드.body.bottom.html</span>)
+								</div>
+			       			</div>
+			       			
+						</div>
+						<div class="form-inline" >
+							<textarea class="wys"  cols="100" rows="20"  id="attach_bottom_cont" name="attach_bottom_cont">{DATA.attach_bottom_cont}</textarea>
+						</div>
+					</div>
+					
+		        </div>
+		        
+		        
+				<!-- <div class="form-group">
+					<label for="attach_bottom_cont" class="col-flex"></label>
+		           	<div class="form-inline" >
+						<textarea class="wys"  cols="100" rows="20"  id="attach_bottom_cont" name="attach_bottom_cont">{DATA.attach_bottom_cont}</textarea>
+					</div>
+				</div> -->
+				<div class="form-group" style="margin-top:20px;">
+					<label class="col-flex"></label>
+		           	<div class="form-inline" >
+			        	<button type="submit" class="btn btn-primary">등록완료</button>
+			        	<button type="button" class="btn m-l-10" onClick="location.href='{Doc["baseURL"]}/lst{Doc["queryString"]}'">목록보기</button>
+		        	</div>
+		        </div>
+		    </form>
+		</div>
+
+	</div>
+</div>

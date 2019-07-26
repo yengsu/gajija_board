@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "yeppushopaanalytics",
+  "private_key_id": "c9ddd3172972348ccc3787e62762a7fe8b17856321f8c54bde15",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADsnsANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAvfrgoIBAQDDH5vpUTN21hhmF6\nkcWccaCAY+2GFU5MEfGM5Xaa0u6i6AWzCEThUG3ob+Sww2uatUuJne6jxcN7grqXjA\npSdK6Ll7dAvm02AQMMJzH5lpyoW7JYHO8akTEbmspRukFwM2QbTx1rd9aEYCsOkv\nsY6kdzkPey8cKueqDewTUInHkfWAPwnowO3qSTbN4Fe/SnD6BJ0o4Bdaz6ou5QN5\nIcRI4spzRCsWmllX38uDFtY/uyM+BY/0gCK2HeLX6lShiOwunxzhbMgl6MCIA54X\nu4U+My0Y4u4k0520EkArMfh/77l/lnaUw6WT/8O/1/wNReoGJZYnm+/7UBQXiQ2F\n4w0Vn76jAgMBAAECggEAFTV02XX5jZO80blRjK4Nm7wiTDt3IF2uZAL5D43l0w7W\nZbMlBvOeIbrfj307+b/8/aVhPTbTPm+zz+DDthk4vAn/ly3nlarvH9tR7hVU1uQ7\nSVasJYX6NCFYMUxNDZMzy0um8ysn3PgEyKnYktjgq2Wc18d0GeBchjbtWvNrB27h\nurHhNP30UAR0u2XWV8RY2h5/JUe0GO2kYz2o+Quynp9fih/kqrcpTK8XmURXK8/n\nYsg1xl2zVDpXWItZpnrSBTipNllJNn4shX5CF82J3oZIqn7zz1w333gMIjULtsGG\ngvgMiN0ZPEBIEPnSP9qhljyQBhLS+GsNH4sDa92xHQKBgQD9He5h5UfHyZm9elvE\n/pMQLwlr1B65fpI15f6u+8oMwigVt6umITNAKDui6KtrqCPfm65LsH30U6JkPpHT\nNnD0dNh1+Z1W54zb03MZ+9aofDfRcsOLRBKcGZTTj6NKb62ubTtLGRrJdbGCxPcu\ndlvjnHiJaf2P9jhen+VNNe7svQKBgQDFWJLVX1QUJmga8sbl/9bMzUyyZfCNxDAv\nGFZXGFo2hRGVfNpLjFrbrjeIEUqH6LbvKKj+uuTREZAQDTGPiHO29+JX7DNHR1NF\nKaSqy1mZ1KvcJFbkxI7qNjymEg4oPJa+wcqs/tVy/aOUEITPclwExeP60o3detED\nng6/ycz+3wKBgQCG8P0UjcK93VmsLV5dYIcQurLgHJ8grzzNpUcpDK1ELgJmyZum\nHs8O5iQdDsPMykANxxad3YLYzfmmTcE6hCyl9uErzB64pQtwaoNTl/Jxsn+jlvZu\n+aSeOfkg7NPWLEHA2xUgTUr9mlQ/bjiFOa51YwbT44C9zjtxHveFOTqeVQKBgC3z\nfd0pIU6/0qXTufR8KevuMdmoWubns8CDjjcheIARZBLGy52jxNQ6MLwCKrSSv2XY\nteD6a6UyzbSvHccqIqeL+Kw4V4hVV1JXa/xI9UgYeRv9ai5ChnSKxHx2380GrqMk\nRKkbfWAVJy2m2wXivwJtgbQ5qsbTfi+1cgG+X3lJAoGBAPyg8viHRZ3SDTIoJ3C/\nm2OvRiTUI1dukKs/PWWX6EKaW0gVNo1Y2yCIOqwEjE2J57QvOnmY393FepNI2OAM\nWvmABlxEc8NRdtenkEsHX6Cd6Hx0FJ0JlUzAqYOHgvFHIMvWWsEk4RRXTTQjJKsA\nPy1a8tSaW4A63qV+CIv+fh9o\n-----END PRIVATE KEY-----\n",
+  "client_email": "yeppuanalytics@yeppushopaanalytics.iam.gserviceaccount.com",
+  "client_id": "1132796146310759671145043",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/xe5r09/yeppuanalytics%40yeppushopaanalytics.iam.gserviceaccount.com"
+}

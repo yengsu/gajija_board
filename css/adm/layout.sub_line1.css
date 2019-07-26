@@ -1,0 +1,92 @@
+/* @import url(//fonts.googleapis.com/earlyaccess/nanumgothiccoding.css);
+html,body { font-family:'Nanum Gothic Coding', monospace} */
+html,body {
+	font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+	/* font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif */
+	/* font-family:'Apple SD Gothic Neo',arial,sans-serif; */
+	font-style: normal;
+	font-size:14px;
+}
+
+.main {
+	height:100%;
+	min-height: 100%;
+	/*font-family: 'Nanum Gothic Coding', serif;*/
+}
+
+	/*>>>>>>>>>>>>> 헤더영역 >>>>>>>>>>>>>> */
+	/*헤더영역 - 전체*/
+	.main > .header { 
+		display:block;
+		/* background:#2e363f;  */
+		border-bottom: 1px solid rgba(0,0,0,0.14);
+	}
+		/* 헤더영역 - 상단영역 */
+		.main > .header > .header-top {
+	    	padding:5px 0px;
+	    	background-color:#f9f2f2;
+	    }
+	    /* Navigation 메뉴 */
+		.main > .header > ul.nav{ 
+			display:block;
+			height:32px;
+			line-height:32px;
+			/* background: #202429; */
+			border-right: 1px solid rgba(0,0,0,0.14);
+    		border-top: 1px solid rgba(0,0,0,0.14);
+		}
+		/* Navigation 메뉴 - 항목 */
+	    .main > .header > .nav .nav-item{ 
+	    	display:inline-block;
+	    	padding-left: 10px;
+	    }
+	    /* Navigation 메뉴 - 항목 링크 */
+	    .main > .header > .nav a.nav-link {
+			color:#E7E7E7;
+		}
+	
+	/* 로고 */
+		.main > .header .logo {
+			display:block;
+			padding:5px 15px;
+		}
+		.main > .header .logo img{ 
+			width:120px;
+		}
+	
+	/*<<<<<<<<<<<< 헤더영역 <<<<<<<<<<<<<<< */
+	/* 왼쪽메뉴 */
+	.main > .contents > .left-menu {
+    	width:190px;
+		min-width: 190px;
+    	height:100%;
+		/* background:#2A3F54 ; */
+		border-right:1px solid rgba(0,0,0,0.14);
+		color:rgba(0,0,0,0.87);
+	}
+	/* 왼쪽메뉴 항목 */
+		.main > .contents > .left-menu .nav .nav-item{ padding:5px 0px;}
+		/* 왼쪽메뉴 항목 링크 */
+		.main > .contents > .left-menu .nav a.nav-link {
+			display:block;
+			padding:.5em 1em ;
+			/* color:#E7E7E7; */
+			font-size:14px;
+		}
+		/* 왼쪽메뉴 항목 마우스 오버시 */
+		.main > .contents .left-menu .nav .nav-item:hover {
+		    background: rgba(255,255,255,.05);
+		}
+		/* 왼쪽메뉴 항목 활성화 */
+		.main > .contents .left-menu .nav .nav-item.active {
+		    border-right: 5px solid #1ABB9C;
+		    background: rgba(255,255,255,.05);
+		    border-bottom: 1px solid #223548;
+		    border-top: 1px solid #3b5671;
+		}
+	/* 메인 컨텐츠 영역 */
+	.main > .contents > .body {
+	    padding: 20px 20px;
+      	width:100%;
+      	min-width: 1000px;
+	}

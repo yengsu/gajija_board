@@ -1,0 +1,40 @@
+@media screen and (max-width: 650px) {
+	.table-style.table-flex > .thead { display:none; }
+	.table-style .tbody  .column.no { display:none; }
+	.table-style .tbody  .column.writer { display:inline; width:auto;}
+	.table-flex .column.elapsed_days{ display:initial; }
+}
+
+@media screen and (max-width: 800px) {
+	.table-style.table-flex .column.title{
+  		font-weight:700;
+  	}
+	.table-style.table-flex .column.regdate{
+	    width: 80px;
+    	padding: 0px;
+   	}
+   	.table-style.table-flex .column.elapsed_days{
+   		padding-left: 5px;
+  	}
+  	
+  	
+  	/* .table-style.table-flex > .thead { display:none; } */
+  	.table-style .thead  .column.no { display:none; }
+	.table-style .tbody  .column.no { display:none; }
+	
+	.table-style .tbody > .table-row { 
+		flex-direction: row;
+    	-webkit-flex-direction: row;
+	}
+	.table-style .tbody > .table-row > .grp-no-title.row{ 
+		display: -webkit-box;
+	    display: -webkit-flex;
+	    display: -ms-flexbox;
+	    align-items: flex-start;
+	    -webkit-flex-wrap: wrap;
+	    -ms-flex-wrap: wrap;
+	    flex-wrap: wrap;
+	    flex-basis: 100%;
+    }
+    .brd_content img{ width:100% !important;}
+}

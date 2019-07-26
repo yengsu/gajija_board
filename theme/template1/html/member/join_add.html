@@ -1,0 +1,118 @@
+<script type="text/javascript">
+$(function () {
+//$(document).ready(function(){
+	$('#formWrite').submit(function(e){
+		//(e.preventDefault) ? e.preventDefault() : e.returnValue = false;
+		//return false ;
+	});
+
+
+});
+</script>
+
+<style media="screen">
+	.members {height: 100%; }
+	#footer {float: left; width: 100%; margin-top: 0}
+	.join_add {margin-bottom: 100px; margin-top: 0}
+	.form-material ., .form-material ..focus, .form-material .:focus {
+		background-image:linear-gradient(#f06288, #f06288), linear-gradient(rgba(120, 130, 140, 0.13), rgba(120, 130, 140, 0.13)) !important;}
+	@media screen and (max-width: 425px) {
+	.member_wrap {padding-bottom: 0}
+}
+</style>
+
+<div class="cate-top sub-top-bg pc-hidden">
+	<div class="container">
+    <button type="button" onclick="javascript:history.back();" class="backBtn">Back Button</button>
+		<h2>Membership Complete</h2>
+	</div>
+</div>
+
+<section class="members loginBg joinAdd">
+
+    <div class="container">
+			<div class="member-tl m-b-20">Membership Complete</div>
+
+      <form id="formWrite" name="formWrite" action="{Doc["baseURL"]}/{Doc["Action"]}{? Doc["CODE"]}/{Doc["CODE"]}{/}{Doc["queryString"]}" method="post" class="" style="max-width:900px; margin:0 auto;">
+        <!--회원가입 완료폼-->
+        <div class="member_wrap join_add">
+          <div class="join">
+            <div class="member-text">If you enter the information below,
+							we will provide you with various event information and birthday coupons for you.</div>
+            <div class="form-group form-inline">
+              <label class="joinTl">Skin Type</label>
+              <select name="add_skin_type"  style="width:100%">
+                  <option value="">Select Skin Type</option>
+                  {@SKIN_TYPE}
+                  <option value="{.key_}">{.value_}</option>
+                  {/}
+              </select>
+            </div>
+            <div class="form-group form-inline">
+              <label class="joinTl">Skin troubles</label>
+              <select name="add_skin_anxiety"  style="width:100%">
+                  <option value="">Select Skin Troubles</option>
+                  {@SKIN_ANXIETY}
+                  <option value="{.key_}">{.value_}</option>
+                  {/}
+              </select>
+            </div>
+            <div class="form-group form-inline">
+              <label class="joinTl">Preferred Brand</label>
+              <div class="form-inline pre-group">
+                <select name="add_pref_brand1" class=" pull-left">
+                    <option value="">Brand1</option>
+                    {@BRAND_LIST}
+                  	<option value="{.serial}">{.name}</option>
+                  	{/}
+                </select>
+                <select name="add_pref_brand2" class=" pull-left">
+                    <option value="">Brand2</option>
+                    {@BRAND_LIST}
+                  	<option value="{.serial}">{.name}</option>
+                  	{/}
+                </select>
+                <select name="add_pref_brand3" class=" pull-right">
+                    <option value="">Brand3</option>
+                    {@BRAND_LIST}
+                  	<option value="{.serial}">{.name}</option>
+                  	{/}
+                </select>
+              </div>
+            </div>
+            <div class="form-group form-inline m-t-10" style="width:100%; display:inline-block;">
+              <label class="joinTl">Birthday</label>
+              <div class="form-inline birth-group">
+                <select name="birth_year" class=" pull-left">
+                    <option value="">YEAR</option>
+                    {@ (range(date('Y')-90, date('Y')-10))}
+                    <option value="{.value_}">{.value_}</option>
+                    {/}
+                </select>
+                <select name="birth_month" class=" pull-left">
+                    <option value="">MONTH</option>
+                    {@ (range(1, 12))}
+                    <option value="{=sprintf('%02d', .value_)}">{=sprintf('%02d', .value_)}</option>
+                    {/}
+                </select>
+                <select name="birth_day" class=" pull-left">
+                    <option value="">DAY</option>
+                    {@ (range(1, 31))}
+                    <option value="{=sprintf('%02d', .value_)}">{=sprintf('%02d', .value_)}</option>
+                    {/}
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="form-group text-center m-t-30" style="width:100%; display:inline-block">
+            <button type="submit" class="bt-o bt-o-b bt-line">Exit</button>
+						<button type="submit" class="bt-o bt-o-b bt-pill">Save</button>
+          </div>
+        </div>
+
+      </form>
+    </div>
+
+
+
+</section>

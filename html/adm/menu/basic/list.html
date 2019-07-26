@@ -1,0 +1,122 @@
+<div class="body">
+
+	<div class="wrap row-flex">
+  			<h2>메뉴 관리</h2>
+			<div class="p-t-20">
+				<div class="p-10">
+					총 갯수 : {TOTAL_CNT}
+				</div>
+				<table class="table">
+					<thead class="whiteblue">
+						<tr>
+							<!-- <th class="text-center" style="width:60px;"> No. </th>
+							<th class="text-center" style="width:80px;">메뉴코드</th>
+							<th class="text-center">메뉴명</th>
+							<th class="text-center" style="width:150px;">레이아웃명</th>
+							<th class="text-center" style="width:20%;">템플릿</th>
+							<th class="text-center" style="width:90px;">사용유무</th>
+							<th class="text-center" style="width:90px;">노출유무</th>
+							<th class="text-center" style="width:130px;">-</th> -->
+							<th class="text-center"> No. </th>
+							<th class="text-center">메뉴코드</th>
+							<th class="text-center">메뉴명</th>
+							<th class="text-center">레이아웃명</th>
+							<th class="text-center">템플릿</th>
+							<th class="text-center">사용유무</th>
+							<th class="text-center">노출유무</th>
+							<th class="text-center">-</th>
+						</tr>
+					</thead>
+					<tbody>
+	{? LIST}
+					{@LIST}
+						<tr>
+							<th class="text-center">{VIEW_NUM- .index_ {*번호*}}</th>
+							<td class="text-center">{.mcode}</td>
+							<td>{.serial} <a href="{Doc["baseURL"]}/edit/{.serial}{Doc["queryString"]}">{.title}</a> 
+							<button class="btn" title="추가" onClick="location.href='{Doc["baseURL"]}/add/{.serial}{Doc["queryString"]}'">
+									<i class="fa fa-pencil"></i>추가
+								</button>
+							</td>
+							<td class="text-center">{.layout}</td>
+							<td>{.tpl}</td>
+							<td class="text-center">{.used}</td>
+							<td class="text-center">{.imp}</td>
+							<td class="text-center">
+								
+								<button class="btn" title="추가" onClick="location.href='{Doc["baseURL"]}/edit/{.serial}{Doc["queryString"]}'">
+									<i class="fa fa-pencil"></i><span>수정</span>
+								</button>
+								<button class="btn" title="추가" onClick="location.href='{Doc["baseURL"]}/delete/{.serial}{Doc["queryString"]}'">
+									<i class="fa fa-times"></i><span class="m-l-5">삭제</span>
+								</button>
+							 </td>
+						</tr>
+					{/}
+	{:}
+						<tr>
+							<td colspan="9" class="text-center">검색 데이타를 찾을 수 없습니다.</td>
+						</tr>
+	{/}
+					</tbody>
+				</table>
+				<div class="form-group">
+					<button type="button" class="btn" onClick="location.href='{Doc["baseURL"]}/add'">등록하기</button>
+				</div>
+				<!-- 페이징(Pagination) 영역 START -->
+				<div>
+		            
+		            	<div class="pagination text-center">
+				{? LIST}
+							<a class="page first" href="{PAGING.first.url}">First</a>
+					{? PAGING.prev.num}
+							<a class="page prev" href="{PAGING.prev.url}">Previous</a>
+					{/}
+					{@PAGING.no}
+						{? .current}
+							<a class="page active" href="{.url}">{.num}</a>
+						{:}
+							<a class="page" href="{.url}">{.num}</a>
+						{/}
+					{/}
+				
+					{? PAGING.next.num}
+							<a class="page next" href="{PAGING.next.url}">Next</a>
+					{/}
+							<a class="page last" href="{PAGING.last.url}">Last</a>
+				{/}
+		            	</div>
+		
+						
+		
+				</div>
+				<!-- 페이징(Pagination) 영역 END -->
+				
+				<!--  검색영역 START -->
+				<div class="">
+					<form class=" text-center" method="post" action="">
+						<div class="InputAddOn p-t-20 justify-content-center">
+					           	<select id="search_field" name="search_field" class="" placeholder="검색조건 항목 선택">
+									<option value="title" >타이틀명</option>
+								</select>
+								<!-- <label for="search_keyword" class="InputAddOn-field">검색어</label> -->
+					           	<input type="text" class="InputAddOn-field" id="search_keyword" name="search_keyword" style="width:20em;" placeholder="검색어를 입력해주세요.">
+								<button type="submit" class="btn InputAddOn-item">검색</button>
+								<button type="button" class="btn InputAddOn-item" onClick="location.href='{Doc["baseURL"]}/lst'">전체목록</button>
+						</div>
+						<div class="form-inline">
+						</div>
+						
+					</form>
+				</div>
+				<!--  검색영역 END -->
+			</div>
+			
+			
+	</div>
+	
+	
+
+
+</div>
+

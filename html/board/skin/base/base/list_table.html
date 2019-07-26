@@ -1,0 +1,109 @@
+<link href="./default.css" rel="stylesheet" type="text/css">
+
+<div class="boardComm container" style="position: relative;overflow: hidden;">
+  			<!-- <h2 style="margin-top:0px;">조회</h2> -->
+			<div class="data-list-block">
+				<table class="table table-hover table-sm">
+					<!-- <thead style="background:#4e6a86;color:#fff;"> -->
+					<!-- <thead style="background:rgba(4, 39, 74, 0.6);color:#fff;"> -->
+					<thead style="background:rgba(78, 106, 134, 0.65);color:#fff;">
+					
+						<tr>
+							<th class="col-auto text-center">No</th>
+							<th class="col-auto text-center">타이틀</th>
+							<th class="col-auto text-center">작성자</th>
+							<th class="col-auto text-center">Date</th>
+							<th class="col-auto text-center">조회</th>
+						</tr>
+					</thead>
+					<tbody>
+					{@LIST}
+						<tr>
+							<th class="text-center">
+							{? .noti == 1}
+								<span class="btn btn-danger btn-xs">공지</span>
+							{:}
+								{VIEW_NUM- .index_ {*번호*}}
+							{/}
+							</th>
+							<td class="brd-title">
+								<a href="{Doc["baseURL"]}/view/{.serial}{Doc["queryString"]}">
+								{? Board_conf.sec == 1 // 환경정보-비밀글 이면}
+									 
+									{? !_SESSION['MBRID'] || !.userid || _SESSION['MBRID'] != .userid // 자신이 작성한 글이 아닌경우}
+										{? !_SESSION['ADM']}
+										<i class="fas fa-lock fa-sm mr-1"></i>
+										{/}
+									{/}
+									
+								{: .sec == 1 //게시물이 비밀글인 경우}
+									{? !_SESSION['MBRID'] || !.userid || _SESSION['MBRID'] != .userid // 자신이 작성한 글이 아닌경우}
+										{? !_SESSION['ADM']}
+										<i class="fas fa-lock fa-sm mr-1"></i>
+										{/}
+									{/}
+								{/}
+								{.title}
+								</a>	
+							</td>
+							<!-- <td>{? .lev //회원레벨이 있으면}[{.lev}] {/}{.writer}</td> -->
+							<td class="text-center">{? .lev_ico //회원레벨 icon}<i class="fa {.lev_ico} fa-lg text-danger"></i>{/} {.writer}</td>
+							<td class="text-center">{.regdate}</td>
+							<td class="text-center">{.viewcnt}</td>
+						</tr>
+					{/}
+					</tbody>
+				</table>
+				<div class="p-1">
+					<button type="button" class="btn btn-sm btn-dark" onClick="location.href='{Doc["baseURL"]}/add{Doc["queryString"]}'">등록하기</button>
+				</div>
+			</div>
+			
+	<div class="row text-center">
+            <!-- <div class="col-lg-12"> -->
+            <div class="text-center col">
+                <ul class="pagination pagination-sm h-center">
+		{? LIST}
+					<li class="page-item first"><a class="page-link" href="{PAGING.first.url}">First</a></li>
+			{? PAGING.prev.num}
+					<li class="page-item prev"><a class="page-link" href="{PAGING.prev.url}">Previous</a></li>
+			{/}
+			{@PAGING.no}
+				{? .current}
+					<li class="page-item page active"><a class="page-link" href="{.url}">{.num}</a></li>
+				{:}
+					<li class="page-item page"><a class="page-link" href="{.url}">{.num}</a></li>
+				{/}
+			{/}
+		
+			{? PAGING.next.num}
+					<li class="page-item next"><a class="page-link" href="{PAGING.next.url}">Next</a></li>
+			{/}
+					<li class="page-item last"><a class="page-link" href="{PAGING.last.url}">Last</a></li>
+		{/}
+                </ul>
+            </div>
+	</div>
+	<div class="row row text-center h-center m-4">
+				<form class=" text-center form-inline" method="post" action="{Doc["baseURL"]}/lst{Doc["queryString"]}" ><!-- action="{Doc["baseURL"]}/lst?bid={_GET["bid"]}"> -->
+		           <label class="sr-only" for="search_field">검색조건 항목</label>
+		           <div class="input-group">
+			           <select id="search_field" name="search_field" class="form-control form-control-sm p-0" placeholder="검색조건 항목 선택">
+							<option value="title" >타이틀명</option>
+						</select>
+					
+				        <input type="text" class="form-control form-control-sm w-25" id="search_keyword" name="search_keyword" value="{_REQUEST["search_keyword"]}" placeholder="검색어를 입력해주세요.">
+				    	<div class="input-group-append">
+						    <button type="submit" class="btn btn-sm btn-dark">검색</button>
+							<button type="button" class="btn btn-sm btn-secondary" onClick="location.href='{Doc["baseURL"]}/lst?mcode={_GET["mcode"]}&bid={_GET["bid"]}'">전체목록</button>
+							<!-- <button type="button" class="btn btn-sm btn-danger" onClick="location.href='{Doc["baseURL"]}/add{Doc["queryString"]}'">등록하기</button> -->
+						</div>
+				    </div>
+					
+					
+				</form>
+				
+	</div>
+
+</div>
+

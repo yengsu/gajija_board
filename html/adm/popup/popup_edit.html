@@ -1,0 +1,241 @@
+<script src="/dist/editor/ckeditor/ckeditor.js"></script>
+<script src="/dist/editor/ckeditor/config.adm.js"></script>
+<script src="/dist/editor/ckeditor/adapters/jquery.js"></script>
+<script type="text/javascript">
+$(function () {
+	//"use strict";
+	//======================================
+	//		Editor
+	//======================================
+	var editor1 = $( '.wys' ).ckeditor(CKEDITOR_config);
+	CKEDITOR.config.height = 350;
+	CKEDITOR.config.width = 'auto';
+	CKEDITOR.config.allowedContent =true;
+	//--------------------------------------
+	$('button[id^="btnFileSearch"]', document.getElementById('frmEdit')).on('click', function(e){
+
+		var tmp = this.id.split('-');
+
+		if(tmp[1] !== undefined && tmp[2] !== undefined)
+		{
+			if( $('[name="'+tmp[2]+'"]').length < 1 ) return false;
+			
+			var kind = tmp[1];
+			var inputObj = tmp[2];
+
+			var basedir = ''; // 기본 저장경로
+			var func = $(this).attr('data-func') ;
+			if(typeof eval(func) !== 'function') func = '';
+			
+			if( $(this).attr('data-basedir') !== undefined )
+				param_basedir = "&basedir="+encodeURIComponent($(this).attr('data-basedir')) ;
+			else param_basedir = '';
+			
+			newWindow('/dist/components/file_manager/elFinder/template_select.php?mode='+kind+'&FuncNum='+func+'&formEle='+inputObj+param_basedir, 'mnu_file_search', 800, 600, 1, 1) ;
+		}
+		e.preventDefault();
+	});
+	ydateRange({ 
+		ele : { 
+			'start' : 'sdate',
+		 	'end' : 'edate'
+		},
+		pos : 'end'
+	});
+});
+function callFunction(func, mod, formEle, basedir, file){
+	/*
+    file object
+    	baseUrl : "/html/_attach/"
+    	mime : "text/html"
+    	name : "4.body.top.htm"
+    	path : "_attach\4.body.top.htm"
+    	size : "135"
+    	url : "/html/_attach/4.body.top.htm"
+    */
+   
+    //if(mod == 'tpl') 
+
+    filename = file.url ;//file.url.substr(1) ;
+    if(mod == 'tpl') filename = filename.replace(basedir, "") ;
+    if(typeof eval(func) === 'function')
+    {
+		    (function(func, mod, formEle, filename){
+				eval(func+"('"+mod+"','"+formEle+"','"+filename+"')");
+		    }(func, mod, formEle, filename));
+			//eval("OFUNC."+func+"('"+fileUrl+"')");
+    }
+}
+function inputSetVal(mod, ele, file){
+	$('[name="'+ele+'"]', document.getElementById('formEdit')).val(file) ;
+}
+function set_attach_main(mod, ele, file){
+	//if(mod == 'tpl')
+	//{
+		var requestURL = null ;
+		requestURL = '{Doc["baseURL"]}/getFile' ;
+
+		setTimeout(function() {
+			$.ajax({
+					url : requestURL,
+					type : 'POST',
+					dataType : 'json',
+					cache : false,
+					aysnc : false, // true(동기), false(비동기)
+					data : {'file': file},
+					beforeSend : function(xhr, settings){	// 기본적으로 생성,수정 처리시 표시
+						$('#file-manager-progress').html("<span style='color:red;'> Loading ...</span>") ;
+					},
+					success : function(data){
+						/* CKEDITOR.instances['memo'].setData(data,function(){
+							$('#file-manager-progress').empty();
+							 this.updateElement();
+						}); */
+						//$("#frmEdit").find('textarea[name="'+ele+'"]').val( data ) ;
+					},
+					complete: function(e){
+						$('#file-manager-progress').empty();
+						if(e.status === 200){
+							$('#file-manager-progress').empty();
+							CKEDITOR.instances[ele].editable().setHtml( e.responseJSON );
+							//$("#frmEdit").find('textarea[name="'+ele+'"]').val( e.responseJSON) ;
+						}
+					}
+			});
+		},200);
+	//}
+	//$('[name="'+ele+'"]', document.getElementById('frmEdit')).val(file) ;
+	
+}
+</script>
+
+<h1>팝업 편집</h1>
+<style type="text/css">
+    .form-check {
+    	margin-bottom:0;
+    }
+    #frmEdit label.col-title {
+	    max-width: 12%;
+	}
+</style>
+<div class="body">
+    <form id="frmEdit" class="form-horizontal" id="brdWriteFrm" action="{Doc["baseURL"]}/{Doc["Action"]}{? Doc["CODE"]}/{Doc["CODE"]}{/}{Doc["queryString"]}" method="post" name="brdWriteFrm" class="register" enctype="multipart/form-data">
+    	<input type="hidden" name="serial" value="{DATA.serial}">
+        <div class="form-group">
+            <label for="frm_title" class="col-title col-flex">타이틀명 (title)</label>
+            <div class="form-inline">
+				<input type="text" id="frm_title" name="title" value="{DATA.title}" placeholder="타이틀명을 입력해주세여.">
+			</div>
+        </div>
+        <!-- <div class="form-group">
+            <label for="frm_listscale" class="col-flex">출력 게시물 수 (listscale)</label>
+            <div class="form-inline">
+				<input type="text" id="frm_listscale" name="listscale" value="{DATA.listscale}" placeholder="출력 게시물 수 입력해주세여.">
+			</div>
+        </div>
+        <div class="form-group">
+            <label for="frm_pagescale" class="col-flex">출력 페이징블럭수  (pagescale)</label>
+            <div class="form-inline">
+				<input type="text" id="frm_pagescale" name="pagescale" value="{DATA.pagescale}" placeholder="페이징블럭 수 입력해주세여.">
+			</div>
+        </div> -->
+		<div class="form-group">
+            <label for="frm_width" class="col-title col-flex">가로 (width)</label>
+            <div class="form-inline">
+				<input type="text" id="frm_width" name="width" value="{DATA.width}" placeholder="가로 사이즈(숫자 0~9) 입력해주세여."> 
+				<span class="col-flex p-l-10">pixel</span>
+			</div>
+        </div>
+        <div class="form-group">
+            <label for="frm_height" class="col-title col-flex">세로 (height)</label>
+            <div class="form-inline">
+				<input type="text" id="frm_height" name="height" value="{DATA.height}" placeholder="세로 사이즈(숫자 0~9)  입력해주세여.">
+				<span class="col-flex p-l-10">pixel</span>
+			</div>
+        </div>
+        <div class="form-group">
+            <label for="frm_height" class="col-title col-flex">출력형식</label>
+            <div class="form-inline">
+				<input class="radio radio-danger" type="radio" id="frm_output-0" name="output" value="layer" {? DATA.output=='layer'}checked=""{/}>
+				<label for="frm_output-0"> 레이어 </label>
+				
+				<input class="radio radio-danger m-l-20" type="radio" id="frm_output-1" name="output" value="win" {? DATA.output=='win'}checked=""{/}>
+				<label for="frm_output-1"> 윈도우창 </label>
+			</div>
+        </div>
+        <div class="form-group">
+            <label for="frm_attach_top" class="col-title col-flex">메모내용 (memo)</label>
+            <div>
+				<!-- <div class="d-block">
+					<button id="btnFileSearch-tpl-memo" data-basedir="{ATTACH_BaseDir //템플릿 경로}" data-func="set_attach_main" class="btn m-b-5 btn-success btn-sm" type="button"><span class="fa fa-search"></span> Template 선택</button>
+					 상품상세 페이지 템플릿 로딩 progress
+			 		<span id="file-manager-progress"></span>
+			 	</div>
+			 	<div class="d-block" style="width: 62em;">
+					<textarea class="wys"  cols="100" rows="20"  id="memo" name="memo">{DATA.memo}</textarea>
+				</div> -->
+				<div class="control-label" style="text-align:left !important;">저장 기본위치 : <span style="font-family: sans-serif; font-size: 100%;font-weight:bold;">{ATTACH_BaseDir}</span></div>
+				<div class="form-group">
+	       			<div class="form-inline">
+						
+						<div class="InputAddOn">
+					        <button class="btn InputAddOn-item" id="btnFileSearch-tpl-attach_file" data-basedir="{ATTACH_BaseDir //첨부파일경로}" data-func="set_attach_main" type="button">
+					        	<span class="fa fa-search"></span>
+					        </button>
+							<input type="text" id="frm_attach_file" name="attach_file" value="{DATA.attach_file}" class="InputAddOn-field" style="width: 25.6em;" placeholder="내용저장 파일 입력해주세요.">
+						</div>
+						<div class="control-label col-lg-5" style="padding-left:10px;text-align:left !important;line-height: 2.3em;">
+							(미입력시 자동 파일생성 : <span style="color:#C60018;font-weight:bold;">popup.코드.html</span>)
+						</div>
+	       			</div>
+	       			
+				</div>
+				<div class="form-inline" >
+					<textarea class="wys"  cols="100" rows="20"  id="attach_file_cont" name="attach_file_cont">{DATA.attach_file_cont}</textarea>
+				</div>
+			</div>
+        </div>
+        <div class="form-group">
+            <label for="frm_height" class="col-title col-flex">노출기간</label>
+            <div class="form-inline">
+				<div id="date-range" class="dateForm input-daterange InputAddOn-none">
+					<input style="width: 12em;" type="text" name="sdate" value="{DATA.sdate}" placeholder="yyyy-mm-dd" class="InputAddOn-field-none">
+					<span class="InputAddOn-item-none">~</span>
+					<input style="width: 12em;" type="text" name="edate" value="{DATA.edate}" placeholder="yyyy-mm-dd" class="InputAddOn-field-none">
+			
+					<div class="dateSelect InputAddOn-item-none">
+						<button type="button" class="btn-date-1 btn btn-default">오늘</button>
+						<button type="button" class="btn-date-2 btn btn-default">7일</button>
+						<button type="button" class="btn-date-3 btn btn-default">15일</button>
+						<button type="button" class="btn-date-4 btn btn-default">1개월</button>
+						<button type="button" class="btn-date-5 btn btn-default">3개월</button>
+						<button type="button" class="btn-date-6 btn btn-default">6개월</button>
+						<button type="button" class="btn-date-7 btn bg-gray text-black">전체</button>
+					</div>
+				</div>
+			</div>
+        </div>
+        <div class="form-group">
+            <label for="frm_imp" class="col-title col-flex">노출유무</label>
+            <div class="form-inline">
+				
+				<input type="checkbox" id="frm_imp" name="imp" value="1" class="checkbox checkbox-danger" {? DATA.imp}checked=""{/}>
+				<label for="frm_imp"> <span style="display:inline-block; margin-top:-2px; ">노출함</span></label>
+				<!-- <div class="form-check">
+					<label for="frm_imp">
+						<input type="checkbox" id="frm_imp"  name="imp"  value="1" {? DATA.imp}checked=""{/}>
+						노출함
+					</label>
+				</div> -->
+				
+			</div>
+        </div>
+		<div class="form-group">
+			<label class="col-title col-flex"></label>
+            <div class="form-inline">
+	        	<button type="submit" class="btn">등록완료</button>
+	        	<button type="button" class="btn m-l-10" onClick="location.href='{Doc["baseURL"]}/lst{Doc["queryString"]}'">목록보기</button>
+        	</div>
+       	</div>
+    </form>
+</div>

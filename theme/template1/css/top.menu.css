@@ -1,0 +1,216 @@
+/* 상단메뉴 블럭 */
+.wrap-top-menu{ 
+	height: 40px;
+}
+/* #TOP-MENU { height:40px;} */
+
+nav#TOP-MENU > ul { position:relative; z-index:99; /* background-color: rgba(0,0,0,0.14); */}
+nav#TOP-MENU > ul li  { position:static; display: list-item;line-height: initial; }
+nav#TOP-MENU > ul > li > ul{ 
+	/* position:absolute;  */width:100%;left:0;z-index:100;background-color:#5d5c5c; /* padding:0px 10px;  */
+    /* border-bottom: 1px solid #3e3e3e; */
+}
+
+nav#TOP-MENU > ul > li ul {
+	/* flex-direction:row; */
+	align-items: stretch;
+}
+nav#TOP-MENU > ul > li ul li {
+	/* min-width:160px; */
+}
+
+/* 웹버전: 서브메뉴 줄마다 4번째 항목의  가로테두리 제거 */
+nav#TOP-MENU > ul > li > ul > li:nth-child(4n+4) {
+	border-right: 0px;
+}
+nav#TOP-MENU > ul > li > ul > li {
+    /* border-right: 1px solid #313131; */
+    border-bottom: 1px solid #313131;
+    /* flex-basis: 25%; */
+    /* flex: 0 25%; */
+}
+
+nav#TOP-MENU > ul > li > ul li *{ color:#fff; }
+
+/* 3차 서브메뉴부터 왼쪽패딩(여백) 줌 */
+nav#TOP-MENU > ul > li > ul li ul li {
+   	padding-left: 7px;
+}
+
+nav#TOP-MENU > ul > li > ul > li ul{
+	/* position: absolute; */
+	left: 160px;
+	top: 0px;
+	/* height: 100%; */
+	display: flex;
+	/* align-items: center; */
+	flex-direction: column;
+	/* flex-wrap: wrap; */
+	/* min-width: 160px; */
+	/* text-align: left; */
+	flex-grow:1;
+	flex-wrap: wrap;
+	flex: 1;
+	background: #444444;
+	/* border-right: 1px solid #696969; */
+}
+
+nav#TOP-MENU > ul > li {
+    flex: 1;
+    /* border-left: 1px dotted #d4d4d4; */
+    /* background-color: #a5a5a5; */
+    border-left: 1px dotted #ffffff;
+    background: #dedcdc;
+}
+/* 1차 메뉴항목 마다 구분선 지정 */
+/* 
+nav#TOP-MENU > ul > li:not(:first-of-type):before {
+	content: "";
+	position: absolute;
+    top: 25%;
+    width: 1px;
+    height: 20px;
+    border-left: 1px dotted #d4d4d4;
+}
+ */
+ 
+/* ◀ */
+nav#TOP-MENU ul > li > ul > li label.active:after {
+	/* content: "\f104";  */
+}
+/* ▶ */
+nav#TOP-MENU  ul > li > ul > li label.deactive:after{
+    /* content: "\f105"; */  
+}
+
+/* 마이너스 - */
+nav#TOP-MENU ul > li > ul > li label.active:after {
+	/* content: "\f068"; */
+}
+/* 플러스 + */
+nav#TOP-MENU  ul > li > ul > li label.deactive:after{
+    /* content: "\f067"; */
+}
+
+
+nav#TOP-MENU ul > li label.active:after {
+	content: "\f106"; /* ▲ */
+}
+nav#TOP-MENU ul > li label.deactive:after{
+    content: "\f107"; /* ▼ */
+}
+
+nav#TOP-MENU > ul > li > .item { height: 40px; justify-content: center; background-color:#fff; }
+
+nav#TOP-MENU > ul > li > ul > li > ul > li ul {
+    font-size: 90%;
+}
+nav#TOP-MENU > ul > li > ul li ul li ul .item {
+    padding: 5px;
+}
+nav#TOP-MENU .item { 
+	padding:7px; 
+    flex:1;
+    position:relative;
+}
+
+nav#TOP-MENU label{
+    font-family: Font Awesome\ 5 Free;
+    font-style: normal;
+    font-weight: normal;
+    line-height: inherit;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-weight: 900;
+    display: inline-block;
+    font-size: 1.4em;/* inherit; */
+    padding:0px 6px;
+    
+    position:absolute;
+    right:5px;
+    top:0px;
+    height:100%;
+    align-items:center;
+}
+nav#TOP-MENU li a.active {
+    color: #f06288;
+}
+
+/* .tm-bgcolor {
+    background-color: #a5a5a5;
+} */
+
+nav#TOP-MENU > ul > li:last-of-type {
+	border-right: 1px dotted #fff;
+}
+/* ============================
+ IE 브라우져용 시작
+============================ */
+.wrap-top-menu{
+	position:relative;
+}
+#TOP-MENU { 
+	position:absolute;
+	top: 0px;
+}
+.nav-Home { height:41px !important;;/* border-bottom: 1px solid rgba(0,0,0,0.14); */ }
+
+/* IE 브라우져용 종료 
+============================ */
+
+
+
+/* ========================================= */
+
+nav#TOP-MENU li input:checked ~ ul {
+  max-height: 999px; /* Just give a big enough height for animation */
+}
+
+/* 모바일 메뉴버튼 */
+.openSidebarMenu { display:none; }
+
+
+/* ● 3차메뉴부터 트리구조로 시작 ● */ 
+		nav#TOP-MENU > ul > li > ul li ul li ul  li{position: relative;padding-left: 10px;}
+		nav#TOP-MENU > ul > li > ul li ul li ul  li:before, nav#TOP-MENU > ul > li > ul li ul li ul  li:after {
+		    content: "";
+		    position: absolute;
+		    left: 0px;
+		}
+		nav#TOP-MENU > ul > li > ul li ul li ul  li:before {
+		    border-top: 1px solid #ccc;
+		    top: 15px;
+		    width: 11px;/* 12px; */
+		    height: 0;
+		}
+		nav#TOP-MENU > ul > li > ul li ul li ul  li:after {
+		    border-left: 1px solid #ccc;
+		    height: 105%;
+		    width: 0px;
+		    top: 0px;
+		}
+		nav#TOP-MENU > ul > li > ul li ul li ul > li:last-child:after {
+		    height: 16px;
+		}
+		
+		/* depth 0인경우 선 긋지 않음*/
+		nav#TOP-MENU > ul > li > ul li ul li > ul > li:before,
+		#LEFT_MENU > ul > li:after
+		{
+			height:0;
+			/* border: 0px; */
+		}
+		nav#TOP-MENU > ul > li > ul li ul li ul li .item {
+		    padding: 5px 0px 5px 2px;
+		}
+		nav#TOP-MENU > ul > li > ul li ul li ul li {
+		    padding-left: 10px;
+		}
+		nav#TOP-MENU > ul > li > ul li ul li ul {
+		    padding-left: 10px;
+		}
+		nav#TOP-MENU > ul > li > ul> li > ul > li > .item{
+			padding: 7px 0px 7px 0px;
+	    }
+/* ● 3차메뉴부터 트리구조로 종료 ● */ 
+	

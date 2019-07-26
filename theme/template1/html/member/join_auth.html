@@ -1,0 +1,141 @@
+{*
+---------------------------------------
+페이지 용도 : 이메일인증 또는 폰인증 페이지
+#form-join-auth-email
+#form-join-auth-sms
+
+필수입력 사항
+	아이디 : input-name ( memail )
+	이름 : input-name ( musername )
+	성별 : input-name ( msex )
+---------------------------------------
+*}
+<script src="/js/func/Validate.js"></script>
+<script src="/js/jquery/jquery.countdown.min.js"></script>
+<script src="/js/jquery/jquery.mbr.apiAuthen.js"></script>
+<script type="text/javascript">
+var baseURL = '{Doc["baseURL"]}';
+$(function(){
+	window.resizeTo( $('.facebookLogin').width() + (window.outerWidth - window.innerWidth), 420{?INPUT_VAR}+{INPUT_VAR.size_*57 //입력값만큼 높이 늘림}{/});//$('.facebookLogin').height() + (window.outerHeight - window.innerHeight));
+});
+var inputValidate = [{INPUT_VAR_JS}];
+</script>
+<style>
+  body, html {overflow-x: hidden; overflow-y: auto;background-color: #f6f6f6;}
+</style>
+<section class="facebookLogin">
+  <div class="facebook-tl">
+    YEPPU confirmation
+  </div>
+
+  <div class="facebook-agree join">
+    <form id="formWrite" name="formWrite" action="{Doc["baseURL"]}/{Doc["Action"]}{? Doc["CODE"]}/{Doc["CODE"]}{/}{Doc["queryString"]}" method="post">
+	  <input type="hidden" name="sdk" value="{SDK}">
+	  <!-- ################### -->
+	  <!-- 회원 추가 입력란 -->
+	  <!-- ################### -->
+{? INPUT_VAR // 필수입력 사항}
+	  <div id="mbr-input-block" style="display: inline-block; width:100%; border:1px solid #f9cbcb; margin-bottom:20px; padding:10px; background:#fdf5f5;">
+      {? INPUT_VAR.name==1 //이름 입력}
+      <!-- <div class="form-group pull-left join-name" style="width:60%">
+        <input type="text" class=" ios-no-shadow" id="musername" name="musername" value="{USER_PROFILE.name}" placeholder="이름을 입력해주세요." required autocomplete="off">
+      </div> -->	
+      <div class="form-group pull-left" style="display: inline-block;margin: 0px;padding: 5px;">이름:</div>
+      <div class="form-group" style="width:60%;display: inline-block;margin-bottom: 0px;">
+      	<input type="text" class=" ios-no-shadow" id="musername" name="musername" value="{USER_PROFILE.name}" placeholder="이름을 입력해주세요." required="" autocomplete="off">
+      </div>
+      
+      {/}
+      {? INPUT_VAR.gender==1 //성별 입력}
+	  <div class="joinSex form-group form-inline pull-right" style="width:39%; padding:14px 10px 0px 70px;margin-bottom: 0px;">
+        <div class="radio" style="width: 10% !important;">
+          <input type="radio" id="msex-female" name="msex" value="2" required>
+          <label for="msex-female"> 여 </label>
+        </div>
+        <div class="radio m-l-20">
+          <input type="radio" id="msex-man" name="msex" value="1" required>
+          <label for="msex-man"> 남 </label>
+        </div>
+      </div>
+      {/}
+     </div>
+{/}
+      <!-- ################### -->
+	  <div class="form-group clearfix m-b-5">
+	  	<input type="radio" id="auth_kind_email" name="auth_kind" value="email" checked required {? INPUT_VAR.email == 1}style="display:none;"{/}> <label for="auth_kind_email">Email 인증</label>
+{? INPUT_VAR.email != 1 //아이디[email] 없을경우}
+	  	<input type="radio" id="auth_kind_sms" name="auth_kind" value="sms" style="margin-left: 20px;" required> <label for="auth_kind_sms">폰 인증</label>
+{/}
+	  </div>
+	  <!-- 이메일 인증 : userid(email) -->
+	  <div id="form-join-auth-email" class="form-group clearfix m-b-5">
+        <input type="text" class=" ios-no-shadow pull-left" style="width:70%" id="memail" name="memail" value="{USER_PROFILE.email}" placeholder="Email 주소를 입력해주세요." autocomplete="off">
+        <a href="#" id="btn-emailAuthSend" class="btn btn-default pull-right" style="width:29%; padding:9px 10px;">인증코드 받기</a>
+      </div>
+{? INPUT_VAR.email != 1 //아이디[email] 없을경우}
+      <!-- sms인증 -->
+      <div id="form-join-auth-sms" class="form-group clearfix m-b-5" style="display:none;">
+        <input type="text" class=" ios-no-shadow pull-left" style="width:70%" id="mphone" name="mphone" placeholder="폰번호를 입력해주세요." autocomplete="off">
+        <a href="#" id="btn-smsAuthSend" class="btn btn-default pull-right" style="width:29%; padding:9px 10px;">인증코드 받기</a>
+      </div>
+{/}
+      <div id="Auth-block" class="form-group clearfix" style="display:none;">
+        <input type="text" class=" ios-no-shadow pull-left" style="width:70%" id="MAuthCode" name="MAuthCode" placeholder="인증번호 입력" autocomplete="off">
+        <a href="#" id="btn-AuthConfirm" class="btn btn-default pull-right" style="width:29%; padding:9px 10px;">Confirm</a>
+        <span class="join-time">Count <span id="Lifetime-count" style="color:red;font-weight:bold;"></span></span>
+      </div>
+      <div class="form-group join-chk">
+        <div class="checkbox">
+          <input type="checkbox" id="magree_news" name="magree_news" value="1">
+          <label for="magree_news">E-MAIL, SMS를 통한 이벤트정보 수신에 동의합니다.<!-- I agree to receive event information EMAIL or SMS from YEPPU -->.</label>
+        </div>
+        <div class="checkbox">
+          <input type="checkbox" id="magree_policy" name="magree_policy" value="1" required>
+          <label for="magree_policy">쇼핑몰의 <a href="/Customer/policy" target="_blank" class="policy-bt" data-toggle="modal" data-target="#privacyView">개인 정보 보호 정책</a> 및 <a href="/Customer/clause" target="blank" class="policy-bt" data-toggle="modal" data-target="#termView">이용 약관</a>에 동의합니다.</label>
+          <!-- <label for="magree_policy">I agree to YEPPU <a href="/view/main2/yeppu/customer/clause" class="policy-bt">Terms and Conditions</a> and <a href="/Customer/policy" class="policy-bt">Privacy Policy</a>.</label> -->
+          <!--label for="magree_policy">I agree to YEPPU <a href="#" class="policy-bt" data-toggle="modal" data-target="#policy">Terms and Conditions</a> and <a href="/">Privacy Policy</a>.</label-->
+        </div>
+      </div>
+      <div class="form-group m-t-20 m-b-0 join-bt text-center">
+        <button type="reset" class="bt-o">Cancel</button>
+        <button type="submit"  id="btn-submit" class="bt-o bt-pill">Create Account</button>
+      </div>
+    </form>
+  </div>
+
+</section>
+
+
+<!--Terms and Conditions Popup-->
+<div id="termView" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h2 class="modal-title" id="myLargeModalLabel">이용약관</h2>
+      </div>
+      <div class="modal-body">
+        내용 준비 중입니다.
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+<!--Privacy Policy Popup-->
+<div id="privacyView" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h2 class="modal-title" id="myLargeModalLabel">개인 정보 보호 정책</h2>
+      </div>
+      <div class="modal-body">
+        내용 준비 중입니다.
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>

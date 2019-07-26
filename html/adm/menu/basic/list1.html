@@ -1,0 +1,122 @@
+<style type="text/css">
+.btn-group-sm>.btn, .btn-sm{
+	font-size:.8rem;
+}
+</style>
+<div class="row-flex">
+
+	<div class="row">
+		<div class="col-12">
+  			<h2>메뉴 조회</h2>
+			<!-- <div class="table-responsive"> -->
+			<div class="row-flex" style="width: 1080px;">
+				<div class="form-inline justify-content-center">
+					<form class="" method="post" action="">
+						<div class="form-group">
+					           <label class="sr-only" for="search_field">검색조건 항목</label>
+					           <select id="search_field" name="search_field" class="form-control form-control-sm" placeholder="검색조건 항목 선택">
+									<option value="title" >메뉴명</option>
+								</select>
+					    </div>
+						<div class="form-group ">
+					           <label class="sr-only" for="search_keyword">검색어</label>
+					           <input type="text" class="form-control form-control-sm" id="search_keyword" name="search_keyword" placeholder="검색어를 입력해주세요.">
+					    </div>
+						<button type="submit" class="btn btn-sm btn-primary">검색</button>
+						
+						<div class="form-group ">
+							<button type="button" class="btn btn-sm btn-primary" onClick="location.href='{Doc["baseURL"]}/lst'">전체목록</button>
+							<button type="button" class="btn btn-sm btn-danger" onClick="location.href='{Doc["baseURL"]}/add'">메뉴생성</button>
+						</div>
+					</form>
+				</div>
+				<div class="row-flex">총 갯수 : {TOTAL_CNT}</div>
+				
+				<div class="row-flex">
+					<table class="table table-hover table-sm">
+						<thead style="background:#4e6a86;color:#fff;">
+							<tr>
+								<th class="text-center" style="width:60px;"> No. </th>
+								<th class="text-center" style="width:80px;">메뉴코드</th>
+								<th class="text-center">메뉴명</th>
+								<th class="text-center" style="width:80px;">레이아웃명</th>
+								<th class="text-center" style="width:150px;">템플릿</th>
+								<th class="text-center" style="width:70px;">사용유무</th>
+								<th class="text-center" style="width:70px;">노출유무</th>
+								<th class="text-center" style="width:130px;">-</th>
+								<!-- <th class="col-xs-2"> writer </th>
+								<th class="col-xs-2"> regdate </th>
+								<th class="col-xs-2"> - </th> -->
+							</tr>
+						</thead>
+						<tbody>
+						{@LIST}
+							<tr>
+								<th class="text-center">{VIEW_NUM- .index_ {*번호*}}</th>
+								<td class="text-center">{.mcode}</td>
+								<td>{.serial} <a href="{Doc["baseURL"]}/edit/{.serial}{Doc["queryString"]}">{.title}</a> 
+								<button class="btn btn-sm btn-default" title="추가" onClick="location.href='{Doc["baseURL"]}/add/{.serial}{Doc["queryString"]}'">
+										<i class="fa fa-pencil"></i>추가
+									</button>
+								</td>
+								<td class="text-center">{.layout}</td>
+								<td>{.tpl}</td>
+								<td class="text-center">{.used}</td>
+								<td class="text-center">{.imp}</td>
+								<td>
+									
+									<button class="btn btn-sm btn-default" title="추가" onClick="location.href='{Doc["baseURL"]}/edit/{.serial}{Doc["queryString"]}'">
+										<i class="fa fa-pencil"></i>수정
+									</button>
+									<button class="btn btn-sm btn-default" title="추가" onClick="location.href='{Doc["baseURL"]}/delete/{.serial}{Doc["queryString"]}'">
+										<i class="fa fa-times"></i>삭제
+									</button>
+								 </td>
+	
+							</tr>
+						{/}
+						</tbody>
+						</div>
+					</table>
+				</div>
+			
+				<!-- pagination Start -->
+				<div class="row-flex">
+					<ul class="pagination pagination-sm justify-content-center" style="margin:0;">
+				{? LIST}
+							<li class="page-item">
+								<a class="page-link" class="page-link"  href="{PAGING.first.url}">First</a>
+							</li>
+					{? PAGING.prev.num}
+							<li class="page-item prev"><a class="page-link"  href="{PAGING.prev.url}">Previous</a></li>
+					{/}
+						
+					{@PAGING.no}
+						{? .current}
+							<li class="page-item active"><a class="page-link"  href="{.url}">{.num}</a></li>
+						{:}
+							<li class="page-item"><a class="page-link"  href="{.url}">{.num}</a></li>
+						{/}
+					{/}
+						
+					{? PAGING.next.num}
+							<li class="page-item next"><a class="page-link" href="{PAGING.next.url}">Next</a></li>
+					{/}
+							<li class="page-item">
+								<a class="page-link last" href="{PAGING.last.url}">Last</a>
+							</li>
+				{/}
+					</ul>
+				</div>
+				<!-- pagination End -->
+				
+				
+		</div>
+
+	</div>
+	
+	
+
+
+</div>
+

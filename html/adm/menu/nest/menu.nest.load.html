@@ -1,0 +1,88 @@
+<script type="text/javascript">
+$.extend( get_nestable_opts.prototype.config, {
+	afterInit: function ( event ) {
+		Menu_handle.prototype.init(event.el, event);
+	}
+	{? JS_CATEGORY_OPT}
+	,property : {JS_CATEGORY_OPT}
+	{/}
+	{? JS_CATEGORY_DATA}
+	,res_data : {JS_CATEGORY_DATA}
+	{/}
+
+
+});
+</script>
+<!--{? CATEGORY_LIST}-->
+				<!--{@ CATEGORY_LIST}-->
+
+								<!--{? .tag_first_start_g // open first ol}-->
+								    <ol class="dd-list">
+								<!--{/}-->
+
+								<!--{? .tag_close_d // close li}-->
+								        </li>
+
+								<!--{: .tag_start_g // open ol}-->
+								    <ol class="dd-list">
+
+								<!--{: .tag_close_dg //close li ol}-->
+
+									<!--{@ range(1, .tag_close_dg) //close li ol}-->
+										</li>
+									</ol>
+									<!--{/}-->
+									</li>
+								<!--{/}-->
+								{? .indent == 0 }
+											<li class="dd-item dd3-item  dd-hide" data-id="{.serial}" data-serial="{.serial}">
+												<div class="dd3-content" style="padding-right:0;">
+													<div class="opt_name-text rootNode">메뉴</div>
+													<!-- <input type="hidden" name="title" value="{.title}" > -->
+												</div>
+								 {:}
+
+								        <li class="dd-item dd3-item" data-id="{.serial}" data-serial="{.serial}">
+								        	<!-- <div class="{? .indent > 0}dd-handle {/}dd3-handle">{.key_}</div> -->
+								        	<div class="{? .indent > 0}dd-handle {/}dd3-handle"></div>
+
+											<div class="dd3-content">
+												<div class="btns-opt">
+									        		{? .indent < DATA.base_maxDepth}<i class="btn_optAdd fa fa-plus-circle text-info" title="추가"></i>{/}
+													<i class="btn_optDel fa fa-minus-circle text-danger" style="margin-left:5px;" title="제거"></i>
+												</div>
+												<div class="opt-form"><!--  style="width:200px;"> -->
+													<span class="opt_name-text">{.title}</span>
+													{*<input type="text" name="title" value="{.title}" style="width:100%;" class="form-control" preholder="옵션명을 입력해 주세요." autocomplete="off">*}
+												</div>
+											</div>
+								{/}
+								<!--{? .tag_end_close_dg // close last li ol}-->
+									<!--{@ range(1, .tag_end_close_dg) //close last li ol}-->
+											</li>
+										</ol>
+									<!--{/}-->
+									</li>
+								<!--{/}-->
+								<!--{? .tag_end_close_g // close last ol}-->
+									</ol>
+								<!--{/}-->
+
+
+					<!--{/}-->
+
+<!--{:}-->
+								    <ol class="dd-list">
+										<li class="dd-item dd3-item  dd-hide" data-id="1" data-serial="">
+												<div class="dd3-content" style="padding-right:0;">
+													<div class="opt_name-text rootNode">메뉴</div>
+
+													<input type="hidden" name="title" value="HOME" >
+													<div class="dd-content-wrap" style="float:right;margin-left:10px;">
+
+													</div>
+
+												</div>
+										</li>
+								    </ol>
+<!--{/}-->

@@ -1,0 +1,360 @@
+<script src="/js/func/Validate.js"></script>
+<!-- ckeditor -->
+<script src="/dist/editor/ckeditor/ckeditor.js"></script>
+<script src="/dist/editor/ckeditor/config.adm.js"></script>
+<script src="/dist/editor/ckeditor/adapters/jquery.js"></script>
+
+<script type="text/javascript">
+//"use strict";
+//elFinder(file manager) callback
+function callFunction(func, mod, formEle, basedir, file){
+	/*
+    file object
+    	baseUrl : "/html/_attach/"
+    	mime : "text/html"
+    	name : "4.body.top.htm"
+    	path : "_attach\4.body.top.htm"
+    	size : "135"
+    	url : "/html/_attach/4.body.top.htm"
+    */
+    if(mod == 'tpl') filename = file.url.replace(/[\\]/g, "/") ;
+	(function(func, mod, formEle, filename){
+		var fn = window[func] ;
+		try{
+			//if (typeof fn === "function")
+			fn.call(this, mod,formEle,filename);
+		}catch(e){
+			alert(e.message);
+		}
+
+	})(func, mod, formEle, filename);
+}
+/**
+ * Execute after callFunction function callback
+ *
+ * @param string mod
+ * @param string  input name(element)
+ * @param string file ( attach file )
+ * @param opt
+ * 				opt = {
+						url : '',
+						url_add : '',
+						data : '',
+				}
+ */
+function emailDetail_template(mod, ele, file, opt){
+	var opts = {
+			'url' : '{Doc["baseURL"]}/getFile',
+			'data' : {'file': file}
+	};
+	if(typeof opt === 'object'){
+		if(opt.url) opts.url = opt.url ;
+		if(opt.url_add) opts.url += opt.url_add ;
+		if(opt.data) opts.data = $.extend(opts.data, opt.data) ;
+	}
+	{? Doc.Action == 'postCoupon'}
+	else{
+		opts.url += '/coupon' ;
+		opts.data.serial = '{_REQUEST['coupon_serial']}';
+	}
+	{/}
+	//console.log('opts', opts, opt) ;return false;
+
+	if(mod == 'tpl')
+	{
+		var requestURL = null ;
+		requestURL = opts.url ;
+
+		setTimeout(function() {
+			$.ajax({
+					url : requestURL,
+					type : 'POST',
+					dataType : 'json',
+					cache : false,
+					aysnc : false, // true(동기), false(비동기)
+					data : opts.data, //{'file': file},
+					beforeSend : function(xhr, settings){	// 기본적으로 생성,수정 처리시 표시
+						$('#file-manager-progress').html("<span style='color:red;'> Loading ...</span>") ;
+					},
+					success : function(data){
+						/* CKEDITOR.instances['memo'].setData(data,function(){
+							$('#file-manager-progress').empty();
+							 this.updateElement();
+						}); */
+						//$("#frmEdit").find('textarea[name="'+ele+'"]').val( data ) ;
+					},
+					complete: function(e){
+						$('#file-manager-progress').empty();
+						if(e.status === 200){
+							$('#file-manager-progress').empty();
+							CKEDITOR.instances.m_memo.editable().setHtml( e.responseJSON );
+							//$("#frmEdit").find('textarea[name="'+ele+'"]').val( e.responseJSON) ;
+						}
+					}
+			});
+		},400);
+	}
+	//$('[name="'+ele+'"]', document.getElementById('frmEdit')).val(file) ;
+}
+
+$(function(){
+	//======================================
+	//		상품내용 Editor
+	//======================================
+	var editor1 = $( '.wys' ).ckeditor(CKEDITOR_config);
+	CKEDITOR.config.height = 250;
+	CKEDITOR.config.width = 'auto';
+	CKEDITOR.config.allowedContent =true;
+	//--------------------------------------
+	$('button[id^="btnFileSearch"]', document.getElementById('frmEdit')).on('click', function(e){
+
+		var tmp = this.id.split('-');
+
+		if(tmp[1] !== undefined && tmp[2] !== undefined)
+		{
+			var kind = tmp[1];
+			var inputObj = tmp[2];
+
+			var basedir = ''; // 기본 저장경로
+			if( $(this).attr('data-basedir') !== undefined )
+				param_basedir = "&basedir="+encodeURIComponent($(this).attr('data-basedir')) ;
+			else param_basedir = '';
+			newWindow('/dist/components/file_manager/elFinder/template_select.php?mode='+kind+'&FuncNum=emailDetail_template&formEle='+inputObj+param_basedir, 'mnu_file_search', 800, 600, 1, 1) ;
+		}
+		e.preventDefault();
+	});
+
+	function relateForm_usable(){
+		$('[name="c_tgm_grade"] option:selected', $('#frmEdit')).prop('selected' , false) ;
+		$('[name="c_tgm_grade"]', $('#frmEdit')).prop('disabled' , true) ;
+	}
+	//발급 대상 Event
+	$('input:radio[name="m_target"]', $('#frmEdit')).on('click', function(e){
+		// 회원등급
+		if( this.value == 'mbrGrade' ) {
+			OFUNC.clear_form_elements({elem:'.target-mbrGrade', disabled: false} ) ;
+			OFUNC.clear_form_elements({elem:'.target-mbrAll', clear:true, disabled: true} ) ;
+			OFUNC.clear_form_elements({elem:'.target-direct', clear:true, disabled: true} ) ;
+		}
+		// 전체회원
+		else if( this.value == 'mbrAll' ) {
+			OFUNC.clear_form_elements({elem:'.target-mbrGrade', clear:true, disabled: true} ) ;
+			OFUNC.clear_form_elements({elem:'.target-mbrAll', disabled: false} ) ;
+			OFUNC.clear_form_elements({elem:'.target-direct', clear:true, disabled: true} ) ;
+		}
+		// 직접입력
+		else if( this.value == 'direct' ) {
+			OFUNC.clear_form_elements({elem:'.target-mbrGrade', clear:true, disabled: true} ) ;
+			OFUNC.clear_form_elements({elem:'.target-mbrAll', clear:true, disabled: true} ) ;
+			OFUNC.clear_form_elements({elem:'.target-direct', disabled: false} ) ;
+			//$('[name="m_target_mbrGrade"] option:selected', $('#frmEdit')).prop('selected' , false) ;
+		}
+		/* else if( this.value == 2 ){ // 전체회원
+		}
+		else if( this.value == 3 ){ // 오프라인 쿠폰번호
+		} */
+	});
+
+	// 발송자[관리자 체크시]
+	$('input:checkbox[name="m_mail_from_admin"]', $('#frmEdit')).on('click', function(e){
+		if( this.checked == true)
+			OFUNC.clear_form_elements({elem:'#mail-from-block', clear:true, disabled: true} ) ;
+		else
+			OFUNC.clear_form_elements({elem:'#mail-from-block', disabled: false} ) ;
+	});
+
+	//발급 대상 Event
+	$('[name="m_target_mbrGrade"]', $('#frmEdit')).on('change', function(e){
+		$('input:radio[name="m_target"][value="mbrGrade"]', $('#frmEdit')).click();
+	}) ;
+	$('input[name="m_target_mbrAll_agree"]', $('#frmEdit')).on('click', function(e){
+		$('input:radio[name="m_target"][value="mbrAll"]', $('#frmEdit')).click();
+	}) ;
+	$('input[name="m_mail_to"]', $('#frmEdit')).on('keydown keyup', function(e){
+		$('input:radio[name="m_target"][value="direct"]', $('#frmEdit')).click();
+	}) ;
+	$( '#frmEdit' ).submit(function(e){
+		if( $('input[name="m_title"]', $('#frmEdit')).val() == '' ){
+			alert('제목을 입력해주세요.');
+			$('input[name="m_title"]', $('#frmEdit')).focus();
+			return false ;
+		}
+		if( $('input[name="m_title"]', $('#frmEdit')).val() == '' ){
+			alert('제목을 입력해주세요.');
+			$('input[name="m_title"]', $('#frmEdit')).focus();
+			return false ;
+		}
+		if($('#m_target-direct:checked').length){
+			if( !validateEmail($('#m_mail_to', this).val() ) ){
+				alert('보낼 Email 주소를 정확히 입력해주세요.');
+				$('#m_mail_to', this).focus();
+				return false ;
+			}
+		}
+{? Doc["Action"] == 'postCoupon'} // 쿠폰페이지에서 접근한 경우}
+	{? COUPON_DATA.c_target==3 //오프라인쿠폰인경우}
+		else if($('#m_mail_to').length){
+			if( !validateEmail($('#m_mail_to', this).val() ) ){
+				alert('보낼 Email 주소를 정확히 입력해주세요.');
+				$('#m_mail_to', this).focus();
+				return false ;
+			}
+		}
+	{/}
+{/}
+
+	});
+	{? Doc.Action == 'postCoupon'}
+	emailDetail_template('tpl', '', 'datas/templates/email/coupon/mail_coupon.html', {
+				'url_add' : '/coupon',
+				'data' : {
+							'file' : 'datas/templates/email/coupon/mail_coupon.html',
+							'serial' : '{_REQUEST['coupon_serial']}'
+						}
+			}) ;
+	{/}
+});
+</script>
+<div class="body">
+	<div class="wrap row-flex">
+	
+			<h3>개별/전체 메일 발송</h3>
+			<form id="frmEdit" name="frmEdit" method="post" action="{Doc["baseURL"]}/{Doc["Action"]}{? Doc["CODE"]}/{Doc["CODE"]}{/}{Doc["queryString"]}" enctype="multipart/form-data">
+
+				<div class="p-20">
+						<table class="table">
+							<tbody>
+							<tr>
+								<th>제목</th>
+								<td>
+								<input type="text" name="m_title">
+								</td>
+							</tr>
+							<tr>
+								<th>
+                  <div class="pull-left" style="margin-top:3px;">발송자 이메일</div>
+									<div>
+										<input type="checkbox" id="m_mail_from_admin" name="m_mail_from_admin" value="1" class="checkbox checkbox-danger">
+										<label for="m_mail_from_admin"> <span style="display:inline-block; margin-top:-2px; margin-left:-5px;">관리자</span></label>
+									</div>
+								</th>
+								<td>
+									<div id="mail-from-block">
+										<input type="text" name="m_mail_from" class="form-control">
+									</div>
+								</td>
+							</tr>
+				{? Doc["Action"] == 'post'}
+
+				            <tr>
+				              <th rowspan="3"><label class="control-label">대상회원 선택</label></th>
+				              <td class="td-inner">
+				                  <div class="form-inline m-t-5">
+				                     <div class="form-inline">
+				                        <input class="radio radio-danger" type="radio" id="m_target-mbrGrade" name="m_target" value="mbrGrade">
+				                        <label for="m_target-mbrGrade"> 회원등급선택 </label>
+				                      </div>
+				                      <div class="target-mbrGrade form-inline">
+				                        <div class="m-l-30">
+				                          <select name="m_target_mbrGrade" class="form-control ">
+				                          {? MBR_GRADES}
+				                            {@ MBR_GRADES}
+				                            <!-- <option value="{.key_}">{.value_}</option> -->
+				                            <option value="{.grade_code}">{.grade_name}</option>
+				                            {/}
+				                          {/}
+				                          </select>
+				                        </div>
+				                        <div class="target-mbrGrade form-inline m-l-10">
+				                        	<input class="checkbox checkbox-primary" type="checkbox" id="m_target_mbrGrade_agree" name="m_target_mbrGrade_agree" value="1">
+				                        	<label for="m_target_mbrGrade_agree"> 수신 동의한 회원에게만 발송 </label>
+				                        </div>
+				                      </div>
+				                  </div>
+				              </td>
+				            </tr>
+				            <tr>
+				              <td class="td-inner">
+				                  <div class="form-inline">
+				                     <div class="form-inline">
+				                        <input class="radio radio-danger" type="radio" id="m_target-mbrAll" name="m_target" value="mbrAll">
+				                        <label for="m_target-mbrAll"> 전체회원 </label>
+				                      </div>
+				                      <div class="target-mbrAll form-inline" style="margin-left:60px">
+				                      <input class="checkbox checkbox-primary" type="checkbox" id="m_target_mbrAll_agree" name="m_target_mbrAll_agree" value="1">
+				                      <label for="m_target_mbrAll_agree"> 수신 동의한 회원에게만 발송 </label>
+				                      </div>
+				                  </div>
+				              </td>
+				              </tr>
+				            <tr>
+				              <td sytle="padding-bottom:5px;">
+				                  <div class="form-inline">
+				                     <div class="form-inline m-t-5">
+				                        <input class="radio radio-danger" type="radio" id="m_target-direct" name="m_target" value="direct">
+				                        <label for="m_target-direct"> 직접입력 </label>
+				                      </div>
+				                      <div class="target-direct checkbox form-inline m-l-40 m-b-5">
+				                        <input type="text" id="m_mail_to" name="m_mail_to" class="form-control">
+				                      </div>
+				                  </div>
+				                  <div class="pull-left small m-b-5">정보통신망법에 따라 수신거부한 회원에게는 광고성정보를 발송할 수 없으며 위반 시 과태료가 부과됩니다.</div>
+				              </td>
+				            </tr>
+
+
+
+				{: Doc["Action"] == 'postMemberSingle' // 회원조회 페이지에서 접근한 경우}
+							<tr>
+								<th><label class="control-label">대상회원 선택</label></th>
+								<td>
+									<input type="text" id="m_mail_to" name="m_mail_to" value="{_REQUEST['mailTo']}" class="form-control">
+								</td>
+							</tr>
+				{: Doc["Action"] == 'postCoupon' // 쿠폰페이지에서 접근한 경우}
+						{? COUPON_DATA.c_target==3 //오프라인쿠폰인경우}
+							<tr>
+								<th><label class="control-label">수신자 Email</label></th>
+								<td>
+									<input type="text" id="m_mail_to" name="m_mail_to" value="" class="form-control">
+								</td>
+							</tr>
+						{/}
+							<tr>
+								<th>템플릿 생성 방법</th>
+								<td>
+									<span style="color:darkred;">템플릿 파일 생성시 항목별 예약변수 입니다.</span><br>
+									쿠폰명 : <span style="color:blue;">&#123;title&#125;</span>
+									쿠폰설명 : <span style="color:blue;">&#123;description&#125;</span>
+									사용기간 : <span style="color:blue;">&#123;dwn_date&#125;</span>
+									쿠폰유형 : <span style="color:blue;">&#123;type_name&#125;</span>
+									쿠폰번호 : <span style="color:blue;">&#123;coupon_code&#125;</span>
+									쿠폰혜택 : <span style="color:blue;">&#123;dis&#125;</span>
+								</td>
+							</tr>
+				{/}
+							<tr>
+								<th>내용</th>
+								<td style="padding-top:10px; padding-bottom:10px;">
+									<button id="btnFileSearch-tpl-memo" data-basedir="{EMAIL_TEMPLATE //Email 템플릿 경로}" class="btn m-b-10 btn-success btn-sm" type="button"><span class="fa fa-search"></span> Template 선택</button>
+									<!--  상품상세 페이지 템플릿 로딩 progress -->
+							 		<span id="file-manager-progress"></span>
+									<textarea class="wys"  cols="100" rows="20"  id="m_memo" name="m_memo"></textarea>
+								</td>
+							</tr>
+							</tbody>
+						</table>
+						<div>
+							{? Doc.Action == 'postCoupon'}
+							<button type="button" class="btn btn-basic btn-gray pull-right" style="background-color:#000; width:170px; margin-left:5px;" onClick="location.href='/adm/promotion/Coupon/couponIssue/{_REQUEST['coupon_serial']}{Doc["queryString"]}';"><i class="fa fa-search" aria-hidden="true"></i>쿠폰페이지 이동</button>
+							{: Doc.Action == 'postMemberSingle'}
+							<button type="button" class="btn btn-basic btn-gray pull-right" style="background-color:#000; width:150px; margin-left:5px;" onClick="location.href='/adm/Member/lst{Doc["queryString"]}';"><i class="fa fa-search" aria-hidden="true"></i>회원조회 이동</button>
+							{/}
+							<button type="submit" class="btn btn-basic btn-mail pull-right"><i class="fa fa-envelope" aria-hidden="true"></i>메일발송</button>
+						</div>
+				</div>
+
+				</form>
+			
+	</div> <!--End .wrap-->
+</div>

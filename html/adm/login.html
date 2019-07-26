@@ -1,0 +1,75 @@
+<script type="text/javascript" src="/js/jquery/jquery-3.3.1.min.js"></script>
+<script src="/js/jquery/jquery.func.js"></script>
+<script type="text/javascript">
+var baseUrl = '{Doc["baseURL"]}' ;
+</script>
+<script src="/js/adm/jquery.adm.login.js"></script>
+<style>
+	html, body, main {background-color: #348eca;}
+	/*관리자 로그인 페이지*/
+	#admLogin{ margin:100px auto 0;}
+	#admLogin h1 {
+	    font-size: 1.8em;
+	    color: #fff;
+	    letter-spacing: -0.05em;
+	    display: block;
+	    font-weight: 700;
+	    text-align: center;
+	  }
+
+	#admLogin .login-page {
+	    width: 360px;
+	    padding: 2% 0 0;
+	    margin: auto;
+	  }
+	#admLogin .form {
+	    position: relative;
+	    z-index: 1;
+	    background: #FFFFFF;
+	    max-width: 360px;
+	    margin: 0 auto 100px;
+	    padding: 45px;
+	    text-align: center;
+	    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+	  }
+	#admLogin .form input {
+	    outline: 0;
+	    background: #f2f2f2;
+	    width: 100%;
+	    border: 0;
+	    margin: 0 0 15px;
+	    padding: 15px;
+	    box-sizing: border-box;
+	    font-size: 14px;
+	  }
+	#admLogin .form button {
+	    text-transform: uppercase;
+	    outline: 0;
+	    background: #1b69c7;
+	    width: 100%;
+	    border: 0;
+	    padding: 15px;
+	    color: #FFFFFF;
+	    font-size: 14px;
+	    -webkit-transition: all 0.3 ease;
+	    transition: all 0.3 ease;
+	    cursor: pointer;
+	  }
+	#admLogin .form button:hover,.form button:active,.form button:focus {
+	    /* background: #43A047; */
+	  }
+</style>
+
+<section id="admLogin" class="container">
+	<h1>Admin Login Section</h1>
+	<div class="login-page">
+  <div class="form">
+    <form id="admLoginFrm" name="admLoginFrm" class="login-form">
+    <input type="hidden" name="redir" value="{=urlencode(_REQUEST['redir'])}">
+      <input type="text" name="Auserid" id="Auserid" placeholder=""/>
+      <input type="password" name="Auserpw" id="Auserpw" placeholder=""/>
+      <button type="button" id="mbr_submit">login</button>
+    </form>
+  </div>
+</div>
+</section>

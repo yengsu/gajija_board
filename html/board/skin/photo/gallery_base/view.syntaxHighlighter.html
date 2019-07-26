@@ -1,0 +1,113 @@
+{*
+<!-- SyntaxHighlight Start -->
+<script type="text/javascript" src="/dist/components/syntaxhighlighter/scripts/shCore.js"></script>
+<script type="text/javascript" src="/dist/components/syntaxhighlighter/scripts/shBrushPhp.js"></script>
+<link type="text/css" rel="stylesheet" href="/dist/components/syntaxhighlighter/styles/shCoreDefault.css"/>
+
+<script type="text/javascript">
+	SyntaxHighlighter.defaults['toolbar'] = false ;
+	//SyntaxHighlighter.defaults['html-script'] = true ;
+	SyntaxHighlighter.all();
+	//console.log( 'xxxx', SyntaxHighlighter.defaults) ;
+</script>
+<!-- SyntaxHighlight End -->
+*}
+
+<!-- Highlight Start -->
+<script type="text/javascript" src="/dist/editor/ckeditor/plugins/codesnippet/lib/highlight/highlight.pack.js"></script>
+<!-- <link href="/dist/editor/ckeditor/plugins/codesnippet/lib/highlight/styles/monokai_sublime.css" rel="stylesheet"> -->
+<link href="/dist/editor/ckeditor/plugins/codesnippet/lib/highlight/styles/default.css" rel="stylesheet">
+<script>hljs.initHighlightingOnLoad();</script>
+<!-- Highlight End -->
+
+
+<style type="text/css">
+/* .contents p { margin-bottom:0;} */
+.brd_content p{
+	margin: 0 0 0.1em 0; 
+}
+</style>
+
+<div class="container pb-5" >
+		<h3>{DATA.title}</h3>
+		
+		<div class="brd_content border rounded p-2">
+			<div class="view-memo p-2">{DATA.memo}</div>
+			<div class="view-img-photo text-center">
+			{@ DATA.attachFiles}
+			<img src="/{DATA.attach_path}{DATA.attachFiles[.key_]['file']}"><br/>
+			<a href="{Doc["baseURL"]}/download{? Doc["CODE"]}/{Doc["CODE"]}{/}{Doc["queryString"]}&seq={(.key_+1)}">다운로드</a>
+			{/}
+			
+			</div>
+		</div>
+		
+		<p class="text-right">
+			닉네임: {? DATA.lev_ico //회원레벨 icon}<i class="fa {DATA.lev_ico} fa-lg text-danger"></i>{/} {DATA.usernick}
+		</p>
+
+{? Doc["Action"]=="view"}
+<script type="text/javascript">
+$(document).ready(function(){
+	//var events = $('.elements a').map(function() {
+	var events = $('#btn_brdDelete').map(function() {
+	    var onclick = $(this).attr('onclick');
+	    $(this).removeAttr('onclick');
+	    return onclick;
+	}).get();
+	
+	//$(this).attr("onClick", events[0]) ;
+	$("#btn_brdDelete").on("click", function(e){
+		(e.preventDefault) ? e.preventDefault() : e.returnValue = false;
+
+		if (window.confirm('정말 삭제하시겠습니까?')) {
+			location.href = "{Doc["baseURL"]}/delete{? Doc["CODE"]}/{Doc["CODE"]}{/}{Doc["queryString"]}" ;
+		}
+	});
+});
+</script>
+<div>
+	<button type="button" id="btn_brdUpdate" class="btn btn-sm btn-secondary mr-1" onClick="location.href='{Doc["baseURL"]}/edit{? Doc["CODE"]}/{Doc["CODE"]}{/}{Doc["queryString"]}';">편집하기</button>
+	{? Board_conf['mbr_type'] == 1}
+	<button type="button" id="btn_brdDelete" class="btn btn-sm btn-secondary mr-1" onClick="location.href='{Doc["baseURL"]}/delete{? Doc["CODE"]}/{Doc["CODE"]}{/}{Doc["queryString"]}';">삭제하기</button>
+	{:  //비밀번호 입력란}
+	
+	<button type="button" id="btn_brdDeletes" class="btn btn-sm btn-secondary mr-1 forget" data-toggle="modal" data-target=".forget-modal">삭제하기</button>
+	<div class="modal fade forget-modal" tabindex="-1" role="dialog" aria-labelledby="myForgetModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+			<form name="frmRemove" action="{Doc["baseURL"]}/delete{? Doc["CODE"]}/{Doc["CODE"]}{/}{Doc["queryString"]}" method="post" >
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">×</span>
+						<span class="sr-only">Close</span>
+					</button>
+					<h4 class="modal-title">게시물 삭제</h4>
+				</div>
+				<div class="modal-body">
+					<p>비밀번호를 입력해주세요.</p>
+					<input type="password" name="frm_userpw" id="frm_userpw" class="form-control" autocomplete="off">
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">취소</button>
+					<button type="submit" class="btn btn-sm btn-sm btn-custom">확인</button>
+				</div>
+			</form>
+			</div> <!-- /.modal-content -->
+		</div> <!-- /.modal-dialog -->
+	</div> <!-- /.modal -->
+	{/}
+<button type="button" id="btn_brdList" class="btn btn-sm btn-secondary float-right" onClick="location.href='{Doc["baseURL"]}/lst{Doc["queryString"]}';">목록보기</button>
+</div>
+{/}
+
+{*
+######################################################
+코멘트 작성 & 리스트 출력
+######################################################
+*}
+{#COMMENTS}
+</div>
+
+{*#BOARD_LIST*}
+

@@ -50,7 +50,12 @@ group_concat_max_len=10240
    ```
 4. 데이타 디렉토리
    ```sh
-   chmod 707 datas/
+   chmod -R 707 datas/
+   ```
+5. html 디렉토리
+   ```sh
+   chmod -R 707 html/_attach/
+   chmod -R 707 theme/template1/html/_attach/
    ```
 
 ## composer로 library 설치 (해당 폴더의 파일참조:  Readme) 

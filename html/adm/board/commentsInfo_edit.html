@@ -1,0 +1,322 @@
+<script type="text/javascript" src="/js/jquery/jquery.func.js"></script>
+<script type="text/javascript">
+$(document).ready( function() {
+	$('#frm_skin_grp').bind('change', function(e){
+		e.preventDefault();
+		if( $(this).find('option:selected').val() == '' ){
+			//alert('분류를 선택해주세요.');
+			$('#frm_skin_name').find('option:gt(0)').remove();
+			return false;
+		}
+		var skin_name = '';
+		if(typeof arguments[1] !== 'undefined'){
+			skin_name = arguments[1] ;
+		}
+		var params = $(this).find('option:selected').val();
+		OFUNC.Request_ajax({
+			url : '{Doc["baseURL"]}/Req_getSkins{Doc["queryString"]}',
+			type : 'POST',
+			dataType : 'json',
+			data : {property : 'get_skins', grpcode : params},
+			//contentType: "html; charset=utf-8",
+			complete: function(e){
+				if(e.status === 200){
+					if(e.responseJSON)
+					{
+						//console.log(arguments) ;
+						var res = e.responseJSON ;
+						$('#frm_skin_name').find('option:gt(0)').remove();
+						for(var i=0; i<res.length; i++){
+							$('#frm_skin_name').append(new Option(res[i], res[i]));
+						}
+						$('#frm_skin_name option[value="'+skin_name+'"]').prop('selected', 'selected') ;
+					}
+				}
+
+			}
+		});
+		
+	});
+	
+	$('#frm_mbr_type').bind('click', function(e){
+		if( ! this.checked )
+		{
+			//$('[id^="grant_"], #frm_noti_lev').removeAttr('selected').find('option:first').prop('selected', 'selected');
+			//$('[id^="grant_"], #frm_noti_lev').prop('disabled', true) ;
+			$('[id^="grant_"]').removeAttr('selected').find('option:first').prop('selected', 'selected');
+			$('[id^="grant_"]').prop('disabled', true) ;
+		}
+		else{
+			//$('[id^="grant_"], #frm_noti_lev').prop('disabled', false) ;
+			$('[id^="grant_"]').prop('disabled', false) ;
+		}
+	});
+	
+	if( $('#frm_skin_grp').find('option:selected').val() != '' ){
+		$('#frm_skin_grp').triggerHandler('change', '{DATA.skin_name}') ;
+	}
+	
+});
+</script>
+
+<h1>편집</h1>
+<style type="text/css">
+    .form-check {
+    	margin-bottom:0;
+    }
+    #frmEdit label{
+	    max-width: 12%;
+	}
+</style>
+<link rel="stylesheet" href="/dist/components/bootstrap/addon/awesome-bootstrap-checkbox/build.css" />
+<div class="body">
+    <form id="frmEdit" class="form-horizontal" id="brdWriteFrm" action="{Doc["baseURL"]}/{Doc["Action"]}{? Doc["CODE"]}/{Doc["CODE"]}{/}{Doc["queryString"]}" method="post" name="brdWriteFrm" class="register" enctype="multipart/form-data">
+    	<input type="hidden" name="frm_bid" value="{_REQUEST["bid"]}">
+        <div class="form-group">
+            <label for="frm_bid" class="col-flex">게시판 아이디 (bid)</label>
+            <div class="form-inline">
+				<input type="text" id="frm_bid" name="bid" value="{DATA.bid}" placeholder="보드아이디 입력해주세여.">
+			</div>
+        </div>
+        <div class="form-group">
+            <label for="frm_oid" class="col-flex">업체코드 (oid)</label>
+            <div class="form-inline">
+				<input type="text" id="frm_oid" name="oid" value="{DATA.oid}" placeholder="업체코드 입력해주세여.">
+			</div>
+        </div>
+        <div class="form-group">
+            <label for="frm_mcode" class="col-flex">메뉴코드 (mcode)</label>
+            <div class="form-inline">
+				<input type="text" id="frm_mcode" name="mcode" value="{DATA.mcode}" placeholder="메뉴코드 입력해주세여.">
+			</div>
+        </div>
+        <div class="form-group">
+            <label for="frm_cate" class="col-flex">분류코드 (cate)</label>
+            <div class="form-inline">
+				<input type="text" id="frm_cate" name="cate" value="{DATA.cate}" placeholder="분류코드 입력해주세여.">
+			</div>
+        </div>
+        <div class="form-group">
+            <label for="frm_title" class="col-flex">타이틀명 (title)</label>
+            <div class="form-inline">
+				<input type="text" id="frm_title" name="title" value="{DATA.title}" placeholder="타이틀명을 입력해주세여.">
+			</div>
+        </div>
+        <div class="form-group">
+            <label for="frm_table_name" class="col-flex">table_name</label>
+            <div class="form-inline">
+				<input type="text" id="frm_table_name" name="table_name" value="{DATA.table_name}" placeholder="타이틀명을 입력해주세여.">
+			</div>
+        </div>
+        <!-- 
+        <div class="form-group">
+            <label for="frm_skin_grp" class="col-flex">스킨그룹 (skin_grp)</label>
+            <div class="col-4">
+				<input type="text" id="frm_skin_grp" name="skin_grp" value="{DATA.skin_grp}" placeholder="스킨그룹 입력해주세여.">
+			</div>
+        </div>
+         -->
+        <div class="form-group">
+            <label for="frm_skin_grp" class="col-flex">스킨명 (skin_name)</label>
+            <div class="form-inline">
+            		<span style="padding-right:5px;"><span style="line-height:2em; color:blue;font-size:medium;letter-spacing: 2px;">{COMMENTS_SKIN_BASEDIR}</span></span>
+            		
+            		<select id="frm_skin_grp" name="skin_grp">
+							<option value="">스킨분류 선택</option>
+						{@COMMENTS_SKIN_GROUPS}
+							<option value="{.value_}" {? DATA.skin_grp == .value_}selected=''{/}>{.value_}</option>
+						{/}
+					</select> <span style="line-height:2em;color:blue;font-size:larger;padding:0 5px 0 5px;">/</span> 
+	            	<select id="frm_skin_name" name="skin_name">
+							<option value="">스킨선택</option>
+					</select>
+				
+				<!-- <input type="text" id="frm_skin_name" name="skin_name" value="{DATA.skin_name}" placeholder="스킨명 입력해주세여."> -->
+			</div>
+        </div>
+        <div class="form-group">
+            <label for="frm_listscale" class="col-flex">출력 게시물 수 (listscale)</label>
+            <div class="form-inline">
+				<input type="text" id="frm_listscale" name="listscale" value="{DATA.listscale}" placeholder="출력 게시물 수 입력해주세여.">
+			</div>
+        </div>
+        <div class="form-group">
+            <label for="frm_pagescale" class="col-flex">출력 페이징블럭수  (pagescale)</label>
+            <div class="form-inline">
+				<input type="text" id="frm_pagescale" name="pagescale" value="{DATA.pagescale}" placeholder="페이징블럭 수 입력해주세여.">
+			</div>
+        </div>
+        <div class="form-group">
+            <label for="frm_title_len" class="col-flex">타이틀 길이 (title_len)</label>
+            <div class="form-inline">
+				<input type="text" id="frm_title_len" name="title_len" value="{DATA.title_len}" placeholder="타이틀 길이 입력해주세여.">
+			</div>
+        </div>
+        <div class="form-group">
+            <label class="col-flex"><span>사용권한 (Grant)</span><br/><span style="color:darkred;">(미선택시 모두 사용가능)</span></label>
+            <div class="form-inline" style="margin-bottom: 0px; /* border-left: 2px solid #3474ea; */">
+				
+				<div class="form-inline">
+						<label class="col-flex" style="margin: 0px 0px 0px 10px; text-align:left !important;">읽기</label>
+						<div class="text-left">
+							<select id="grant_read" name="grant_read" class="form-control form-control-sm">
+								<option value="">등급선택</option>
+								<option value=''>──────</option>
+                                {@MBR_GRADES}
+                                <option value="{.grade_code}" {? .grade_code == DATA.grant_read}selected{/}>{.grade_name}</option>
+                                {/}
+                           	</select>
+						</div>
+				</div>
+				<div class="form-inline">
+						<label style="margin: 0px 0px 0px 10px; text-align:left !important;">쓰기</label>
+						<div>
+							<select id="grant_write" name="grant_write" class="form-control form-control-sm">
+								<option value="">등급선택</option>
+								<option value=''>──────</option>
+                                {@MBR_GRADES}
+                                <option value="{.grade_code}" {? .grade_code == DATA.grant_write}selected{/}>{.grade_name}</option>
+                                {/}
+                           	</select>
+						</div>
+				</div>
+				<div class="form-inline">
+						<label class="col-flex" style="margin: 0px 0px 0px 10px; text-align:left !important;">수정</label>
+						<div class="text-left">
+							<select id="grant_update" name="grant_update" class="form-control form-control-sm">
+								<option value="">등급선택</option>
+								<option value=''>──────</option>
+                                {@MBR_GRADES}
+                                <option value="{.grade_code}" {? .grade_code == DATA.grant_update}selected{/}>{.grade_name}</option>
+                                {/}
+                           	</select>
+						</div>
+				</div>
+				<div class="form-inline">
+						<label style="margin: 0px 0px 0px 10px; text-align:left !important;">삭제</label>
+						<div>
+							<select id="grant_delete" name="grant_delete" class="form-control form-control-sm">
+								<option value="">등급선택</option>
+								<option value=''>──────</option>
+                                {@MBR_GRADES}
+                                <option value="{.grade_code}" {? .grade_code == DATA.grant_delete}selected{/}>{.grade_name}</option>
+                                {/}
+                           	</select>
+						</div>
+				</div>
+				<!-- <span style="position:absolute;top:30px;left:200px;">( 쓰기,수정,삭제 )</span> -->
+				
+			</div>
+        </div>
+        <div class="form-group">
+            <label for="frm_indent" class="col-flex">계층형 (indent)</label>
+            <div class="form-inline">
+            
+				<div class="form-check">
+					<label for="frm_indent">
+						<input type="checkbox" id="frm_indent"  name="indent"  value="1" {? DATA.indent}checked=""{/}>
+						사용함
+					</label>
+				</div>
+				
+			</div>
+        </div>
+
+        <div class="form-group">
+            <label for="frm_mbr_type" class="col-flex">운영형태 (이용조건)</label>
+            <div class="form-inline">
+				
+				<div class="form-check">
+					<label for="frm_mbr_type">
+						<input class="form-check-input" type="checkbox" id="frm_mbr_type"  name="mbr_type"  value="1" {? DATA.mbr_type}checked=""{/}>
+						회원용
+					</label>
+				</div>
+				
+			</div>
+        </div>
+        <div class="form-group">
+            <label for="frm_sec" class="col-flex">비밀 댓글(sec)</label>
+            <div class="form-inline">
+				
+				<div class="form-check">
+					<label for="frm_sec">
+						<input type="checkbox" id="frm_sec"  name="sec"  value="1" {? DATA.sec}checked=""{/}>
+						비밀 (작성자 본인과 읽기가능한 권한자만 보기가능)
+					</label>
+				</div>
+				
+			</div>
+        </div>
+        <div class="form-group">
+            <label for="frm_sec_pwd" class="col-flex">비밀글쓰기 사용(sec_pwd)</label>
+            <div class="form-inline">
+				
+				<div class="form-check">
+					<label for="frm_sec_pwd">
+						<input type="checkbox" id="frm_sec_pwd"  name="sec_pwd"  value="1" {? DATA.sec_pwd}checked=""{/}>
+						사용함
+					</label>
+				</div>
+				
+			</div>
+        </div>
+        <div class="form-group">
+            <label for="frm_editor" class="col-flex">에디터사용 (WYSIWYG)</label>
+            <div class="form-inline">
+				
+				<div class="form-check">
+					<label class="form-check-label">
+						<input type="checkbox" id="frm_editor"  name="editor"  value="1" {? DATA.editor}checked=""{/}>
+						사용함
+					</label>
+				</div>
+				
+			</div>
+        </div>
+        <div class="form-group">
+            <label for="frm_upload_path" class="col-flex">업로드 경로 (upload_path)</label>
+            <div class="form-inline">
+				<input type="text" id="frm_upload_path" name="upload_path" value="{DATA.upload_path}" placeholder="업로드 경로 입력해주세여.">
+			</div>
+        </div>
+        <div class="form-group">
+            <label for="frm_upload_file_cnt" class="col-flex">업로드 파일 갯수 (upload_file_cnt)</label>
+            <div class="form-inline">
+				<input type="text" id="frm_upload_file_cnt" name="upload_file_cnt" value="{DATA.upload_file_cnt}" placeholder="업로드 파일 갯수 입력해주세여.">
+			</div>
+        </div>
+        <div class="form-group">
+            <label for="frm_attach_path" class="col-flex">첨부파일 경로 (attach_path)</label>
+            <div class="form-inline">
+				<input type="text" id="frm_attach_path" name="attach_path" value="{DATA.attach_path}" placeholder="첨부파일 경로 입력해주세여.">
+			</div>
+        </div>
+        <div class="form-group">
+            <label for="frm_attach_top" class="col-flex">본문 상단파일 (attach_top)</label>
+            <div class="form-inline">
+				<input type="text" id="frm_attach_top" name="attach_top" value="{DATA.attach_top}" placeholder="본문 상단파일 입력해주세여.">
+			</div>
+        </div>
+        
+        <div class="form-group">
+            <label for="frm_attach_bottom" class="col-flex">본문 하단파일 (attach_bottom)</label>
+            <div class="form-inline" >
+				<input type="text" id="frm_attach_bottom" name="attach_bottom" value="{DATA.attach_bottom}" placeholder="본문 하단파일 입력해주세여.">
+			</div>
+        </div>
+        <div class="form-group">
+            <label for="frm_memo" class="col-flex">메모내용 (memo)</label>
+            <div class="form-inline">
+				<input type="text" id="frm_memo" name="memo" value="{DATA.memo}" placeholder="메모내용 입력해주세여.">
+			</div>
+        </div>
+		<div class="form-group">
+			<label class="col-flex"></label>
+            <div class="form-inline">
+	        	<button type="submit" class="btn">등록완료</button>
+	        	<button type="button" class="btn m-l-10" onClick="location.href='{Doc["baseURL"]}/lst{Doc["queryString"]}'">목록보기</button>
+        	</div>
+       	</div>
+    </form>
+</div>

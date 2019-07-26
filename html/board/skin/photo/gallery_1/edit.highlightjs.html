@@ -1,0 +1,155 @@
+{? Board_conf.editor == 1 //에디터 사용할 경우}
+<!-- <script src="/dist/components/editor/ckeditor_bootstrap/ckeditor.js"></script>
+<script src="/dist/components/editor/ckeditor_bootstrap/adapters/jquery.js"></script> -->
+<script src="/dist/components/editor/ckeditor/ckeditor.js"></script>
+<script src="/dist/components/editor/ckeditor/adapters/jquery.js"></script>
+
+<script type="text/javascript">
+
+	
+	
+$(function () {
+var config = {
+		//language = 'es';
+		//uiColor = '#F7B42C';
+		//height = 300;
+		//toolbarCanCollapse = true;
+		removeButtons : 'Scayt,Form,Checkbox,TextField,Radio,Textarea,Select,Button,ImageButton,HiddenField,Language,About,Save',
+
+		extraPlugins : 'widget,lineutils,widgetselection,pbckcode,tableresize,tabletools,codesnippet',
+		codeSnippet_theme : 'default'
+		//extraPlugins : 'sourcedialog,codemirror',
+		//startupMode : 'source',
+	};
+	
+	var editor1 = $( '.wys' ).ckeditor(config);
+	//CKEDITOR.replace('frm_memo', config) ;
+	CKEDITOR.config.height = 250;
+	CKEDITOR.config.width = 'auto';
+	
+	
+	//editor1 = CKEDITOR.replace('attach_top_cont', {extraPlugins: 'codemirror',startupMode : 'source'}) ;
+	//editor2 = CKEDITOR.replace('attach_bottom_cont', {extraPlugins: 'codemirror',startupMode : 'source'}) ; 
+	//console.log(editor1);
+	//
+
+	$('button[id^="btnFileSearch"]', document.getElementById('formEdit')).on('click', function(e){
+		//newWindow('/module/editor/elFinder/elfinder_doc.php?mode=tpl&FuncNum=set_attach_main', 'mnu_file_search', 800, 600, 1, 1) ;
+		var tmp = this.id.split('-');
+		if(tmp[1] !== undefined && tmp[2] !== undefined)
+		{
+			if( $('[name="'+tmp[2]+'"]').length < 1 ) return false;
+			
+			var kind = tmp[1];
+			var inputObj = tmp[2];
+			newWindow('/module/plugin/file_manager/elfinder/base.php?mode='+kind+'&FuncNum=set_attach_main&formEle='+inputObj, 'mnu_file_search', 800, 600, 1, 1) ;
+		}
+		e.preventDefault();
+	});
+});
+</script>
+{/ //Board_conf.editor == 1일경우 마지막부분}
+
+
+<style type="text/css">
+    .bs-example{
+    	margin: 20px;
+    }
+    /* Fix alignment issue of label on extra small devices in Bootstrap 3.2 */
+    .form-horizontal .control-label{
+        padding-top: 7px;
+    }
+</style>
+<div class="container-fluid">
+	<div class="col-lg-12">
+	<div class="alert alert-info" role="alert">
+		{Board_conf.memo}
+	</div>
+	</div>
+    <form class="form-horizontal" id="brdWriteFrm" action="{Doc["baseURL"]}/{Doc["Action"]}{? Doc["CODE"]}/{Doc["CODE"]}{/}{Doc["queryString"]}" method="post" name="brdWriteFrm" class="register" enctype="multipart/form-data">
+    <input type="hidden" name="frm_bid" value="{_REQUEST["bid"]}">
+        
+        <div class="form-group">
+            <label for="frm_writer" class="control-label col-xs-2">작성자</label>
+            <div class="col-xs-4">
+            {? Board_conf['mbr_type'] == 1 //회원용 게시판인경우}
+				{? Doc['Action'] == "write"}
+					{_SESSION['MBRNICK']}
+				{:}
+					{? DATA.lev_ico //회원레벨 icon}<i class="fa {DATA.lev_ico} fa-lg text-danger"></i>{/} {DATA.usernick}
+				{/}
+			{:}
+				<input type="text" class="form-control" id="frm_writer" name="frm_writer" value="{DATA.writer}" placeholder="작성자명을 입력해주세여.">
+			{/}
+			</div>
+        </div>
+	{? Board_conf['noti_lev'] // 공지가능한 레벨정보가 있으면}
+        {? _SESSION['MBRLEV'] >= Board_conf['noti_lev'] //공지 사용권한 체크}
+        <div class="form-group">
+        	<label for="frm_noti" class="control-label col-xs-2">공지사항</label>
+            <div class="col-xs-4">
+				<input type="checkbox" id="frm_noti" name="frm_noti" value="1" {? DATA.noti == 1}checked{/}> <label for="frm_noti" >공지</label>
+			</div>
+		</div>
+		{/}
+	{/}
+        {? Board_conf['mbr_type'] != 1 //회원용 게시판인경우}
+		<div class="form-group">
+        	<label for="frm_userpw" class="control-label col-xs-2">비밀번호</label>
+            <div class="col-xs-4">
+				<input type="password" class="form-control" id="frm_userpw" name="frm_userpw" value="{DATA.userpw}" placeholder="비밀번호 입력해주세여.">
+			</div>
+		</div>
+		{/}
+        <div class="form-group">
+            <label for="frm_title" class="control-label col-xs-2">타이틀명</label>
+            <div class="col-xs-8">
+				<input type="text" class="form-control" id="frm_title" name="frm_title" value="{DATA.title}" placeholder="타이틀명을 입력해주세여.">
+			</div>
+        </div>
+        
+<!-- <script type="text/javascript" src="/dist/components/editor/n_smarteditor/js/service/HuskyEZCreator.js" charset="utf-8"></script>
+<script type="text/javascript">
+var oEditors = [];
+nhn.husky.EZCreator.createInIFrame({
+    oAppRef: oEditors,
+    elPlaceHolder: "frm_memo",
+    sSkinURI: "/dist/components/editor/n_smarteditor/SmartEditor2Skin.html",
+    fCreator: "createSEditor2"
+});
+</script>     --> 
+   
+        <div class="form-group">
+            <label for="frm_memo" class="control-label col-xs-2">글 내용</label>
+            <div class="col-xs-8">
+            {? Board_conf.editor == 1 //에디터 사용할 경우}
+				<textarea class="wys"  cols="100" rows="20"  id="frm_memo" name="frm_memo">{DATA.memo}</textarea>
+			{:}
+				<textarea class="form-control" id="frm_memo" name="frm_memo" row=5 placeholder="내용을 입력해주세여." style="height:200px;">{DATA.memo}</textarea>
+			{/}
+			</div>
+        </div>
+{? Board_conf['upload_file_cnt'] > 0 // 파일업로드 가능갯수 체크}
+	{@ range(0,Board_conf['upload_file_cnt']-1)} 
+        <div class="form-group">
+            <label for="frm_attachFile{.key_+1}" class="control-label col-xs-2">첨부파일 {.key_+1} </label>
+            <div class="col-lg-2">
+				<input type="file" class="form-control frm_attach" id="frm_attachFile{.key_+1}" name="frm_attachFile[{.key_}]">
+			</div>
+			<div class="col-lg-2">{DATA.attachFiles[.key_]}</div>
+        </div>
+	{/} 
+{/}
+        <!-- 
+        <div class="checkbox">
+            <label><input type="checkbox"> Remember me</label>
+        </div> -->
+        <div class="form-group">
+        	<div class="col-xs-2"></div>
+        	<div class="col-xs-4">
+        		<button type="submit" class="btn btn-sm btn-primary">등록완료</button>
+        		<button type="button" class="btn btn-sm btn-primary" onClick="location.href='{Doc["baseURL"]}/lst{Doc["queryString"]}'">목록보기</button>
+        	</div>
+        </div>
+    </form>
+</div>

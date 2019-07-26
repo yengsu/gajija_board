@@ -1,0 +1,69 @@
+<script src="/js/func/Validate.js"></script>
+<!-- ckeditor -->
+<script src="/dist/editor/ckeditor/ckeditor.js"></script>
+<script src="/dist/editor/ckeditor/adapters/jquery.js"></script>
+
+<script type="text/javascript">
+//"use strict";
+function getLayout(layout){
+	
+	$('iframe').attr('src','{Doc["baseURL"]}/getLayout') ;
+	return ;
+		setTimeout(function() {
+			$.ajax({
+					url : '{Doc["baseURL"]}/getLayout',
+					type : 'POST',
+					dataType : 'json',
+					cache : false,
+					aysnc : false, // true(동기), false(비동기)
+					data : {'layout': layout},
+					beforeSend : function(xhr, settings){	// 기본적으로 생성,수정 처리시 표시
+						//$('#file-manager-progress').html("<span style='color:red;'> Loading ...</span>") ;
+					},
+					success : function(data){
+						/* CKEDITOR.instances['memo'].setData(data,function(){
+							$('#file-manager-progress').empty();
+							 this.updateElement();
+						}); */
+						//$("#frmEdit").find('textarea[name="'+ele+'"]').val( data ) ;
+						console.log(data);
+					},
+					complete: function(e){
+						//$('#file-manager-progress').empty();
+						if(e.status === 200){
+							console.log('ok 200');
+						}
+					}
+			});
+		},400);
+
+	//$('[name="'+ele+'"]', document.getElementById('frmEdit')).val(file) ;
+}
+
+$(function(){
+	$('#btn-getLayout').bind('click', function(e){
+		getLayout('admin_sub');
+		
+	});
+});
+</script>
+<style type="text/css">
+.live-iframe{
+    border: 1px solid #3f87a6;
+    max-width: calc(100% - 40px - 6px);
+    padding: 20px;
+    width: calc(100% - 40px - 6px);
+    border-width: 1px 1px 1px 5px;
+}
+</style>
+<div class="body">
+	<div class="wrap row-flex">
+	
+			<h3>Layout</h3>
+			<div class="form-group p-20">
+				<button id="btn-getLayout" class="btn">레이아웃 가져오기</button>
+				<iframe class="live-iframe" width="500" height="430" frameborder=0></iframe>
+			</div>
+			
+	</div> <!--End .wrap-->
+</div>

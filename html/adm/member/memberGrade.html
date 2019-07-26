@@ -1,0 +1,357 @@
+<style type="text/css">
+/* #Grade-View .ymodal-body {width: 1000px;} */
+.ymodal .ymodal-body label{
+	/* min-width: 11%; */
+	max-width: none;
+}
+#Grade-View .formTable th{
+	width:16%;
+	min-width: 16% !important;
+}
+
+
+[data-spinner-layer] {
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	background: rgba(0,0,0,0.6);
+	width: 100%;
+	height: 100%;
+	padding: 0;
+	margin: 0;
+}
+</style>
+<script type="text/javascript">
+var baseURL = '{Doc["baseURL"]}';
+function searchFormChk(){
+	var frm = document.listForm ;
+//	frm.property.value = "searchForm";
+//	if(frm.keyword.value == ''){
+//		alert('검색어를 입력해주세요.') ;
+//		frm.keyword.focus();
+//		return false ;
+//	}
+	frm.submit();
+}
+$(function(){
+	//"use strict";
+//선택처리
+//$(document).ready(function(){
+	//선택삭제
+	$('#deleteSelBtn').on('click', function(){
+	    var chck = 0;
+		var frm = document.listForm ;
+		var obj = document.getElementsByName("toggle[]") ;
+		if (obj.length == 0) {
+			alert('삭제할 데이타가 없습니다.') ;			
+			return;
+		}
+		for(i=0; i<obj.length; i++){
+			if(obj[i].checked==true) chck++ ;
+		}
+		if (chck == 0) {
+			alert('체크해주세요.') ;
+			return;
+		}
+		if (!confirm(chck+'개의 정보를 삭제 하시겠습니까?')) return;	
+		frm.action = '{Doc["baseURL"]}/selDelete{Doc["queryString"]}';
+	 	frm.submit();
+	}) ;
+	// 개별 체크
+	$('input:checkbox[name="toggle[]"]').on('click', function(){
+		//console.log($(this).is(':checked'));
+			thisRow = $(this).parents('tr') ;
+			if( $(this).is(':checked') )
+				thisRow.css('background-color','#e8eff1') ;
+			else thisRow.css('background-color','#ffffff')  ;
+	});
+	// 전체 체크/해제
+	$('#checkAll').on('click', function(){
+		$('#listForm').checkd(function(thisObj, checked){
+			//console.log(checked, $(thisObj).parents('tr').css('background-color')) ;
+			thisRow = $(thisObj).parents('tr') ;
+			if( checked )
+				thisRow.css('background-color','#e8eff1') ;
+			else thisRow.css('background-color','#ffffff')  ;
+		});
+	});
+	$( '#frmMbrEdit' ).submit(function(e){
+		(e.preventDefault) ? e.preventDefault() : e.returnValue = false;
+		servRequest('Req_configUpdate', 'json',{grade_date:$('#config_grade_date').val()}, function(res){
+			//self.parent().find('.loading-progress').remove();
+
+			if(res)
+			{
+				alert('수정되었습니다.') ;
+			}
+
+		}) ;
+		return false ;
+	}) ;
+
+	var GradeInput_handler = function(e){
+		if(this.id == 'benefit_discount_rate' || this.id == 'benefit_point_rate'){
+			var val = this.value.replace(/[^0-9.]/g, '');
+			//if( parseInt(val) > 100) val=100 ;
+		}
+		else{
+			var val = this.value.replace(/[^0-9]/g, '');
+		}
+		this.value = val ;
+	};
+	var input_c_price_handler = function(e){
+		if(this.checked)
+		{
+			$('input[name="c_price_more"]', e.data.Frm).attr('disabled', false);
+			$('input[name="c_price_under"]', e.data.Frm).attr('disabled', false);
+		}
+		else {
+			$('input[name="c_price_more"]', e.data.Frm).val('').attr('disabled', true);
+			$('input[name="c_price_under"]', e.data.Frm).val('').attr('disabled', true);
+		}
+	};
+	var input_c_qty_handler = function(e){
+		if(this.checked) $('input[name="c_qty_more"]', e.data.Frm).attr('disabled', false);
+		else $('input[name="c_qty_more"]', e.data.Frm).val('').attr('disabled', true);
+	};
+	var input_benefit_discount_handler = function(e){
+		if(this.checked) $('input[name="benefit_discount_rate"]', e.data.Frm).attr('disabled', false);
+		else $('input[name="benefit_discount_rate"]', e.data.Frm).val('').attr('disabled', true);
+	};
+	var input_benefit_point_handler = function(e){
+		if(this.checked) $('input[name="benefit_point_rate"]', e.data.Frm).attr('disabled', false);
+		else $('input[name="benefit_point_rate"]', e.data.Frm).val('').attr('disabled', true);
+	};
+	//form checkbox Event
+	$('input:checkbox[name="c_price"]', $('#frmEdit')).on('click', {'Frm':$('#frmEdit')}, input_c_price_handler) ;
+	$('input:checkbox[name="c_qty"]', $('#frmEdit')).on('click', {'Frm':$('#frmEdit')}, input_c_qty_handler) ;
+	$('input:checkbox[name="benefit_discount"]', $('#frmEdit')).on('click', {'Frm':$('#frmEdit')}, input_benefit_discount_handler) ;
+	$('input:checkbox[name="benefit_point"]', $('#frmEdit')).on('click', {'Frm':$('#frmEdit')}, input_benefit_point_handler) ;
+
+	//number Input Event
+	$('#c_price_more, #c_price_under, #c_qty_more, #benefit_discount_rate, #benefit_point_rate', $('#frmEdit'))
+	.on('paste input propertychange', GradeInput_handler) ;
+
+	//submit Event
+	$( '#frmEdit' ).submit(function(e){
+		/* if( $(this).find('[name="grade_code"]').val().trim() == ''){
+			alert('등급명을 선택해주세요.');
+			$(this).find('[name="grade_code"]').focus();
+			return false ;
+		} */
+		if( $(this).find('[name="grade_code"]').val().trim() == ''){
+			alert('등급코드를 입력해주세요.');			
+			$(this).find('[name="grade_code"]').focus();
+			return false ;
+		}
+		if( $(this).find('[name="grade_name"]').val().trim() == ''){
+			alert('등급명을 입력해주세요.');			
+			$(this).find('[name="grade_name"]').focus();
+			return false ;
+		}
+		var c_price_more = parseInt($(this).find('[name="c_price_more"]').val()) || 0 ;
+		var c_price_under = parseInt($(this).find('[name="c_price_under"]').val()) || 0 ;
+		if(c_price_under != 0 && c_price_more > c_price_under){
+			alert('[등급기준] 누적결제금액 범위를 정확히 입력해주세요.'); 
+			return false ;
+		}
+		$(this).attr('action', '{Doc["baseURL"]}/write{Doc["queryString"]}');
+	});
+//}) ;
+	//form checkbox trigger Event
+	$('input:checkbox[name="c_price"]', $('#frmEdit')).triggerHandler('click') ;
+	$('input:checkbox[name="c_qty"]', $('#frmEdit')).triggerHandler('click') ;
+	$('input:checkbox[name="benefit_discount"]', $('#frmEdit')).triggerHandler('click') ;
+	$('input:checkbox[name="benefit_point"]', $('#frmEdit')).triggerHandler('click') ;
+
+	// modal box 출력
+	$('.btn-view', $('#listForm')).on('click', function(e){
+		(e.preventDefault) ? e.preventDefault() : e.returnValue = false;
+		var self = $(this);
+
+		self.parent().append('<span class="loading-progress" style="position:relative"><span style="position:absolute;left:5px;width:70px;color:red;"> Loading ..</span></span>') ;
+
+		servRequest('Req_read/'+$(this).data('serial'), 'json',null, function(res){
+			self.parent().find('.loading-progress').remove();
+
+			if(res)
+			{
+				var cloneBlock = $('#frmEdit').clone() ;
+				cloneBlock.find('h3').remove();
+				cloneBlock.find('p').remove();
+				cloneBlock.removeClass('frm-line');
+				cloneBlock.removeClass('p-20');
+				OFUNC.clear_form_elements({elem:cloneBlock, clear:true, disabled: false}) ;
+
+				cloneBlock.attr({'id': 'mdl-frmEdit', 'name':'mdl_frmEdit'});
+
+				cloneBlock.find('[name="grade_code"]').val(res.grade_code);
+				cloneBlock.find('[name="grade_name"]').val(res.grade_name);
+
+				//number Input Event
+				cloneBlock.find('input[name="grade_code"]')
+				.on('paste input propertychange', GradeInput_handler) ;
+
+				//submit Event
+				cloneBlock.submit(function(e){
+					if( $(this).find('[name="grade_code"]').val().trim() == ''){
+						alert('등급코드를 입력해주세요.');
+						$(this).find('[name="grade_code"]').focus();
+						return false ;
+					}
+					if( $(this).find('[name="grade_name"]').val().trim() == ''){
+						alert('등급명을 입력해주세요.');
+						$(this).find('[name="grade_name"]').focus();
+						return false ;
+					}
+					
+					$(this).attr('action', '{Doc["baseURL"]}/update/'+ self.data('serial') +'{Doc["queryString"]}');
+				});
+
+				var block = $('#Grade-View') ;
+				block.find('.ymodal-body').empty().append( cloneBlock ) ;
+				$('.ymodal').ymodal({show:true});
+			}
+		});
+
+	});
+}) ;
+</script>
+<style type="text/css">
+	label { max-width: 8%;}
+	.frm-line {
+		border-top: 1px solid rgba(204, 204, 204, 0.39);
+    	margin-top: 5px;
+	}
+</style>
+
+<div class="body">
+	<div class="wrap row-flex">
+	
+		<!-- <div id="top" class="container">
+			<h1 class="title pull-left">회원 등급 관리</h1>
+			<div class="location pull-left">
+				<span>회원</span>
+				<span>회원 관리</span>
+				<span>회원 등급 관리</span>
+			</div>
+		</div> -->
+
+		<div class="row-flex">
+				<h3>회원 등급 평가</h3>
+				<form id="frmMbrEdit" name="frmMbrEdit" method="post" class="frm-line">
+					
+					<div class="form-group p-20">
+			            <label for="frm_mcode" class="col-flex">실적계산기간</label>
+			            <div class="form-inline">
+							<div class="InputAddOn">
+								<div class="InputAddOn-item">최근</div>
+								<select id="config_grade_date" name="config_grade_date" class="InputAddOn-field">
+								{@MBR_GRAD_DATAS}
+									<option value="{.value_}" {?MBR_CONFIG['grade_date']==.value_}selected{/}>{.value_}</option>
+								{/}
+								</select>
+								<div class="InputAddOn-item">개월 간</div>
+								<button type="submit" id="btn-config-gradeDate" class="btn InputAddOn-item"><i class="fa fa-check" aria-hidden="true"></i>저장</button>
+							</div>
+						</div>
+			        </div>
+			        
+				</form>
+		</div>
+		<div class="row-flex">
+				<h3>회원 등급 <span id="edit-text">추가</span></h3>
+				<form id="frmEdit" name="frmEdit" method="post" class="p-20 frm-line">
+					
+					<div class="form-group ">
+						<label class="col-flex">회원등급 코드</label>
+			           	<div class="form-inline" >
+				        	<input type="text" id="grade_code" name="grade_code" placeholder="코드는 숫자(0~9)만 입력해주세요." autocomplete="off">
+							<p class="col-flex p-l-10">(등급순서는 등급코드(숫자)가 낮은숫자에서 높은숫자로 갈수록 등급이 높아집니다.)</p>	
+			        	</div>
+			        </div>
+			        <div class="form-group ">
+						<label class="col-flex">회원등급명</label>
+			           	<div class="form-inline" >
+				        	<input type="text" id="grade_name" name="grade_name" autocomplete="off">
+			        	</div>
+			        </div>
+			        <div class="form-group ">
+						<label class="col-flex"></label>
+			           	<div class="form-inline" >
+				        	<button type="submit" class="btn"><i class="fa fa-check" aria-hidden="true"></i>저장</button>
+			        	</div>
+			        </div>
+						
+					</div>
+				</form>
+		</div>	
+		<div class="row-flex" style="width:1000px;">		
+			  <form id="listForm" name="listForm" method="post" action="{Doc["baseURL"]}/lst{Doc["queryString"]}">
+					<table class="table m-t-40">
+					  <thead class="whiteblue">
+						<tr>
+						  <!-- <th class="th-chk"><input type="checkbox" id="title-table-checkbox" name="all" onclick="check();" /></th> -->
+						  <th class="th-chk"><input class="checkbox checkbox-white" type="checkbox" id="checkAll" name="all" /></th>
+						  <th class="th-num">번호</th>
+						  <th style="width: 12%;">회원등급 코드</th>
+						  <th>회원등급명</th>
+						  <th style="width: 12%;">회원수</th>
+						</tr>
+					  </thead>
+					  <tbody>
+{? LIST}
+					{@LIST}
+						<tr>
+						  <td class="text-center"><input class="checkbox" type="checkbox" name="toggle[]" value="{.serial //P.K}" /></td>
+						  <td class="text-center">{.viewcnt}</td>
+						  <td class="text-center" style="font-weight:bold;">{.grade_code}</td>
+						  <td class="text-center"><a href="#" class="btn-view" data-serial="{.serial //P.K}">{.grade_name // 등급명}</a></td>
+						  <td class="text-center">{.mbr_cnt // 등급 회원수}</td>
+						</tr>
+					{/}
+{:}
+						<!-- <tr><td colspan="7" class="text-center">등록된 데이타가 없습니다.</td></tr> -->
+						<tr><td colspan="7" class="text-center">No Registered Data. </td></tr>
+{/}
+					  </tbody>
+					</table>
+				</form>
+				<div class="pull-left">
+					<button id="deleteSelBtn" class="btn btn-basic btn-del" type="button"><i class="fa fa-minus" aria-hidden="true"></i>선택 삭제</button>
+				</div>
+
+		</div> <!--End #subCon-->
+
+		<!--Start 탈퇴사유버튼 누를 시 나타나는 모달 창-->
+		<!-- <div class="modal fade" id="Grade-View" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="exampleModalLabel1">Edit Membership Level</h4>
+					</div>
+					<div class="modal-body">
+					</div>
+					<div class="modal-footer" style="border-top:0px;">
+						<button type="button" class="btn btn-basic btn-close" data-dismiss="modal" style="margin-top:-36px"><i class="fa fa-times" aria-hidden="true"></i>Close</button>			
+					</div>
+				</div>
+			</div>
+		</div> -->
+		<!--End 탈퇴사유버튼 누를 시 나타나는 모달 창-->
+		<div id="Grade-View" class="ymodal">
+			<div class="ymodal-dialog">
+				<div class="ymodal-header">
+					<button type="button" class="close">&times;</button>
+					<h2 class="ymodal-title">편집모드</h2>
+				</div>
+				<div class="ymodal-body">
+				</div>
+				<div class="ymodal-footer">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

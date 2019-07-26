@@ -1,0 +1,152 @@
+{? Board_conf.editor == 1 //에디터 사용할 경우}
+<script src="/dist/editor/ckeditor/config.base.js"></script>
+<script src="/dist/editor/ckeditor/ckeditor.js"></script>
+<script src="/dist/editor/ckeditor/adapters/jquery.js"></script>
+
+<script type="text/javascript">
+$(function () {
+	var editor1 = $( '.wys' ).ckeditor(CKEDITOR_config);
+	CKEDITOR.config.height = 300;
+	CKEDITOR.config.width = 'auto';
+	//{? Doc["Action"]=="update"}CKEDITOR.config.startupMode = 'source';{/}
+	CKEDITOR.dtd.$removeEmpty['code'] = false;
+	
+	$('#frm_sec').bind('click', function(e){
+		if(this.checked) {
+			$('#frm_sec_pwd-block').show();
+		}else{
+			$('#frm_sec_pwd').val('');
+			$('#frm_sec_pwd-block').hide();			
+		}
+	}) ;
+});
+</script>
+{/ //Board_conf.editor == 1일경우 마지막부분}
+
+<style type="text/css">
+.label_title {
+	min-width: 110px !important;
+    max-width: 110px !important;
+}
+</style>
+<div class="container">
+	<div class="alert alert-secondary" role="alert">
+		{Board_conf.memo}
+	</div>
+    <form class="form-horizontal" id="brdWriteFrm" action="{Doc["baseURL"]}/{Doc["Action"]}{? Doc["CODE"]}/{Doc["CODE"]}{/}{Doc["queryString"]}" method="post" name="brdWriteFrm" class="register" enctype="multipart/form-data">
+    <input type="hidden" name="frm_bid" value="{_REQUEST["bid"]}">
+        
+        <div class="form-group row mb-1">
+            <label for="frm_writer" class="control-label label_title col-md-2 col-sm-2 font-weight-bold">작성자</label>
+            <div class="col-md-10 col-sm-12">
+            {? Board_conf['mbr_type'] == 1 //회원용 게시판인경우}
+				{? Doc['Action'] == "write"}
+					{_SESSION['MBRNICK']}
+				{:}
+					{? DATA.lev_ico //회원레벨 icon}<i class="fa {DATA.lev_ico} fa-lg text-danger"></i>{/} {DATA.usernick}
+				{/}
+			{:}
+				<input type="text" class="form-control" id="frm_writer" name="frm_writer" value="{DATA.writer}" placeholder="작성자명을 입력해주세여.">
+			{/}
+			</div>
+        </div>
+	{? _SESSION['ADM']==1 || Board_conf['noti_lev'] // 공지가능한 레벨정보가 있으면}
+        {? _SESSION['ADM']==1 || _SESSION['MBRLEV'] >= Board_conf['noti_lev'] //공지 사용권한 체크}
+        <div class="form-group row mb-1">
+        	<label for="frm_noti" class="control-label label_title col-md-2 col-sm-2 font-weight-bold">공지사항</label>
+            <div class="col-md-8 col-sm-8">
+				<input type="checkbox" id="frm_noti" name="frm_noti" value="1" {? DATA.noti == 1}checked{/}> <label for="frm_noti" >공지</label>
+			</div>
+		</div>
+		{/}
+	{/}
+	{? _SESSION['ADM']==1 || Board_conf['sec_pwd'] // 비밀글}
+	<!-- 
+        <div class="form-group row mb-1">
+        	<label for="frm_sec_pwd" class="control-label label_title col-md-2 col-sm-2">비밀글</label>
+            <div class="col-md-7 col-sm-8">
+				<input type="checkbox" id="frm_sec_pwd" name="frm_sec_pwd" value="1" {? DATA.sec_pwd == 1}checked{/}> <label for="frm_sec_pwd" >비밀글</label>
+			</div>
+		</div> -->
+	{/}
+	{? _SESSION['ADM']==1 || Board_conf['sec_pwd'] // 비밀글}
+        <div class="form-group row mb-1">
+        	<label for="frm_sec_pwd" class="col-form-label label_title col-sm-2 col-auto font-weight-bold">비밀글</label>
+            <div class="col-sm-2 col-auto pr-0 mt-2" style="max-width: 90px;min-width: 90px;">
+				<input type="checkbox" id="frm_sec" name="frm_sec" value="1" {? DATA.sec == 1}checked{/}> <label for="frm_sec" >비밀글</label>
+			</div>
+
+			<div id="frm_sec_pwd-block" class="col-md-4" {? DATA.sec != 1}style='display:none;'{/}>
+				<input type="password" style='width: 230px;' class="form-control" id="frm_sec_pwd" name="frm_sec_pwd" placeholder="비밀글 비밀번호 입력하세요.">
+			</div>
+		</div>
+	{/}
+       	{? Board_conf['mbr_type'] != 1 //회원용 게시판인경우}
+		<div class="form-group row mb-1">
+        	<label for="frm_userpw" class="control-label label_title col-md-3 col-sm-2 font-weight-bold">비밀번호</label>
+            <div class="col-sm-12">
+				<input type="password" class="form-control" id="frm_userpw" name="frm_userpw" value="{DATA.userpw}" placeholder="비밀번호 입력해주세여.">
+			</div>
+		</div>
+		{/}
+        <div class="form-group row mb-2">
+            <label for="frm_title" class="control-label label_title col-md-1 col-sm-3 font-weight-bold">타이틀명</label>
+            <div class="col-md-9 col-sm-12">
+				<input type="text" class="form-control" id="frm_title" name="frm_title" value="{DATA.title}" placeholder="타이틀명을 입력해주세여.">
+			</div>
+        </div>
+        
+<!-- <script type="text/javascript" src="/dist/components/editor/n_smarteditor/js/service/HuskyEZCreator.js" charset="utf-8"></script>
+<script type="text/javascript">
+var oEditors = [];
+nhn.husky.EZCreator.createInIFrame({
+    oAppRef: oEditors,
+    elPlaceHolder: "frm_memo",
+    sSkinURI: "/dist/components/editor/n_smarteditor/SmartEditor2Skin.html",
+    fCreator: "createSEditor2"
+});
+</script>     --> 
+   
+        <div class="form-group row">
+            <!-- <label for="frm_memo" class="control-label label_title col-md-2 col-sm-2">글 내용</label> -->
+            <div class="col-lg-10 col-md-12 col-sm-12">
+            {? Board_conf.editor == 1 //에디터 사용할 경우}
+				<textarea class="wys"  cols="100" rows="20"  id="frm_memo" name="frm_memo">{DATA.memo}</textarea>
+			{:}
+				<textarea class="form-control" id="frm_memo" name="frm_memo" row=5 placeholder="내용을 입력해주세여." style="height:200px;">{DATA.memo}</textarea>
+			{/}
+			</div>
+        </div>
+{? Board_conf['upload_file_cnt'] > 0 // 파일업로드 가능갯수 체크}
+	{@ range(0,Board_conf['upload_file_cnt']-1)} 
+        <div class="form-group row">
+            <label for="frm_attachFile{.key_+1}" class="control-label label_title col-md-3 col-sm-2 font-weight-bold">첨부파일 {.key_+1} </label>
+            <div class="col-lg-3 col-sm-4">
+				<input type="file" class="form-control frm_attach" id="frm_attachFile{.key_+1}" name="frm_attachFile[{.key_}]">
+			</div>
+		{? Doc.Action == 'update' // 수정페이지 인경우}
+			<div class="col-sm-6">
+				<input type="checkbox" name="frm_del_file[{.key_+1}]" value="{.key_+1}">파일삭제 &nbsp;
+				{? DATA.attachFiles[.key_]['exist'] == 1 //파일이 존재하면}
+				<a href="/{DATA.attach_path}{DATA.attachFiles[.key_]['file']}" target="_blank">{DATA.attachFiles[.key_]['file']}</a>
+				{:}
+				{DATA.attachFiles[.key_]['file']}
+				{/}
+			</div>
+		{/}
+        </div>
+	{/} 
+{/}
+        <!-- 
+        <div class="checkbox">
+            <label><input type="checkbox"> Remember me</label>
+        </div> -->
+        <div class="form-group row">
+        	<div class="col-2"></div>
+        	<div class="col-4">
+        		<button type="submit" class="btn btn-sm btn-dark">등록완료</button>
+        		<button type="button" class="btn btn-sm btn-secondary" onClick="location.href='{Doc["baseURL"]}/lst{Doc["queryString"]}'">목록보기</button>
+        	</div>
+        </div>
+    </form>
+</div>

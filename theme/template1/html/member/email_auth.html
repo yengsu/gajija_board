@@ -1,0 +1,54 @@
+{*
+--------------------------
+페이지 용도 : Email 인증 페이지
+--------------------------
+*}
+<script src="/js/func/Validate.js"></script>
+<script src="/js/jquery/jquery.countdown.min.js"></script>
+<script src="/js/jquery/jquery.mbr.emailAuth.js"></script>
+<script type="text/javascript">
+var baseURL = '{Doc["baseURL"]}';
+$(function(){
+window.resizeTo( $('.facebookLogin').width() + (window.outerWidth - window.innerWidth), 420);//$('.facebookLogin').height() + (window.outerHeight - window.innerHeight));
+});
+</script>
+</script>
+<style>
+  body, html {overflow-x: hidden; overflow-y: auto;background-color: #f6f6f6;}
+</style>
+<section class="facebookLogin">
+  <div class="facebook-tl">
+    YEPPU confirmation
+  </div>
+
+  <div class="facebook-agree join">
+    <form id="formWrite" name="formWrite" action="{Doc["baseURL"]}/{Doc["Action"]}{? Doc["CODE"]}/{Doc["CODE"]}{/}{Doc["queryString"]}" method="post">
+	  <input type="hidden" name="sdk" value="{SDK}">
+      <div class="form-group clearfix m-b-5">
+        <input type="text" class=" ios-no-shadow pull-left" style="width:70%" id=""memail"" name="memail" placeholder="Email주소를 입력해주세여." required autocomplete="off">
+        <a href="#" id="btn-emailAuthSend" class="btn btn-default pull-right" style="width:29%; padding:9px 10px;">인증받기</a>
+      </div>
+      <div id="emailAuth-block" class="form-group clearfix" style="display:none;">
+        <input type="text" class=" ios-no-shadow pull-left" style="width:70%" id="MemailAuthCode" name="MemailAuthCode" placeholder="인증번호를 입력해주세여." autocomplete="off">
+        <a href="#" id="btn-emailAuthConfirm" class="btn btn-default pull-right" style="width:29%; padding:9px 10px;">Confirm</a>
+        <span class="join-time">Count <span id="Lifetime-count" style="color:red;font-weight:bold;"></span></span>
+      </div>
+      <div class="form-group join-chk">
+        <div class="checkbox">
+          <input type="checkbox" id="magree_news" name="magree_news" value="1">
+          <label for="magree_news">I agree to receive event information SMS or EMAIL from YEPPU.</label>
+        </div>
+        <div class="checkbox">
+          <input type="checkbox" id="magree_policy" name="magree_policy" value="1" required>
+          <label for="magree_policy">I agree to YEPPU <a href="/view/main2/yeppu/customer/clause" class="policy-bt">Terms and Conditions</a> and <a href="/Customer/policy" class="policy-bt">Privacy Policy</a>.</label>
+          <!--label for="magree_policy">I agree to YEPPU <a href="#" class="policy-bt" data-toggle="modal" data-target="#policy">Terms and Conditions</a> and <a href="/">Privacy Policy</a>.</label-->
+        </div>
+      </div>
+      <div class="form-group m-t-20 m-b-0 join-bt text-center">
+        <button type="reset" class="bt-o">Cancel</button>
+        <button type="submit"  id="btn-submit" class="bt-o bt-pill">Create Account</button>
+      </div>
+    </form>
+  </div>
+
+</section>

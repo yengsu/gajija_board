@@ -1,0 +1,152 @@
+<script type="text/javascript">
+var baseURL = '{Doc["baseURL"]}';
+
+$(document).ready(function() {
+	$('.btnDelete').bind('click', function(e){
+		(e.preventDefault) ? e.preventDefault() : e.returnValue = false;
+		if (!confirm('삭제 하시겠습니까?')) return;
+		document.location.href = this.getAttribute('href') ;
+		return ;
+	}) ;
+	$('.btnPreview').bind('click', function(e){
+		(e.preventDefault) ? e.preventDefault() : e.returnValue = false;
+		servRequest('Req_getData/'+this.getAttribute('href').substr(1), 'json',{serial:this.getAttribute('href').substr(1)}, function(res){
+			//self.parent().find('.loading-progress').remove();
+
+			if(res)
+			{
+				ypopup({
+						width : res.width,
+						height: res.height,
+						output : res.output,
+						wname : res.serial,
+						content : res.attach_file_cont,
+						url : res.url
+					});
+			}
+
+		}) ;
+		
+	}) ;
+});
+</script>
+
+<div class="body">
+
+	<div class="wrap row-flex">
+  			<h2>팝업 조회</h2>
+			<div class="p-t-20">
+				<div class="p-10">
+					총 갯수 : {TOTAL_CNT}
+				</div>
+				<table class="table">
+					<thead class="whiteblue">
+						<tr>
+							<th scope="row" style="width:8em;"> No. </th>
+							<th style="width:8em;">oid</th>
+							<th>title</th>
+							<th style="width:7em;">출력형식</th>
+							<th style="width:20em;">파일</th>
+							<th style="width:7em;">노출</th>
+							<th style="width:18em;">노출기간</th>
+							<th style="width:10em;">regdate</th>
+							<th style="width:14em;">-</th>
+							<!-- <th class="col-xs-2"> writer </th>
+							<th class="col-xs-2"> regdate </th>
+							<th class="col-xs-2"> - </th> -->
+						</tr>
+					</thead>
+					<tbody>
+	{? LIST}
+					{@LIST}
+						<tr>
+							<th class="text-center">{VIEW_NUM- .index_ {*번호*}}</th>
+							<td class="text-center">{.oid}</td>
+							<td style="font-weight:bold;"><a href="{Doc["baseURL"]}/edit/{.serial}{Doc["queryString"]}">{.title}</a></td>
+							<td class="text-center">{? .output}{.output}{:}-{/}</td>
+							<td class="text-center">{? .attach}{.attach}{:}-{/}</td>
+							<td class="text-center">{? .imp}노출{:}노출안함{/}</td>
+							<td class="text-center">{? .imp_date}{.imp_date}{:}무제한{/}</td>
+							<td class="text-center">{.regdate}</td>
+							<td class="text-center">
+								<a class="btn btnPreview" href="#{.serial}">보기</a>
+							 	<a class="btn" href="{Doc["baseURL"]}/edit/{.serial}{Doc["queryString"]}">수정</a>
+							 	<a class="btn btnDelete" href="{Doc["baseURL"]}/delete/{.serial}{Doc["queryString"]}">삭제</a>
+							 </td>
+							
+							<!-- <td>{.writer}</td>
+							<td>{.regdate}</td>
+							<td>
+								<a href="{Doc["baseURL"]}/add/{.serial}{Doc["queryString"]}">추가</a>
+								<a href="{Doc["baseURL"]}/edit/{.serial}{Doc["queryString"]}">수정</a>
+								<a href="{Doc["baseURL"]}/delete/{.serial}{Doc["queryString"]}">삭제</a>
+							</td> -->
+						</tr>
+					{/}
+	{:}
+						<tr>
+							<td colspan="10" class="text-center">검색 데이타를 찾을 수 없습니다.</td>
+						</tr>
+	{/}
+					</tbody>
+				</table>
+				<div class="form-group">
+					<button type="button" class="btn" onClick="location.href='{Doc["baseURL"]}/add'">등록하기</button>
+				</div>
+				<!-- 페이징(Pagination) 영역 START -->
+				<div>
+		            
+		            	<div class="pagination text-center">
+				{? LIST}
+							<a class="page first" href="{PAGING.first.url}">First</a>
+					{? PAGING.prev.num}
+							<a class="page prev" href="{PAGING.prev.url}">Previous</a>
+					{/}
+					{@PAGING.no}
+						{? .current}
+							<a class="page active" href="{.url}">{.num}</a>
+						{:}
+							<a class="page" href="{.url}">{.num}</a>
+						{/}
+					{/}
+				
+					{? PAGING.next.num}
+							<a class="page next" href="{PAGING.next.url}">Next</a>
+					{/}
+							<a class="page last" href="{PAGING.last.url}">Last</a>
+				{/}
+		            	</div>
+		
+						
+		
+				</div>
+				<!-- 페이징(Pagination) 영역 END -->
+				
+				<!--  검색영역 START -->
+				<div class="">
+					<form class=" text-center" method="post" action="">
+						<div class="InputAddOn p-t-20 justify-content-center">
+					           	<select id="search_field" name="search_field" class="" placeholder="검색조건 항목 선택">
+									<option value="title" >타이틀명</option>
+								</select>
+								<!-- <label for="search_keyword" class="InputAddOn-field">검색어</label> -->
+					           	<input type="text" class="InputAddOn-field" id="search_keyword" name="search_keyword" style="width:20em;" placeholder="검색어를 입력해주세요.">
+								<button type="submit" class="btn InputAddOn-item">검색</button>
+								<button type="button" class="btn InputAddOn-item" onClick="location.href='{Doc["baseURL"]}/lst'">전체목록</button>
+						</div>
+						<div class="form-inline">
+						</div>
+						
+					</form>
+				</div>
+				<!--  검색영역 END -->
+			</div>
+			
+			
+	</div>
+	
+	
+
+
+</div>
+

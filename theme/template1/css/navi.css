@@ -1,0 +1,194 @@
+#LEFT_MENU {
+	padding-right: 0;
+	margin-top:10px;
+}
+/* ul.nav-list {
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+}
+ul.nav-list li a {
+    -webkit-transition: background 0.1s;
+    -moz-transition: background 0.1s;
+    transition: background 0.1s;
+    border-bottom: 1px solid #EDEDDE;
+    padding-bottom: 8px;
+    display: inline-block;
+    color: #666;
+    font-size: inherit; 0.9rem;
+    text-decoration: none;
+}
+ul.nav-list > li.li_category1 {
+	padding-left:0;
+}
+ul.nav-list > li.li_category1 > a{
+	font-size:1.1rem;
+}
+ul.nav-list li{
+	padding-top:10px;
+	padding-left:20px;
+} 
+ul.nav-list > li:first-child a{
+	padding-top:0;
+	text-align:center;
+}
+ul.nav-list li:not(:first-child) a:before {
+
+ul.nav-list li a:before, 
+ul.nav-list li label:before {
+    content: "";
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    border-left: 4px solid #333;
+    margin-left: 10px;
+    margin-right: 5px;
+    position: relative;
+}
+ul.nav-list li.active > a {
+    font-weight: bold;
+}
+
+ul.nav-list > li > a.is_select{
+	font-weight:bold;
+} */
+
+/* ==================================== */
+#LEFT_MENU li.collapse:not(:first-of-type) ul {
+  visibility: hidden;
+  opacity: 0;
+  max-height: 0; /* CSS bug. Cannot animate height... */
+  /*transition: all 0.5s;*/
+}
+
+
+/* Show when checked */
+#LEFT_MENU li.collapse input:checked ~ ul {
+  visibility: visible;
+  opacity: 1;
+  max-height: 999px; /* Just give a big enough height for animation */
+}
+#LEFT_MENU li.collapse input:checked ~ label.::after {
+  /*transform: rotate(90deg);*/
+}
+
+#LEFT_MENU ul > li.collapse {
+	visibility: visible;
+}
+
+#LEFT_MENU li.collapse input:checked + label::before {
+  transform: rotate(90deg);
+}
+nav#LEFT_MENU li a.active {
+    color: #f06288;
+    font-weight:bold;
+    font-size: larger;
+}
+
+
+/* ============================================================================================ */
+/* ◀ */
+	nav#LEFT_MENU ul > li > ul > li label.active:after {
+		/* content: "\f104";  */
+	}
+	/* ▶ */
+	nav#LEFT_MENU  ul > li > ul > li label.deactive:after{
+	    /* content: "\f105"; */  
+	}
+	
+	/* 마이너스 - */
+	nav#LEFT_MENU ul > li > ul > li label.active:after {
+		content: "\f068";
+	}
+	/* 플러스 + */
+	nav#LEFT_MENU  ul > li > ul > li label.deactive:after{
+	    content: "\f067";
+	    
+	}
+	
+	
+	nav#LEFT_MENU ul > li label.active:after {
+		content: "\f106"; /* ▲ */
+	}
+	nav#LEFT_MENU ul > li label.deactive:after{
+	    content: "\f107"; /* ▼ */
+	}
+	/* 3차 서브메뉴부터 왼쪽패딩(여백) 줌 */
+	nav#LEFT_MENU > ul > li > ul li {
+	   	/* padding-left: 20px;
+   	    margin-left: 5px; */
+   	    padding-left: 11px;
+	}
+	nav#LEFT_MENU label{
+	    font-family: Font Awesome\ 5 Free;
+	    font-style: normal;
+	    font-weight: normal;
+	    line-height: inherit;
+	    -webkit-font-smoothing: antialiased;
+	    -moz-osx-font-smoothing: grayscale;
+	    font-weight: 900;
+	    display: inline-block;
+	    font-size: inherit;
+	    padding:0px 6px;
+	    
+	    /* 웹버전(모바일x) */
+        font-size: small;
+	    padding: 1px 1px;
+	    /* border: 1px solid red; */
+	    margin-left: 5px;
+	    color: #ee6d72;
+	}
+	nav#LEFT_MENU .mnuHome { display:none;}
+	
+	
+	/*--------------------*/
+	/* 트리구조 처럼 줄긋기*/
+	/*--------------------*/
+		nav#LEFT_MENU label.indent1 { display:none !important;}
+		
+		#LEFT_MENU ul li { padding-left:0px;}
+		#LEFT_MENU ul li ul { display:inherit	 ;}
+		
+		#LEFT_MENU li{position: relative;padding-left: 10px;}
+		#LEFT_MENU li:before, #LEFT_MENU li:after {
+		    content: "";
+		    position: absolute;
+		    left: 0px;
+		}
+		#LEFT_MENU li:before {
+		    border-top: 1px solid #ccc;
+		    top: 15px;
+		    width: 10px;/* 12px; */
+		    height: 0;
+		}
+		#LEFT_MENU li:after {
+		    border-left: 1px solid #ccc;
+		    height: 105%;
+		    width: 0px;
+		    top: 0px;
+		}
+		#LEFT_MENU ul > li:last-child:after {
+		    height: 16px;
+		}
+		
+		/* depth 0인경우 선 긋지 않음*/
+		#LEFT_MENU > ul > li:before,
+		#LEFT_MENU > ul > li:after
+		{
+			height:0;
+			border: 0px;
+		}
+		nav#LEFT_MENU .item {
+		    padding: 7px 0px 7px 2px;
+		}
+		/* nav#LEFT_MENU > ul > li > ul li ul li {
+		    padding-left: 13px;
+		} */
+		#LEFT_MENU > ul > li ul {
+		    padding-left: 10px;
+		}
+		#LEFT_MENU > ul > li > ul {
+			padding-left: 20px;
+		}

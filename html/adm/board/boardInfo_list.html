@@ -1,0 +1,130 @@
+<div class="body">
+
+	<div class="wrap row-flex">
+  			<h2>게시판 관리</h2>
+			<div class="p-t-20">
+				<div class="p-10">
+					총 갯수 : {TOTAL_CNT}
+				</div>
+				<table class="table">
+					<thead class="whiteblue">
+						<tr>
+							<th style="width:100px;" scope="row"> No. </th>
+							<th style="width:160px;">bid</th>
+							<!-- <th style="width:80px;">oid</th> -->
+							<th style="min-width:180px;">cate</th>
+							<th style="min-width:180px;">title</th>
+							<th style="width:100px;min-width:100px;">DB Table</th>
+							<th style="width:120px;min-width:120px;">게시물</th>
+							<!-- <th style="width:150px;">skin_grp</th>
+							<th style="width:150px;">skin</th> -->
+							<th style="width:200px;min-width:160px;">skin_grp</th>
+							<th style="width:60px;min-width:60px;">계층형</th>
+							<th style="width:60px;min-width:60px;">댓글</th>
+							<th style="width:100px;min-width:100px;">regdate</th>
+							<th style="min-width:250px;">-</th>
+							<!-- <th class="col-xs-2"> writer </th>
+							<th class="col-xs-2"> regdate </th>
+							<th class="col-xs-2"> - </th> -->
+						</tr>
+					</thead>
+					<tbody>
+	{? LIST}
+					{@LIST}
+						<tr>
+							<th class="text-center">{VIEW_NUM- .index_ {*번호*}}</th>
+							<td class="text-center">{.bid}</td>
+							<!-- <td class="text-center">{.oid}</td> -->
+							<td class="text-center">{? .cate_name}{.cate_name}{:}-{/}</td>
+							<td style="font-weight:bold;"><a href="{Doc["baseURL"]}/edit/{.bid}{Doc["queryString"]}">{.title}</a></td>
+							<td class="text-center" >{.table_name}</td>
+							<td class="text-center">{.board_cnt}</td>
+							<!-- <td class="text-center">{.skin_grp}</td>
+							<td class="text-center">{.skin_name}</td> -->
+							<td class="text-center">{.skin_grp} / {.skin_name}</td>
+							<td class="text-center" style="color:red;">{? .indent}O{:}X{/}</td>
+							<td class="text-center" style="color:red;">{? .comments}O{:}X{/}</td>
+							<td class="text-center">{.regdate}</td>
+							<td class="text-center">
+								<a class="btn" href="/board/BoardComm/lst?bid={.bid}" target="_blank">보기</a>
+								<a class="btn" href="/adm/board/BoardAdminComments/edit/{.bid}{Doc["queryString"]}" target="_blank">댓글정보</a>
+							 	<a class="btn" href="{Doc["baseURL"]}/edit/{.bid}{Doc["queryString"]}">수정</a>
+							 	<a class="btn" href="{Doc["baseURL"]}/delete/{.bid}{Doc["queryString"]}">삭제</a>
+							 </td>
+							
+							<!-- <td>{.writer}</td>
+							<td>{.regdate}</td>
+							<td>
+								<a href="{Doc["baseURL"]}/add/{.serial}{Doc["queryString"]}">추가</a>
+								<a href="{Doc["baseURL"]}/edit/{.serial}{Doc["queryString"]}">수정</a>
+								<a href="{Doc["baseURL"]}/delete/{.serial}{Doc["queryString"]}">삭제</a>
+							</td> -->
+						</tr>
+					{/}
+	{:}
+						<tr>
+							<td colspan="10" class="text-center">검색 데이타를 찾을 수 없습니다.</td>
+						</tr>
+	{/}
+					</tbody>
+				</table>
+				<div class="form-group">
+					<button type="button" class="btn" onClick="location.href='{Doc["baseURL"]}/add'">등록하기</button>
+				</div>
+				<!-- 페이징(Pagination) 영역 START -->
+				<div>
+		            
+		            	<div class="pagination text-center">
+				{? LIST}
+							<a class="page first" href="{PAGING.first.url}">First</a>
+					{? PAGING.prev.num}
+							<a class="page prev" href="{PAGING.prev.url}">Previous</a>
+					{/}
+					{@PAGING.no}
+						{? .current}
+							<a class="page active" href="{.url}">{.num}</a>
+						{:}
+							<a class="page" href="{.url}">{.num}</a>
+						{/}
+					{/}
+				
+					{? PAGING.next.num}
+							<a class="page next" href="{PAGING.next.url}">Next</a>
+					{/}
+							<a class="page last" href="{PAGING.last.url}">Last</a>
+				{/}
+		            	</div>
+		
+						
+		
+				</div>
+				<!-- 페이징(Pagination) 영역 END -->
+				
+				<!--  검색영역 START -->
+				<div class="">
+					<form class=" text-center" method="post" action="">
+						<div class="InputAddOn p-t-20 justify-content-center">
+					           	<select id="search_field" name="search_field" class="" placeholder="검색조건 항목 선택">
+									<option value="title" >타이틀명</option>
+								</select>
+								<!-- <label for="search_keyword" class="InputAddOn-field">검색어</label> -->
+					           	<input type="text" class="InputAddOn-field" id="search_keyword" name="search_keyword" style="width:20em;" placeholder="검색어를 입력해주세요.">
+								<button type="submit" class="btn InputAddOn-item">검색</button>
+								<button type="button" class="btn InputAddOn-item" onClick="location.href='{Doc["baseURL"]}/lst'">전체목록</button>
+						</div>
+						<div class="form-inline">
+						</div>
+						
+					</form>
+				</div>
+				<!--  검색영역 END -->
+			</div>
+			
+			
+	</div>
+	
+	
+
+
+</div>
+

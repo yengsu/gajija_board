@@ -1,0 +1,113 @@
+.boardComm a {
+	color:#212529 !important;
+	/* text-decoration:none !important; */
+}
+/* .boardComm > .data-list-block{
+	overflow-x:auto;
+} */
+.boardComm table{
+	min-width: 500px;
+}  
+
+.table-flex .table-row {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: row;
+  -webkit-flex-direction: row;
+  flex-wrap: no-wrap;
+  -webkit-flex-wrap: no-wrap;
+  width: 100%;
+}
+.table-flex .row {
+  align-self: center; /* 수직정렬 */
+}
+/*.wrapper {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: row;
+  -webkit-flex-direction: row;
+}*/
+.table-flex .column {
+  flex-grow: 0;
+  -webkit-flex-grow: 0;
+  flex-shrink: 0;
+  -webkit-flex-shrink: 0;
+}
+/*
+ * General good-look styles
+ */
+.table-flex .table-row.header {
+  background-color: #FFEEDB;
+  font-weight: bold;
+}
+/*--------------------------------------------------*/
+/*테이블 선긋기 START*/
+/* 		.table-flex { border-top: 1px solid gray; } */
+		.table-flex .table-row { 
+			border-bottom: 1px solid #e0e0e0;
+		  	border-collapse: collapse;
+			border-bottom: 1px solid #e4e2e2;
+		}
+/* 		.table-flex .table-row .row:first-child {
+			border-left: 1px solid gray;
+		}
+		.table-flex .table-row  .column {
+			border-right: 1px solid gray;
+		} */
+/*테이블 선긋기 END */
+
+.table-flex .thead {
+	color: #000;
+    font-weight: 400;
+	background: rgba(188, 200, 212, 0.5);
+	border:0;
+}
+		
+.table-flex .table-row  .column{
+	/*line-height:16px;*/
+	padding:8px 10px;
+	align-self: center ;
+	
+	display: flex;
+	
+}
+.table-flex .column.no{
+	width:80px;
+	text-align: center;
+	justify-content: center;
+}
+.table-flex .column.title{
+	display:inline-block;
+	flex-grow: 1;
+    -webkit-flex-grow: 1;
+	overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width:300px;
+    text-align: center;
+}
+.table-flex .tbody .column.title{ text-align: left; } 
+
+.table-flex .column.writer{
+	/* display:inline-block; */
+	width:100px;
+    word-break: break-word;
+    text-overflow: ellipsis;
+	text-align: center;
+	
+	
+}
+.table-flex .column.regdate{
+	width:100px;
+	text-align: center;
+	justify-content: center;
+}
+.table-flex .column.elapsed_days{
+	display:none;
+}
+
+.table-flex .column.viewcnt{
+	width:80px;
+	text-align: center;
+	justify-content: center;
+}

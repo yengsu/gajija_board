@@ -1,0 +1,348 @@
+body{ font-size: 14px; }
+label { 
+	/* vertical-align: middle;
+	padding-top: calc(.5rem - 1px * 2);
+    padding-bottom: calc(.5rem - 1px * 2); */
+    padding-top: calc(.5rem - 1px * 2);
+    padding-bottom: calc(.5rem - 1px * 2);
+}
+select { height: 2.4rem;}
+
+input[type="text"] { 
+	width: 28em;
+	height:2.4rem; padding-left:5px; border: 1px solid hsla(31,15%,50%,.25);
+}
+
+label{
+	    min-width: 5%;
+}
+button, input, optgroup, select, textarea {
+    font-family: sans-serif;
+    font-size: 100%;
+    line-height: 1.15;
+} 
+/* body a {
+  color: #464646;
+  -webkit-transition: all .1s linear;
+  -moz-transition: all .1s linear;
+  -o-transition: all .1s linear;
+  -ms-transition: all .1s linear;
+  transition: all .1s linear;
+} */
+body a:hover {
+  text-decoration: none;
+}
+body a:focus {
+  text-decoration: none;
+}
+
+.hide { display:none !important; }
+
+/* .form-inline { display:inline-block;padding:5px 0;} */
+.form-inline {
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    /* height: 100%; */
+    align-self: center;
+    /* justify-content: center; */
+    padding:5px 0;
+}
+
+.form-group { display:flex;padding:3px 0;}
+
+/* 수직정렬 - 중앙정렬 */
+/* .form-inline > *{
+	align-self: center;
+} */
+.text-center { text-align: center!important; }
+.text-right { text-align:right; }
+.d-inline-block { display:inline-block !important; }
+.d-block { display:block !important; }
+/* ################# Flex layout Start ################# */
+.d-flex {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+}
+/* 감싸기 */
+.wrapper-flex {
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    
+    align-items: flex-start;
+	-webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    
+    flex-basis: 100%; /*추가하면 new line처리됨*/
+}
+.nowrapper-flex {
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    
+    align-items: flex-start;
+	-webkit-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+}
+/* 칼럼(Column)형 */
+.column-flex {
+    -webkit-box-orient: vertical!important;
+    -webkit-box-direction: normal!important;
+    -webkit-flex-direction: column!important;
+    -ms-flex-direction: column!important;
+    flex-direction: column!important;
+    /* justify-content: center; */
+}
+/* 행(Row)형 */
+.row-flex {
+    -webkit-box-orient: vertical!important;
+    -webkit-box-direction: row!important;
+    -webkit-flex-direction: row!important;
+    -ms-flex-direction: row!important;
+    flex-direction: row!important;
+}
+/* flex 컨테너의 사이즈 영향을 안받음 */
+.flex0 {
+	-webkit-box-flex: 0;
+    -webkit-flex: none;
+    -ms-flex: none;
+    flex: none;
+}
+/* flex 컨테이너의 넓이 사이즈만큼 채움 */
+.flex1 { 
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+}
+/* 노출순위 : -1:처음 */
+.flex-order-1 {
+	-webkit-box-ordinal-group: 0;
+	-webkit-order: -1;
+	-ms-flex-order: -1;
+	order: -1;	
+}
+/* 자기자신을 수직정렬: 중앙으로 */
+.align-self-center{ align-self: center !important; }
+
+/* 수평정렬: 왼쪽으로 */
+.justify-content-end{
+	justify-content: flex-start;
+}
+/* 수평정렬: 중앙으로 */
+.justify-content-center{
+	justify-content: center;
+}
+/* 수평정렬: 오른쪽으로 */
+.justify-content-end{
+	justify-content: flex-end;
+}
+
+/* 수직정렬: 맨 위으로 */
+.align-items-start {
+	display: flex;
+	align-items: flex-start;
+	height:100%;
+}
+/* 수직정렬: 중앙으로 */
+.align-items-center {
+	display: flex;
+	align-items: center;
+	height:100%;
+}
+/* 수직정렬: 맨 밑쪽으로 */
+.align-items-end {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-end;
+	height:100%;
+}
+
+/* 수직정렬: 맨 위으로 */
+.align-content-start {
+	display: flex;
+	flex-wrap: wrap;
+	align-content: flex-start;
+	height:100%;
+}
+/* 수직정렬: 중앙으로 */
+.align-content-center {
+	display: flex;
+	flex-wrap: wrap;
+	align-content: center;
+	height:100%;
+}
+/* 수직정렬: 맨 밑쪽으로 */
+.align-content-end {
+	display: flex;
+	flex-wrap: wrap;
+	align-content: flex-end;
+	height:100%;
+}
+/* 수직정렬: 열간격을 일정하게 서로 벌림 */
+.align-content-evenly {
+	display: flex;
+	flex-wrap: wrap;
+	align-content: space-evenly;
+	height:100%;
+}
+
+.col-flex {
+	display: -webkit-box!important;
+    display: -webkit-flex!important;
+    display: -ms-flexbox!important;
+    display: flex!important;
+    
+    /* 자신의 영역을 칼럼형식으로 출력 */
+    -webkit-box-orient: vertical!important;
+    -webkit-box-direction: normal!important;
+    -webkit-flex-direction: column!important;
+    -ms-flex-direction: column!important;
+    flex-direction: column!important;
+    
+    flex-grow: 1; /* 사이즈만큼 자신의 영역 확장 */
+   	justify-content: center; /* 수평정렬: 가운데 */
+}
+/* ################# Flex layout End ################# */
+
+.p-0 {
+  padding: 0px !important;
+}
+.p-10 {
+  padding: 10px !important;
+}
+.p-20 {
+  padding: 20px !important;
+}
+.p-30 {
+  padding: 30px !important;
+}
+.p-l-0 {
+  padding-left: 0px !important;
+}
+.p-l-10 {
+  padding-left: 10px !important;
+}
+.p-l-20 {
+  padding-left: 20px !important;
+}
+.p-r-0 {
+  padding-right: 0px !important;
+}
+.p-r-10 {
+  padding-right: 10px !important;
+}
+.p-r-20 {
+  padding-right: 20px !important;
+}
+.p-t-0 {
+  padding-top: 0px !important;
+}
+.p-t-10 {
+  padding-top: 10px !important;
+}
+.p-t-20 {
+  padding-top: 20px !important;
+}
+.p-b-0 {
+  padding-bottom: 0px !important;
+}
+.p-b-10 {
+  padding-bottom: 10px !important;
+}
+.p-b-20 {
+  padding-bottom: 20px !important;
+}
+.m-0 {
+  margin: 0px !important;
+}
+.m-l-5 {
+  margin-left: 5px !important;
+}
+.m-l-10 {
+  margin-left: 10px !important;
+}
+.m-l-15 {
+  margin-left: 15px !important;
+}
+.m-l-20 {
+  margin-left: 20px !important;
+}
+.m-l-30 {
+  margin-left: 30px !important;
+}
+.m-l-40 {
+  margin-left: 40px !important;
+}
+.m-r-5 {
+  margin-right: 5px !important;
+}
+.m-r-10 {
+  margin-right: 10px !important;
+}
+.m-r-15 {
+  margin-right: 15px !important;
+}
+.m-r-20 {
+  margin-right: 20px !important;
+}
+.m-r-30 {
+  margin-right: 30px !important;
+}
+.m-r-40 {
+  margin-right: 40px !important;
+}
+.m-t-5 {
+  margin-top: 5px !important;
+}
+.m-t-0 {
+  margin-top: 0px !important;
+}
+.m-t-10 {
+  margin-top: 10px !important;
+}
+.m-t-15 {
+  margin-top: 15px !important;
+}
+.m-t-20 {
+  margin-top: 20px !important;
+}
+.m-t-30 {
+  margin-top: 30px !important;
+}
+.m-t-40 {
+  margin-top: 40px !important;
+}
+.m-b-0 {
+  margin-bottom: 0px !important;
+}
+.m-b-5 {
+  margin-bottom: 5px !important;
+}
+.m-b-10 {
+  margin-bottom: 10px !important;
+}
+.m-b-15 {
+  margin-bottom: 15px !important;
+}
+.m-b-20 {
+  margin-bottom: 20px !important;
+}
+.m-b-30 {
+  margin-bottom: 30px !important;
+}
+.m-b-40 {
+  margin-bottom: 40px !important;
+}
+
+.h2, h2 {
+    font-size: 2rem;
+}
+.h3, h3 {
+    font-size: 1.5rem;
+}

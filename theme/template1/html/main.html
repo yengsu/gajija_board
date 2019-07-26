@@ -1,0 +1,35 @@
+<style type="text/css">
+@media  (max-width: 800px) {
+
+	div.ypopup{
+		width: 90% !important;
+    	height: 80% !important;
+    	top: 12% !important;
+    	bottom: 5% !important;
+	}
+}
+
+</style>
+<div class="container">
+	<div class="row">
+		<div class="container text-center">xxxxxxxxxxx</div>
+	</div>
+</div>
+{? POPUP // 팝업창 정보 있으면}
+<script type="text/javascript">
+	{@POPUP}
+	ypopup({
+		width : {.width},
+		height: {.height},
+		output : '{.output}',
+		wname : {.serial},
+		content : {? .attach_file_cont}{.attach_file_cont}{:}''{/},
+		visible_date : true,
+		url : '{.url}'
+	});
+	<!-- <div class="row">
+		<div class="container text-center">{.serial}</div>
+	</div> -->
+	{/}
+</script>
+{/}

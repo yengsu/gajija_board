@@ -1,0 +1,450 @@
+<link href="/dist/nest/adm.menu.css" rel="stylesheet">
+<script src="/dist/nest/jquery.nestable.ys.js"></script>
+<script src="/dist/nest/jquery.nestable-boardCate.ys.js"></script>
+
+<script type="text/javascript">
+var postFormEle = "#formEdit" ;
+var baseURL = '{Doc["baseURL"]}' ;
+
+$.extend( get_nestable_opts.prototype.config, {
+		//maxDepth : 4,//{INDENT_LIMIT+1 //set depth},
+		collapseAll : false, // open, close
+		afterInit: function ( event ) {
+			Menu_handle.prototype.init(event.el, event);
+		}
+		{? JS_CATEGORY_OPT}
+		,property : {JS_CATEGORY_OPT}
+		{/}
+		{? JS_CATEGORY_DATA}
+		,res_data : {JS_CATEGORY_DATA}
+		{/}
+
+
+});
+
+$(function () {
+	//-------------------------------------------------
+	//nestable start
+	$('.nestable').nestable(get_nestable_opts.prototype.config)
+	.on('beforeDragStart', get_nestable_opts.prototype.evt.beforeDragStart)
+	.on('dragEnd', get_nestable_opts.prototype.evt.dragEnd) ;
+	//-------------------------------------------------
+	// goods_opt - form post sumit
+	$( postFormEle ).submit({'frm':postFormEle}, Menu_handle.prototype.optSubmit_handler) ;
+
+	// goods_opt - ajax form submit
+	$('.all_regist').bind('click', Menu_handle.prototype.opt_requestAjax_handler) ;
+	//-------------------------------------------------
+
+	/* var ScrollFollow = function(Ele){
+			var element = $(Ele),
+		    originalY = element.offset().top;
+
+			var topMargin = 0;
+
+			// Should probably be set in CSS; but here just for emphasis
+			element.css('position', 'relative');
+
+			$(window).on('scroll', function(event) {
+			    var scrollTop = $(window).scrollTop();
+			    //console.log(scrollTop, originalY, window.outerHeight/2);
+			    if(originalY == 0)
+		    	{
+				    if(scrollTop < originalY) var aTop = 0;
+				    else var aTop = scrollTop - originalY + topMargin;
+		    	}
+			    else{
+			    	//if(scrollTop < originalY) var aTop = scrollTop + topMargin ;
+				   if(scrollTop >= originalY) var aTop = scrollTop + topMargin ;
+				   else var aTop = scrollTop;
+				   //var aTop = scrollTop + topMargin ;
+		    	}
+			    element.css('top', aTop);
+			    //element.stop(false, false).animate({
+			   //     top: aTop
+			    //}, 300);
+			});
+	};
+	ScrollFollow('#nest-edit-block'); */
+	
+	//------------------------------------------------
+	
+	$("#myTabs li").click(function(){
+	     var tabid = $(this).find("a").attr("href");
+	     $("#myTabs li,#myTabs li a, #myTabContent div.tab-pane").removeClass("active");   // removing active class from tab
+
+	     $(".tab-pane").addClass('hide');   // hiding open tab
+	     $(tabid).removeClass('hide');    // show tab
+	     $(this).addClass("active"); //  adding active class to clicked tab
+	     $(this).children('a').addClass("active");
+
+	  });
+
+//---------------------------------------
+});
+</script>
+<style type="text/css">
+#nest-edit-block{ display:none;}
+.left-wrap {
+	width:450px;
+}
+.cate-wrap {
+    border: 3px solid #dadada;
+    overflow: hidden;
+    margin-top: 10px;
+    width: 450px;
+}
+.cate-inner {
+    overflow: hidden;
+    margin: 20px 30px 20px 20px;
+}
+#nest-edit-block{
+    margin-left: 30px;
+}
+/*#################################################*/
+#myTabContent {
+	border-left: 1px solid #ccc;
+    padding-left: 14px;
+} 
+.panel-body label{
+	    max-width: 11%;
+}
+
+.panel-body .nav {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-left: 0;
+  margin-bottom: 0;
+  list-style: none;
+}
+.panel-body .tab-pane {
+	padding:20px;
+}
+.panel-body .nav-link {
+  display: block;
+  padding: 0.5em 1em;
+}
+
+.panel-body .nav-link:focus, .nav-link:hover {
+  text-decoration: none;
+}
+
+.panel-body .nav-link.disabled {
+  color: #636c72;
+  cursor: not-allowed;
+}
+
+.panel-body .nav-tabs {
+  border-bottom: 1px solid #ddd;
+}
+
+.panel-body .nav-tabs .nav-item {
+  margin-bottom: -1px;
+}
+
+.panel-body .nav-tabs .nav-link {
+  border: 1px solid transparent;
+  border-top-right-radius: 0.25rem;
+  border-top-left-radius: 0.25rem;
+}
+
+.panel-body .nav-tabs .nav-link:focus, .panel-body .nav-tabs .nav-link:hover {
+  border-color: #eceeef #eceeef #ddd;
+}
+
+.panel-body .nav-tabs .nav-link.disabled {
+  color: #636c72;
+  background-color: transparent;
+  border-color: transparent;
+}
+
+.panel-body .nav-tabs .nav-link.active,
+.panel-body .nav-tabs .nav-item.show .nav-link {
+  color: #464a4c;
+  background-color: #fff;
+  border-color: #ddd #ddd #fff;
+}
+
+.panel-body .nav-tabs .dropdown-menu {
+  margin-top: -1px;
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+}
+
+.text-blue{ 
+	color: rgba(0, 112, 255, 0.92);
+	vertical-align: middle;
+    padding-top: calc(.5rem - 1px * 2);
+    padding-bottom: calc(.5rem - 1px * 2); 
+}
+.cate-wrap .active {
+	background-color:rgba(226, 218, 111, 0.2);;
+}
+.loading-progress{
+	position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* width: 100px;
+    height: 32px; */
+    line-height: 27px;
+    margin: auto;
+    z-index: 1000;
+    text-align: center;
+    font-size: 1.1em;
+    font-weight:bold;
+    background-color:rgba(255, 255, 255, 0.7);
+    /* border: 1px solid #948585;
+    border-radius: .6em; */
+}
+.loading-progress .msg{
+    position: relative;
+    top: 40%;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100px;
+    height: 32px;
+    margin: auto;
+    background-color: #fff;
+    border: 1px solid #948585;
+    border-radius: .6em;
+}
+</style>
+		<div id="top" class="container">
+			<h1 class="title pull-left">게시판 분류 관리</h1>
+			<div class="location pull-left">
+				<span>Nest메뉴</span>
+			</div>
+		</div>
+
+			<div class="subCon form-inline">
+				<div class="left-wrap">
+
+					<div id="FrmGoodsOpts-base" data-kind='1'>
+					<div id="goods-opt-base" class="nestable dd">
+
+								<div class="opt-header">
+									<div style="display:inline-block;border:0;background:none;">
+										<menu class="nestable-menu" style="margin:0;">
+									        <button type="button" data-action="expand-all" class="btn btn-expand btn-xs"> 펼치기 <i class="fa fa-chevron-down" aria-hidden="true"></i></button>
+									        <button type="button" data-action="collapse-all" class="btn btn-fold btn-xs"> 접기 <i class="fa fa-chevron-up" aria-hidden="true"></i></button>
+									        <button type="button" class="btn_optAdd btn_optAdd_new btn btn-addc btn-xs"> 추가하기 <i class="fa fa-plus" aria-hidden="true"></i></button>
+									        <button type="button" class="btn btn_Refresh btn-xs"> 새로고침 <i class="fas fa-sync-alt" aria-hidden="true"></i></button>
+							    		</menu>
+									</div>
+					     </div>
+					<div class="cate-wrap" style="overflow:scroll;height:650px;">
+					  <!-- <div style="position:absolute;top:0;">loading....</div> -->
+					  <div class="cate-inner" style="position:relative;">
+					<!--{? CATEGORY_LIST}-->
+						<!--{@ CATEGORY_LIST}-->
+
+								<!--{? .tag_first_start_g // open first ol}-->
+								    <ol class="dd-list">
+								<!--{/}-->
+
+								<!--{? .tag_close_d // close li}-->
+								        </li>
+
+								<!--{: .tag_start_g // open ol}-->
+								    <ol class="dd-list">
+
+								<!--{: .tag_close_dg //close li ol}-->
+
+									<!--{@ range(1, .tag_close_dg) //close li ol}-->
+										</li>
+									</ol>
+									<!--{/}-->
+									</li>
+								<!--{/}-->
+								{? .indent == 0 }
+											<li class="dd-item dd3-item  dd-hide" data-id="{.serial}" data-serial="{.serial}">
+												<div class="dd3-content" style="padding-right:0;">
+													<div class="opt_name-text rootNode">메뉴</div>
+													<!-- <input type="hidden" name="title" value="{.title}" > -->
+												</div>
+								    {:}
+
+								        <li class="dd-item dd3-item" data-id="{.serial}" data-serial="{.serial}">
+								        	<!-- <div class="{? .indent > 0}dd-handle {/}dd3-handle">{.key_}</div> -->
+								        	<div class="{? .indent > 0}dd-handle {/}dd3-handle"></div>
+
+											<div class="dd3-content">
+												<div class="btns-opt">
+									        		{? .indent < DATA.base_maxDepth}<i class="btn_optAdd fa fa-plus-circle text-info" title="추가"></i>{/}
+													<i class="btn_optDel fa fa-minus-circle text-danger" style="margin-left:5px;" title="제거"></i>
+												</div>
+												<div class="opt-form" style="width:200px;">
+													<span class="opt_name-text">{.title}</span><span class="opt-datas-cnt"> {.board_qty}</span>
+													{*<input type="text" name="title" value="{.title}" style="width:100%;" class="form-control" preholder="옵션명을 입력해 주세요." autocomplete="off">*}
+												</div>
+											</div>
+								{/}
+								<!--{? .tag_end_close_dg // close last li ol}-->
+									<!--{@ range(1, .tag_end_close_dg) //close last li ol}-->
+											</li>
+										</ol>
+									<!--{/}-->
+									</li>
+								<!--{/}-->
+								<!--{? .tag_end_close_g // close last ol}-->
+									</ol>
+								<!--{/}-->
+
+
+						<!--{/}-->
+
+					<!--{:}-->
+
+								    <ol class="dd-list">
+										<li class="dd-item dd3-item  dd-hide" data-id="1" data-serial="">
+												<div class="dd3-content" style="padding-right:0;">
+													<div class="opt_name-text rootNode">메뉴</div>
+
+													<input type="hidden" name="title" value="HOME" >
+													<div class="dd-content-wrap" style="float:right;margin-left:10px;">
+
+													</div>
+
+												</div>
+										</li>
+								    </ol>
+					<!--{/}-->
+
+					</div>
+					</div>
+				</div>
+
+				</div> <!--End .cate-inner -->
+			</div> <!--End .cate-wrap -->
+
+			<div id="nest-edit-block"  style="flex: 0 1 80%;margin-left:20px;">
+				
+					<div class="panel panel-info">
+						<div class="panel-heading">
+							<!-- <h5>메뉴 편집</h5> -->
+				           	
+				           	<div class="panel-heading-btn">
+                                
+                            </div>
+				        </div>
+				        
+				        <div class="panel-body">
+				        
+				        <!--  TAB Pannel start -->
+							<div class="row-flex">
+							    <ul id="myTabs" class="nav nav-tabs" role="tablist">
+							      <li class="nav-item"><a class="nav-link active" role="tab" data-toggle="tab" href="#baseTab" id="base-tab">편집</a></li>
+							    </ul>
+							    <form id="formEdit" class="form-horizontal">
+									<div id="myTabContent" class="tab-content">
+					<!--  TAB 1 -->
+									      <div class="tab-pane" id="baseTab" role="tabpanel">
+									      		<div class="form-group">
+		                             				<label class="col-flex">코드</label>
+		                             				<div class="form-inline">
+		                               					<input type="text" id="form_serial" name="serial" readonly style="height:1rem;border:0;">
+		                               				</div>
+		                           				</div>
+									        	<div class="form-group">
+		                             				<label for="form_title" class="col-flex">분류명</label>
+		                             				<div class="form-inline">
+		                               					<input type="text" id="form_title"  name="title" placeholder="메뉴명 입력해주세요.">
+		                               				</div>
+		                           				</div>
+		                           				<div class="form-group">
+		                             				<label class="col-flex">게시판 갯수</label>
+		                             				<div class="form-inline">
+		                               					<span class="board_qty p-l-10" style="font-weight:bold;color:#ce0101;">0</span> 개 (연결된 게시판)
+		                               				</div>
+		                           				</div>
+									        	<!-- <div class="form-group">
+		                             				<label class="col-flex">게시판 ID</label>
+		                             				<div class="form-inline">
+		                               					<select id="form_bid" name="bid" class="form-control form-control-sm">
+															<option value="">게시판 선택</option>
+															<option value=''>──────</option>
+			                                                {@BOARDS}
+			                                                <option value="{.bid}">{.title} ({.bid})</option>
+			                                                {/}
+		                                            	</select>
+		                               				</div>
+		                           				</div> -->
+		                           				<div class="form-group">
+		                             				<label class="col-flex">권한부여</label>
+
+													<div class="form-inline">
+														<label class="col-flex" style="margin: 0px 15px;text-align:left !important;">읽기</label>
+														<div class="form-inline">
+															<select id="grant_read" name="grant_read" class="form-control form-control-sm">
+																<option value="">등급선택</option>
+																<option value=''>──────</option>
+				                                                {@MBR_GRADES}
+				                                                <option value="{.grade_code}">{.grade_name}</option>
+				                                                {/}
+			                                            	</select> 
+			                                            	<small class="text-blue m-l-10 align-self-center">하위(childs) 포함해서 적용.</small>
+														</div>
+													</div>
+
+		                           				</div>
+		                           				<div class="form-group">
+		                             				<label for="imp_checkbox" class="col-flex">노출유무</label>
+		                             				<div class="form-inline">
+		                             					<div class="form-check">
+		                             						<input class="checkbox checkbox-danger" type="checkbox" id="imp_checkbox"  name="imp"  value="1">
+															<label for="imp_checkbox">
+																노출함
+															</label>
+															<small class="text-blue m-l-10 align-self-center">하위(childs)포함해서 적용.</small>
+														</div>
+
+		                               				</div>
+		                           				</div>
+
+									      </div>
+				<!--  TAB end -->
+
+								    </div>
+								    <div class="form-group">
+		                                        <div class="form-inline">
+		                                          <button id="btnUpdate" class="btn">수정하기</button>
+		                                          <button id="btnDelete" class="btn m-l-10">삭제하기</button>
+		                                        </div>
+	                                </div> 
+								</form>
+							</div>				        
+						 <!--  TAB Pannel end -->
+									
+				        </div>
+					</div>
+				</div>
+		</div> <!--End #subCon-->
+
+		<!-- ========================================================================== -->
+		<!--  Template                                                                                                         -->
+		<!-- ========================================================================== -->
+		    <div id="optTmpFrm" style="display:none;">
+				<li class="dd-item dd3-item" data-id="" data-serial="">
+			       	<div class="dd-handle dd3-handle"></div>
+
+					<div class="dd3-content">
+
+						<div class="opt-form" style="width:200px;"><input type="text" name="title" value="" style="width:100%;" class="nest-form form-control" preholder="할인 타이틀명을 입력해주세요." autocomplete="off"></div>
+						<div class="dd-content-wrap">
+
+							<span class="btns-opt">
+				        		<i class="btn_optAdd fa fa-plus-circle fa-lg text-info" title="추가"></i>
+								<i class="btn_optDel fa fa-minus-circle fa-lg text-danger" style="margin-left:5px;" title="제거"></i>
+							</span>
+							<div class="opt-frm">
+							</div>
+						</div>
+					</div>
+				</li>
+			</div>
+			<!-- ========================================================================== -->

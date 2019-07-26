@@ -1,0 +1,75 @@
+<?{MNUS1} = explode("/", $_SERVER['REQUEST_URI']);
+{MNUS} = "/".{MNUS1}[1]."/".{MNUS1}[2];
+{MNUS_SUB} = "/".{MNUS1}[1]."/".{MNUS1}[2]."/".{MNUS1}[3];
+?>
+				<!-- <div class="left-menu"> -->
+					
+					<ul class="nav">
+						<!-- <li class="nav-item {? MNUS=="/adm/main"} active{/}">
+							<a href='/adm/main' class="nav-link">
+							<span>Home</span>
+							</a>
+						</li> -->
+						<!-- <li class="nav-item {? MNUS=="/adm/menu"} active{/}"> -->
+						<li class="nav-item">
+							<a href='/adm/menu/MenuComm/main' class="nav-link">
+							<span>메뉴관리</span>
+							</a>
+							<ul class="nav">
+								<li class="nav-item">
+									<a href='/adm/menu/MenuComm/main' class="nav-link{? MNUS_SUB=="/adm/menu/MenuComm"} active{/}"><span>메뉴관리(Tree)</span></a>
+								</li>
+								<li class="nav-item">
+									<a href='/adm/menu/MenuCommNest/main' class="nav-link{? MNUS_SUB=="/adm/menu/MenuCommNest"} active{/}"><span>메뉴관리(Nest)</span></a>
+								</li>
+								<li class="nav-item">
+									<a href='/adm/menu/MenuBasic/lst' class="nav-link{? MNUS_SUB=="/adm/menu/MenuBasic"} active{/}"><span>메뉴관리(일반)</span></a>
+								</li>
+							</ul>
+						</li>
+						<li class="nav-item">
+							<a href='/adm/Member/lst' class="nav-link">
+							<span>회원 관리</span>
+							</a>
+							<ul class="nav">
+								<li class="nav-item">
+									<a href='/adm/Member/lst' class="nav-link{? MNUS_SUB=="/adm/Member/lst"} active{/}"><span>회원 조회</span></a>
+								</li>
+								<li class="nav-item">
+									<a href='/adm/member/Grade/main' class="nav-link{? MNUS_SUB=="/adm/member/Grade"} active{/}"><span>등급관리</span></a>
+								</li>
+								<li class="nav-item">
+									<a href='/adm/member/MailSend/main' class="nav-link{? MNUS_SUB=="/adm/member/MailSend"} active{/}"><span>메일보내기</span></a>
+								</li>
+							</ul>
+						</li>
+						<li class="nav-item">
+							<a href='/adm/board/BoardAdmin/lst' class="nav-link">
+								<span>게시판 관리</span>
+							</a>
+							<ul class="nav">
+								<li class="nav-item">
+									<a href='/adm/board/BoardAdminCateNest/main' class="nav-link{? MNUS_SUB=="/adm/board/BoardAdminCateNest"} active{/}"><span>게시판 분류</span></a>
+								</li>
+								<li class="nav-item">
+									<a href='/adm/board/BoardAdmin/lst' class="nav-link{? MNUS_SUB=="/adm/board/BoardAdmin"} active{/}"><span>게시판 조회</span></a>
+								</li>
+							</ul>
+						</li>
+						<li class="nav-item">
+							<a href='/adm/board/BoardAdminComments/lst' class="nav-link">
+								<span>댓글 관리</span>
+							</a>
+							<ul class="nav">
+								<li class="nav-item">
+									<a href='/adm/board/BoardAdminComments/lst' class="nav-link{? MNUS_SUB=="/adm/board/BoardAdminComments"} active{/}"><span>댓글 조회</span></a>
+								</li>
+							</ul>
+						</li>
+						<li class="nav-item {? MNUS_SUB=="/adm/Popup/lst"} active{/}">
+							<a href='/adm/Popup/lst' class="nav-link">
+								<span>팝업 관리</span>
+							</a>
+						</li>
+					</ul>
+				<!-- </div> -->

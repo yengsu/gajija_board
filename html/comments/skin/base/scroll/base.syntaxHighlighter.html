@@ -1,0 +1,215 @@
+<!-- <script type="text/javascript" src="/js/jquery/jquery.func.js"></script> -->
+<!-- <script type="text/javascript" src="/js/comm/purl.js"></script> -->
+<script src="/dist/editor/ckeditor/ckeditor.js"></script>
+<script src="/dist/editor/ckeditor/config.base.js"></script>
+<script src="/dist/editor/ckeditor/adapters/jquery.js"></script>
+
+<script src="/html/comments/skin/base/comments.js?ver=0.0.1"></script>
+<script type="text/javascript">
+var baseURL = "{Doc["baseURL"]}" ;
+var baseURLadd = "{? Doc["CODE"]}/{Doc["CODE"]}{/}{Doc["queryString"]}" ;
+$(function () {
+	//dgx_cts.init('scroll');
+	dgx_cts.init({
+		pagination : {
+			last : {COMMENTS_PAGING.last.num // 마지막 페이지 번호}
+		},
+		display : 'scroll'
+	{? IS_MOBILE //모바일이면}
+		,is_mobile : true
+	{/}
+		
+	});
+	
+	{? IS_MOBILE //모바일이면}	
+	
+	var width = screen.width ;
+	if( $('.comments_list').width() > width ){ // $(document.body).innerWidth() ){
+	    $('.comments_list').css('width', width-20+'px');//$(document.body).innerWidth()-20+'px') ;
+	}
+
+	$( window ).resize(function(){
+		var width = screen.width ;
+		var mql = window.matchMedia("(orientation: portrait)");
+		if (mql.matches) {
+			if( $('.comments_list').width() > width ){ // $(document.body).innerWidth() ){
+			    $('.comments_list').css('width', width-20+'px');//$(document.body).innerWidth()-20+'px') ;
+			}
+		}else{
+			$('.comments_list').css('width', width-65+'px');//$(document.body).innerWidth()-20+'px') ;
+			
+		}
+	});
+	
+	{/}
+});
+</script>
+
+
+<hr>
+
+
+<link rel="stylesheet" href="/html/comments/skin/{Comments_conf.skin_grp}/{Comments_conf.skin_name}/default.css?ver=0.0.5">
+
+<div>
+        <div class="comments_list feed-activity-list" data-last="{COMMENTS_PAGING.last.num // 댓글 마지막페이지번호}">
+{@COMMENTS_LIST}
+		{?  Comments_conf['indent'] == 1 //계층형 사용유무}
+            <div class="wComments_block_{.family}_{.serial} feed-element {?.indent}m-l-{?.indent < 6}{.indent*20}{:}{5*20}{/}{/}" data-sec="{.sec}" style="{? .indent==0}border-left:3px solid rgba(108, 167, 215, 0.42);padding-left:10px;{/}">
+		{:}
+            <div class="wComments_block_{.family}_{.serial} feed-element" data-sec="{.sec}" style="padding-left:10px;">
+		{/}
+                <div class="media-body pl-2 pt-2">
+                	<div class="flex-column flex1 v-center-items">
+	                	<a href="javascript:void(0);" class="float-left">
+		                	<img alt="image" class="profile-photo img-circle rounded-circle" data-noimage="{.profile_not_photo}" src="{.profile_photo}">
+		                    <!-- <br>{.serial} -->
+		                </a>
+	                    
+	                    {? .lev_ico //회원레벨 icon}<i class="fa {.lev_ico} fa-lg text-danger"></i>{/} 
+	                    <strong class="m-l-10 m-r-5">{.usernick}</strong> 
+	                    <small class="text-muted">
+	                    	<strong class="regdate">{.regdate}</strong> <strong class="regtime">{.regtime}</strong> <strong class="elapsed_days">{.elapsed_days}</strong>
+	                    </small>
+
+						<i class="sec-ico fas fa-lock fa-sm ml-2 text-danger" {? !.sec}style="display:none;"{/}></i>
+			{? .sec == 1// 비밀글이고 자신이 작성한 댓글이 아니면}
+                    <!-- <i class="sec-ico fas fa-lock fa-sm ml-2 text-danger"></i> -->
+			{:}
+                    <!-- 
+					<br>
+					<div class="text-muted">
+                    	<a class="btn btn-sm btn-gray fa-xs"><i class="far fa-thumbs-up text-danger"></i> Like </a>
+                        <a class="btn btn-sm btn-gray fa-xs"><i class="far fa-thumbs-down text-default"></i> unLike</a>
+                        <a class="btn btn-sm btn-gray"><i class="fab fa-facebook-f" style="color:#2E6DA4;"></i>acebook </a>
+					</div> -->
+			{/}
+					</div>
+                    <div class="memo{.serial} well text-break m-t-0" style="word-break: break-all;{? .sec == 1 && .my_data_chk != 1 && !_SESSION['ADM']}color:#7b7a7a;background:rgba(204, 204, 204, 0.18);;{/}">
+					{? .sec != 1 || (.sec==1 && .my_data_chk ==1) || _SESSION['ADM']}
+                        {? .parent_del == 1}[삭제된 댓글의 답글] {/} 
+                        {.memo}
+                    {:}
+                    	비밀글 입니다.
+                    {/}
+                    </div>
+					
+					<small class="m-t-5 m-b-5 h-right">
+	                    	{? _SESSION['MBRID'] != '' && Comments_conf['indent']==1 && (.sec==0 || _SESSION['ADM'] || .my_data_chk == 1)}
+							<a class="wComments-{.serial} btn btn-sm" data-action="addComments"><i class="fa fa-reply"></i> 답글</a>
+							{/}
+							{? .my_data_chk == 1 //자신이 등록한글인지}
+	                        <a class="wComments-{.serial} btn btn-sm" data-action="readComments" ><i class="fas fa-pencil-alt"></i> 수정</a>
+	                        <a class="wComments-{.serial} btn btn-sm" data-action="deleteComments" ><i class="fas fa-times"></i> 삭제</a>
+	                        {/}
+						</small>
+                    
+                    <!-- <p id="wComments-{.serial}"  data-formTpl="commentsWrite" data-outputTpl="commentsOutput"  style="height:205px;display:none;"></p> -->
+                </div>
+                <p id="wComments-{.serial}"  data-formTpl="commentsWrite" data-outputTpl="commentsOutput"  style="display:none;"></p>
+            </div>
+{/}
+            
+        </div>
+
+        <!-- <button class="btn btn-primary btn-block m-t"><i class="fa fa-arrow-down"></i> Show More</button> -->
+
+
+</div>
+
+{? COMMENTS_GRANT['response']['write']['code']==200  // 댓글 쓰기권한있으면}
+
+	<div class="writeComments" style="display:none;">
+		<div class="well">
+			<h5 class="m-t-20 m-b-20">댓글 등록하기</h5>
+
+		{? COMMENTS_GRANT['data']['grant_write'] == 0  && Comments_conf['mbr_type'] != 1}
+			<div class="form-inline p-b-10">
+	            <label for="frm_writer" class="title p-r-20" style="width:10%;">작성자</label>
+	            <div class="data">
+					<input type="text" class="" id="frm_writer" name="frm_writer" value="{DATA.writer}" placeholder="작성자명을 입력해주세여.">
+				</div>
+	        </div>
+			<div class="form-inline p-b-10">
+	        	<label for="frm_userpw" class="title p-r-20" style="width:10%;">비밀번호</label>
+	            <div class="data">
+					<input type="password" id="frm_userpw" name="frm_userpw" value="{DATA.userpw}" placeholder="비밀번호 입력해주세여.">
+				</div>
+			</div>
+		{/}
+		
+			<div class="form-group mb-0">
+				<input type="hidden" name="act" value="writeComments">
+				<textarea class="form-control wys" rows="5" id="frm_memo-edit" name="frm_memo" style="width:50%;height:200px;"></textarea>
+			</div>
+			<div class="form-inline">
+				<label for="frm_sec-new" class="mr-2"><input type="checkbox" id="frm_sec-new" name="frm_sec" value="1" class="mr-1">비밀글</label>
+				<button type="button" class="btn btn-dark btnComments m-t-10 m-l-10">댓글저장</button>
+			</div>
+		</div>
+		
+	</div>
+	
+	<button class="btnWriteComments btn btn-dark m-t-10"><i class="fas fa-plus-circle"></i> 댓글추가</button>
+{/}
+
+{*구글 captcha js 
+<!-- https://www.google.com/recaptcha/
+<script src='https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit'></script> -->
+<!-- <div class="g-recaptcha" data-sitekey="6LflkwgTAAAAAPnckM_pLFrdYIOIZ0ciejPjHFly"></div> -->
+*}
+<div class="tpl_commentsWrite" style="display:none;">
+	<div class="well">
+		<!-- <h5>댓글</h5> -->
+
+		<div class="form-group">
+			<textarea class="form-control wys" rows="5" id="frm_memo-add" name="frm_memo" style="width:50%;height:200px;"></textarea>
+		</div>
+		<div class="form-inline m-t-10">
+	{? Comments_conf.sec_pwd //비밀글쓰기}
+			<label for="frm_sec" class="m-r-5"><input type="checkbox" id="frm_sec" name="frm_sec" value="1" class="mr-1">비밀글</label>
+	{/}
+			<button type="button" class="btn btn-sm btn-dark btnComments m-l-5">답글달기</button>
+			<button type="button" class="btn btn-sm btn-dark btnComments-close m-l-10">닫기</button>
+		</div>
+	</div>
+
+</div>
+<div class="tpl_commentsOutput" style="display:none;">
+	
+	<div class="wComments_block_[family]_[serial] feed-element [addClass]" style="padding-left: 10px;[css_style]">
+                <a href="javascript:void(0);" class="profile-link float-left">
+                    <!-- <img alt="image" class="img-circle rounded-circle" src="[profile_photo]"> -->
+                    <img alt="image" class="profile-photo img-circle rounded-circle" data-noimage="[profile_not_photo]" src="[profile_photo]">
+                </a>
+                <div class="media-body pl-2">
+                    <small class="float-right">
+						<a class="wComments-[serial] btn btn-sm btn-gray fa-xs" data-action="addComments" ><i class="fa fa-reply"></i>답글</a>
+                        <a class="wComments-[serial] btn btn-sm btn-gray fa-xs" data-action="readComments" ><i class="fas fa-pencil-alt"></i> 수정</a>
+                        <a class="wComments-[serial] btn btn-sm btn-gray fa-xs" data-action="deleteComments" ><i class="fas fa-times"></i> 삭제</a>
+					</small>
+                    <i class="fa [userlev] fa-lg text-danger"></i> 
+                    <strong>[usernick]</strong> 
+                    <small class="text-muted">
+                    	<strong class="regdate">[regdate]</strong> <span class="regtime">[regtime]</span> <span class="elapsed_days">[elapsed_days]</span>
+                    </small>
+                    <i class="sec-ico fas fa-lock fa-sm ml-2 text-danger"></i>
+                    <!-- 
+					<br>
+					<div class="text-muted">
+                    	<a class="btn btn-sm btn-gray fa-xs"><i class="far fa-thumbs-up text-danger"></i> Like </a>
+                        <a class="btn btn-sm btn-gray fa-xs"><i class="far fa-thumbs-down text-default"></i> unLike</a>
+                        <a class="btn btn-sm btn-gray"><i class="fab fa-facebook-f" style="color:#2E6DA4;"></i>acebook </a>
+					</div> -->
+                    <div class="memo[serial] well" style="word-break: break-all;">
+                        [memo]
+                    </div>
+                    <div class="pull-right text-muted">
+
+                    </div>
+                    <!-- <p id="wComments-[serial]"  data-formTpl="commentsWrite" data-outputTpl="commentsOutput"  style="height:205px;display:none;"></p> -->
+                </div>
+                <p id="wComments-[serial]"  data-formTpl="commentsWrite" data-outputTpl="commentsOutput"  style="display:none;"></p>
+	</div>
+	
+</div>

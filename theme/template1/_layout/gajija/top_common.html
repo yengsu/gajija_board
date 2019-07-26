@@ -1,0 +1,69 @@
+		<div id="top-line"></div>
+		<div class="header-top">
+		
+			<div class="wrapper-center container d-flex">
+		
+					<div style="width:35%;">
+						<a href="/" class="navbar-brand-logo"><img src="/theme/{C.THEME}/images/logo_pink.svg" style="width:120px;" class="img-responsive" alt="logo"></a>
+					</div>
+					
+					<div class="h-right v-stretch-items" style="width:65%;">
+						<div class="header-top-right v-center-items h-right ">
+						
+						{? _SESSION['MBRID'] //로그인 후 영역}
+							<a href="/Member/edit?mcode=100634" id="btn-mbrLogout">
+								<i class="fas fa-sign-out-alt" aria-hidden="true"></i>
+								<span>회원정보 변경</span>
+							</a>
+							<a href="/Member/logout" id="btn-mbrLogout" class="m-l-10">
+								<i class="fas fa-sign-out-alt" aria-hidden="true"></i>
+								<span>LogOut</span>
+							</a>
+						{:}
+							<a href="/Member/login?mcode=100663">
+								<i class="fas fa-sign-in-alt" aria-hidden="true"></i>
+								<span>로그인</span>
+							</a>
+							<a href="/Member/join?mcode=100664" class="m-l-20">
+								<i class="fas fa-user-plus" aria-hidden="true"></i>
+								<span>회원가입</span>
+							</a>
+						{/}
+							
+						</div>
+					</div>
+					
+			</div>
+		</div>		
+			
+		<div class="wrap-top-menu">
+			
+			
+			<div id="TOP-CONTAINER" class="wrapper-center bg-white box-shadow" style="flex: 0 0 100%;max-width: 100%;">
+				
+				<input type="checkbox" class="openSidebarMenu" id="openSidebarMenu">
+				<label for="openSidebarMenu" class="sidebarIconToggle">
+				  <div class="spinner diagonal part-1"></div>
+				  <div class="spinner horizontal"></div>
+				  <div class="spinner diagonal part-2"></div>
+				</label>
+				<div id="cover-defence" style="position:fixed;top:0;left:0;display:none;width: 100%;background: rgba(6, 6, 6, 0.61);;height: 100%;z-index:999;"></div>
+				
+				{# NAV_COMMON // 공통메뉴[상단]}
+				<!-- <nav id="TOP-MENU">
+					<ul class="row">
+						<li class="nav-item">
+							<a class="nav-link active" href="/">Home</a>
+						</li>
+					{@MNU.base // 상단메뉴 리스트 출력}
+						{? .indent == 1}
+						<li class="nav-item"><a class="nav-link" href="{.url}">{.title}</a></li>
+						{/}
+					{/}
+					</ul>
+				</nav> -->
+			</div>
+		</div>
+			
+		
+	<!-- 네비게이션 Bar End -->

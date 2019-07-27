@@ -1,0 +1,137 @@
+/* @import url(//fonts.googleapis.com/earlyaccess/nanumgothiccoding.css);
+html,body { font-family:'Nanum Gothic Coding', monospace} */
+html,body {
+	font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+	/* font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif */
+	/* font-family:'Apple SD Gothic Neo',arial,sans-serif; */
+	font-style: normal;
+	font-size:14px;
+}
+*,:after,:before {
+box-sizing:border-box;
+}
+a:active, a:hover {
+	outline-width: 0
+}
+a {
+	background-color: transparent;
+	-webkit-text-decoration-skip: objects
+	border-bottom: 1px dashed rgba(70, 185, 128, .5);
+	color: #010050;
+}
+
+	/*>>>>>>>>>>>>> 헤더영역 >>>>>>>>>>>>>> */
+	/*헤더영역 - 전체*/
+	header { 
+		/* background:#2e363f;  */
+		background-color:#fff;
+		border-bottom: 1px solid rgba(0,0,0,0.14);
+	}
+		/* 헤더영역 - 상단영역 */
+		header > .header-top {
+	    	padding:10px;
+    	    border-bottom: 1px solid rgba(0,0,0,0.14);
+	    	/*background-color:#f9f2f2;*/
+	    }
+	    /* Navigation 메뉴 */
+		header > ul.nav{ 
+			display:block;
+			height:32px;
+			line-height:32px;
+			/* background: #202429; */
+			border-right: 1px solid rgba(0,0,0,0.14);
+    		border-top: 1px solid rgba(0,0,0,0.14);
+		}
+		/* Navigation 메뉴 - 항목 */
+	   header > .nav .nav-item{ 
+	    	display:inline-block;
+	    	padding-left: 10px;
+	    }
+	    /* Navigation 메뉴 - 항목 링크 */
+	    header > .nav a.nav-link {
+			color:#E7E7E7;
+		}
+	
+	/* 로고 */
+		header .logo {
+			display:inline-block;
+			padding:5px 15px;
+		}
+		header .logo img{ 
+			width:120px;
+		}
+	
+	/*<<<<<<<<<<<< 헤더영역 <<<<<<<<<<<<<<< */
+	main {
+		-webkit-box-flex: 1;
+	    -webkit-flex: 1 0 auto;
+	    -ms-flex: 1 0 auto;
+	    flex: 1 0 auto;
+	}
+		/* 왼쪽메뉴 */
+		main > nav{
+			width:190px;
+			min-width: 190px;
+		}
+		main > aside{
+			width:190px;
+			min-width: 190px;
+			border-left:1px solid rgba(0,0,0,0.14);
+		}
+		main > nav, main > aside{
+			-webkit-box-flex: 0;
+			-webkit-flex: 0 0 12em;
+			-ms-flex: 0 0 12em;
+			flex: 0 0 12em;
+			padding:0 0.5em;
+		}
+		main > nav .nav {
+	    	height:100%;
+			/* background:#2A3F54 ; */
+			border-right:1px solid rgba(0,0,0,0.14);
+			color:rgba(0,0,0,0.87);
+		}
+		/* 왼쪽메뉴 항목 */
+			main > nav .nav .nav-item{ padding:5px 0px;}
+			/* 왼쪽메뉴 항목 링크 */
+			main > nav .nav a.nav-link {
+				display:block;
+				padding:.5em 1em ;
+				/* color:#E7E7E7; */
+				font-size:14px;
+			}
+			/* 왼쪽메뉴 항목 마우스 오버시 */
+			main > nav .nav .nav-item:hover {
+			    background: rgba(255,255,255,.05);
+			}
+			/* 왼쪽메뉴 항목 활성화 */
+			main > nav .nav .nav-item.active {
+			    border-right: 5px solid #1ABB9C;
+			    background: rgba(255,255,255,.05);
+			    border-bottom: 1px solid #223548;
+			    border-top: 1px solid #3b5671;
+			}
+		/* 메인 컨텐츠 영역 */
+		main > article {
+		    padding: 0.5rem;/* 20px 20px */;
+	      	width:100%;
+	      	/* min-width: 1000px; */
+	      	padding-bottom: 5em;
+		}
+	footer {
+		padding: 24px;
+	    padding: 0.6rem;
+	    background: #404040;
+	    color: #999;
+	    font-size: .85em;
+	    text-align: center;
+	}
+		footer a {
+			padding-bottom: 1px;
+			border: 0;
+			color: #e5e5e5
+		}
+		footer a:active, footer a:focus, footer a:hover {
+			color: #fff;
+			text-decoration: underline
+		}

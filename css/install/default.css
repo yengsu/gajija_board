@@ -1,0 +1,60 @@
+/* @import "navi.css"; */
+body { 
+	/* 
+	왼쪽 : body > main > nav => 사이즈 13em 
+	가운대 : body > main > article > body-container => 사이즈 60em
+	오른쪽 : body > main > aside => 사이즈 15em
+	총 가로 사이즈 : 88em (13em + 60em + 15em)
+	*/
+	/* min-width: 88em;   */
+	/* min-width: 500px; */
+	min-width: 320px;
+}
+::-moz-selection { /* Code for Firefox */
+  color: #fff;
+  background: #e02e34;
+}
+
+::selection {
+  color: #fff;
+  background: #e02e34;
+}
+p{
+    margin: 0;
+    padding: 0;
+    word-break: break-all;
+}
+pre{
+    overflow-x: auto;
+	line-height: 1.3em;
+    color: black;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 0.5em;
+    white-space: pre-wrap;
+}
+
+main.column-flex, main.row-flex {
+	padding: 0px 10px;
+}
+
+/*화면 가운데 사이즈만큼 고정출력*/
+.wrapper-center{
+	/* background: #fff; */
+    width: 998px;
+    margin: 0 auto;
+    padding: 0;
+    /*box-shadow: 0 0 4px 0 rgba(0,0,0,.2);*/
+}
+
+#main-center { 
+	width:799px;
+}
+
+  #top-line {
+    display: block;
+    width: 100%;
+    height: 5px;
+    background: #444444; /* #dd4b39; */
+  }
+  code {  line-height: 22px; }

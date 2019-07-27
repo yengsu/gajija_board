@@ -1,0 +1,545 @@
+body{ font-size: 14px; color:rgba(0, 0, 0, 0.72);}
+
+select { height: 2.4rem;}
+
+input[type="text"], input[type="password"], input[type="email"]  { 
+	width: 12em;
+	height:2.4rem; padding-left:5px; border: 1px solid hsla(31,15%,50%,.25);
+}
+
+label{
+	    min-width: 5%;
+	    /* padding: 0 10px;
+	    vertical-align: middle; */
+		padding-top: calc(.5rem - 1px * 2);
+	    padding-bottom: calc(.5rem - 1px * 2);
+}
+button, input, optgroup, select, textarea {
+    font-family: sans-serif;
+    font-size: 100%;
+    line-height: 1.15;
+} 
+/* body a {
+  color: #464646;
+  -webkit-transition: all .1s linear;
+  -moz-transition: all .1s linear;
+  -o-transition: all .1s linear;
+  -ms-transition: all .1s linear;
+  transition: all .1s linear;
+} */
+body a:hover {
+  text-decoration: none;
+}
+body a:focus {
+  text-decoration: none;
+}
+
+.hide { display:none !important; }
+
+.form-inline {
+    display: inline-flex;
+    align-self: center;
+    padding:3px 0;
+    
+    display:flex;
+    flex-direction: row;
+    align-items: baseline;
+}
+
+.form-group { 
+	display:flex;
+	/* padding:3px 0; */
+	
+	align-items: flex-start;
+    flex-wrap: wrap;
+    
+    flex-direction: column;
+    flex-basis: 100%; /*추가하면 new line처리됨*/
+}
+.form-group + .form-group {
+    padding: 5px 0;
+}
+
+/* 수직정렬 - 중앙정렬 */
+/* .form-inline > *{
+	align-self: center;
+} */
+
+/* 높이 지정 */
+.height-initial { height:initial ; }
+.height-inherit { height:inherit ; }
+.height-100 { height:100% ; }
+
+.text-center { text-align: center!important; }
+.text-right { text-align:right; }
+
+.font-weight { font-weight: 700; }
+
+.d-inline-block { display:inline-block !important; }
+.d-block { display:block !important; }
+.d-inline-flex { 	display:inline-flex !important; }
+.d-flex {
+    /* display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox; */
+    display: flex !important;
+}
+/* ################# Flex layout Start ################# */
+
+/* 요소들이 내부 로직(flex-direction인 column형)에 의해 분할되어 여러 행에 걸쳐서 배치 */
+
+/* 감싸기 */
+.wrap {
+	display: flex;
+    flex-wrap: wrap;
+    /* height:100%; */
+    /* flex-basis: 100%;  *//*추가하면 new line처리됨*/
+}
+.nowrap {
+	display: flex;
+    flex-wrap: nowrap;
+}
+/* 행(Row)형 : 행(row)의 하나의 칼럼(column)만 출력 */
+.col {
+	display: flex;
+    flex-direction: column;
+}
+/* 칼럼(Column)형 : N개의 칼럼(column) 존재가능하게 출력 */
+.row {
+	display: flex;
+    flex-direction: row;
+}
+/* flex 컨테너의 사이즈 영향을 안받음 */
+.flex0 {
+	-webkit-box-flex: 0;
+    -webkit-flex: none;
+    -ms-flex: none;
+    flex: none;
+}
+/* flex 컨테이너의 넓이 사이즈만큼 채움 */
+.flex1 { 
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+}
+/* 노출순위 : -1:처음 */
+.order1 {
+	order: -1 !important;	
+}
+/*가로 사이즈만큼 자신의 영역 확장 : 넓이(width)에서 부족한 width만큼 채움 X */
+.grow0{
+	display: flex;
+    flex-grow: 0 !important;
+}
+/*가로 사이즈만큼 자신의 영역 확장 : 넓이(width)에서 부족한 width만큼 채움 O */
+.grow1{
+	display: flex;
+    flex-grow: 1  !important;
+}
+
+/* 수평정렬: 왼쪽으로 */
+.h-left{
+	display: flex;
+	justify-content: flex-start;
+	/* height: 100%; */
+}
+/* 수평정렬: 중앙으로 */
+.h-center{
+	display: flex;
+	justify-content: center;
+	/* height: 100%; */
+}
+/* 수평정렬: 오른쪽으로 */
+.h-right{
+	display: flex;
+	justify-content: flex-end;
+	/* height: 100%; */
+}
+/* 수평정렬: (간격을 늘림: 앞에서 정렬시작)*/
+.h-between{
+	display: flex;
+	justify-content: space-between;
+	/* height: 100%; */
+}
+/* 수평정렬: 여백을 균등하게 나눔(바깥쪽 여분을 좀더 줌) */
+.h-evenly{
+	display: flex;
+	justify-content: space-evenly;
+	/* height: 100%; */
+}
+/* 수평정렬: 여백을 균등하게 나눔 */
+.h-around{
+	display: flex;
+	justify-content: space-around;
+	/* height: 100%; */
+}
+
+/* 자기자신을 수직정렬: 중앙으로 */
+.v-center-self{ 
+	align-self: center !important; 
+}
+
+/* 수직정렬: 맨 위으로 */
+.v-top-items {
+	display: flex;
+	align-items: flex-start;
+	/* height:100%; */
+}
+/* 수직정렬: 중앙으로 */
+.v-center-items {
+	display: flex;
+	align-items: center;
+	/* height:100%; */
+}
+/* 수직정렬: 맨 밑쪽으로 */
+.v-bottom-items {
+	display: flex;
+	align-items: flex-end;
+	/* height:100%; */
+}
+/* 수직정렬: 자신의 블럭의 높이만큼 자식노드들을 늘림 */
+.v-stretch-items {
+	display: flex;
+	align-items: stretch;
+	/* height:100%; */
+}
+/* 수직정렬: 맨 위으로 */
+.v-top-content {
+	display: flex;
+	flex-wrap: wrap;
+	align-content: flex-start;
+	/* height:100%; */
+}
+/* 수직정렬: 중앙으로 */
+.v-center-content {
+	display: flex;
+	flex-wrap: wrap;
+	align-content: center;
+	/* height:100%; */
+}
+/* 수직정렬: 맨 밑쪽으로 */
+.v-bottom-content {
+	display: flex;
+	flex-wrap: wrap;
+	align-content: flex-end;
+	/* height:100%; */
+}
+/* 수직정렬: 열간격을 일정하게 서로 벌림(늘려진만큼 높이를 차지) */
+.v-between-content {
+	display: flex;
+	flex-wrap: wrap;
+	align-content: space-between;
+	/* height:100%; */
+}
+/* 수직정렬: 열간격을 일정하게 서로 벌림 */
+.v-around-content {
+	display: flex;
+	flex-wrap: wrap;
+	align-content: space-around;
+	/* height:100%; */
+}
+/* 수직정렬: 열간격을 일정하게 서로 벌림 */
+.v-evenly-content {
+	display: flex;
+	flex-wrap: wrap;
+	align-content: space-evenly;
+	/* height:100%; */
+}
+/* 수직정렬: 자신의 블럭의 높이만큼 자식노드들을 늘림 */
+.v-stretch-content {
+	display: flex;
+	flex-wrap: wrap;
+	align-content: stretch;
+	/* height:100%; */
+}
+
+/* ################# Flex layout End ################# */
+
+/* 텍스트 줄바꿈 */
+.text-break {
+	word-wrap: break-word;
+  	/* word-break: keep-all; */
+  	overflow-wrap: break-word;
+  	white-space: pre-normal;
+  	/* white-space: pre-wrap; */
+  	/* white-space: pre-line; *//* 왼쪽여백까지도 없앰 */
+  	/* display:inline; */
+	overflow: hidden;
+	line-height:1.6;
+}
+
+.p-0 {
+  padding: 0px !important;
+}
+.p-5 {
+  padding: 5px !important;
+}
+.p-10 {
+  padding: 10px !important;
+}
+.p-20 {
+  padding: 20px !important;
+}
+.p-30 {
+  padding: 30px !important;
+}
+.p-l-0 {
+  padding-left: 0px !important;
+}
+.p-l-5 {
+  padding-left: 5px !important;
+}
+.p-l-10 {
+  padding-left: 10px !important;
+}
+.p-l-20 {
+  padding-left: 20px !important;
+}
+.p-r-0 {
+  padding-right: 0px !important;
+}
+.p-r-5 {
+  padding-right: 5px !important;
+}
+.p-r-10 {
+  padding-right: 10px !important;
+}
+.p-r-20 {
+  padding-right: 20px !important;
+}
+.p-t-0 {
+  padding-top: 0px !important;
+}
+.p-t-5 {
+  padding-top: 5px !important;
+}
+.p-t-10 {
+  padding-top: 10px !important;
+}
+.p-t-15 {
+  padding-top: 15px !important;
+}
+.p-t-20 {
+  padding-top: 20px !important;
+}
+.p-t-25 {
+  padding-top: 25px !important;
+}
+.p-t-30 {
+  padding-top: 30px !important;
+}
+.p-b-0 {
+  padding-bottom: 0px !important;
+}
+.p-b-5 {
+  padding-bottom: 5px !important;
+}
+.p-b-10 {
+  padding-bottom: 10px !important;
+}
+.p-b-15 {
+  padding-bottom: 15px !important;
+}
+.p-b-20 {
+  padding-bottom: 20px !important;
+}
+.p-b-25 {
+  padding-bottom: 25px !important;
+}
+.p-b-30 {
+  padding-bottom: 30px !important;
+}
+.m-0 {
+  margin: 0px !important;
+}
+.m-5 {
+  margin: 5px !important;
+}
+.m-10 {
+  margin: 10px !important;
+}
+.m-20 {
+  margin: 20px !important;
+}
+.m-30 {
+  margin: 30px !important;
+}
+.m-40 {
+  margin: 40px !important;
+}
+
+.m-l-5 {
+  margin-left: 5px !important;
+}
+.m-l-10 {
+  margin-left: 10px !important;
+}
+.m-l-15 {
+  margin-left: 15px !important;
+}
+.m-l-20 {
+  margin-left: 20px !important;
+}
+.m-l-25 {
+  margin-left: 25px !important;
+}
+.m-l-30 {
+  margin-left: 30px !important;
+}
+.m-l-40 {
+  margin-left: 40px !important;
+}
+.m-l-50 {
+  margin-left: 50px !important;
+}
+.m-l-60 {
+  margin-left: 60px !important;
+}
+.m-l-70 {
+  margin-left: 70px !important;
+}
+.m-l-80 {
+  margin-left: 80px !important;
+}
+.m-l-90 {
+  margin-left: 90px !important;
+}
+.m-l-100 {
+  margin-left: 100px !important;
+}
+
+
+.m-r-5 {
+  margin-right: 5px !important;
+}
+.m-r-10 {
+  margin-right: 10px !important;
+}
+.m-r-15 {
+  margin-right: 15px !important;
+}
+.m-r-20 {
+  margin-right: 20px !important;
+}
+.m-r-25 {
+  margin-right: 25px !important;
+}
+.m-r-30 {
+  margin-right: 30px !important;
+}
+.m-r-40 {
+  margin-right: 40px !important;
+}
+.m-r-50 {
+  margin-right: 50px !important;
+}
+.m-r-60 {
+  margin-right: 60px !important;
+}
+.m-r-70 {
+  margin-right: 70px !important;
+}
+.m-r-80 {
+  margin-right: 80px !important;
+}
+.m-r-90 {
+  margin-right: 90px !important;
+}
+.m-r-100 {
+  margin-right: 100px !important;
+}
+
+.m-t-5 {
+  margin-top: 5px !important;
+}
+.m-t-0 {
+  margin-top: 0px !important;
+}
+.m-t-10 {
+  margin-top: 10px !important;
+}
+.m-t-15 {
+  margin-top: 15px !important;
+}
+.m-t-20 {
+  margin-top: 20px !important;
+}
+.m-t-25 {
+  margin-top: 25px !important;
+}
+.m-t-30 {
+  margin-top: 30px !important;
+}
+.m-t-40 {
+  margin-top: 40px !important;
+}
+.m-t-50 {
+  margin-top: 50px !important;
+}
+.m-t-60 {
+  margin-top: 60px !important;
+}
+.m-t-70 {
+  margin-top: 70px !important;
+}
+.m-t-80 {
+  margin-top: 80px !important;
+}
+.m-t-90 {
+  margin-top: 90px !important;
+}
+.m-t-100 {
+  margin-top: 100px !important;
+}
+
+.m-b-0 {
+  margin-bottom: 0px !important;
+}
+.m-b-5 {
+  margin-bottom: 5px !important;
+}
+.m-b-10 {
+  margin-bottom: 10px !important;
+}
+.m-b-15 {
+  margin-bottom: 15px !important;
+}
+.m-b-20 {
+  margin-bottom: 20px !important;
+}
+.m-b-25 {
+  margin-bottom: 25px !important;
+}
+.m-b-30 {
+  margin-bottom: 30px !important;
+}
+.m-b-40 {
+  margin-bottom: 40px !important;
+}
+.m-b-50 {
+  margin-bottom: 50px !important;
+}
+.m-b-60 {
+  margin-bottom: 60px !important;
+}
+.m-b-70 {
+  margin-bottom: 70px !important;
+}
+.m-b-80 {
+  margin-bottom: 80px !important;
+}
+.m-b-90 {
+  margin-bottom: 90px !important;
+}
+.m-b-100 {
+  margin-bottom: 100px !important;
+}
+
+
+.h2, h2 {
+    font-size: 2rem;
+}
+.h3, h3 {
+    font-size: 1.5rem;
+}

@@ -284,7 +284,7 @@ class DB_mysqli extends Exception
         
         if ($this->_mysqli->connect_error) {
             //throw new Exception('Connect Error ' . $this->_mysqli->connect_errno . ': ' . $this->_mysqli->connect_error, $this->_mysqli->connect_errno);
-        	throw new Exception('Connect Error ' . $this->_mysqli->connect_errno, $this->_mysqli->connect_errno);
+        	throw new Exception('DB Connect Error ' . $this->_mysqli->connect_errno, $this->_mysqli->connect_errno);
         }
 
         if ($this->charset) {

@@ -89,8 +89,9 @@ class Member_controller extends CommNest_service
 	
 	public function __construct($routeResult)
 	{
+		
 		$this->__constructor($routeResult);
-
+		
 		// DB Table 선언
 		$this->setTableName("member");
 

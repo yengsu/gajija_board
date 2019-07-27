@@ -26,7 +26,9 @@ trait Page_comm{
 			\WebAppService::$queryString = \Func::QueryString_filter() ;
 			// base URL
 			\WebAppService::$baseURL = $this->routeResult["baseURL"] ;
+			
 		}
+		
 	}
 	public function __destruct()
 	{
@@ -97,23 +99,22 @@ trait Page_comm{
 	{
 		
 		if( !empty($key) && !empty($keyValue) )  $datas['self'] = \Func::array_searchKeyValue($datas['base'], $key, $keyValue) ;
-		
+
 		// 관리자 아니면 노출처리 된것만 출력
 		if( ! (int)$_SESSION['ADM'] ) {
-		
-			if( !empty($datas) )
+			if( !empty($datas['base']) )
 			{
-				for($i=0,$l=count($datas['base']); $i < $l; $i++){
-					if( !(int) $datas['base'][$i]['imp'] ) {
-						array_splice($datas["base"], $i, 1);//unset($datas["base"][$i]) ;
-						
-						$l=count($datas['base']);
-						$i-- ;
+					for($i=0,$l=count($datas['base']); $i < $l; $i++){
+						if( !(int) $datas['base'][$i]['imp'] ) {
+							array_splice($datas["base"], $i, 1);//unset($datas["base"][$i]) ;
+							
+							$l=count($datas['base']);
+							$i-- ;
+						}
 					}
-				}
 			}
 		}
-		$datas['base'] = \Func::array_orderby($datas['base'], 'lft', SORT_ASC);
+		if( !empty($datas['base']) ) $datas['base'] = \Func::array_orderby($datas['base'], 'lft', SORT_ASC);
 		
 	    //if(!empty($menu['self'])) $menu['self'] = array_pop($datas['self']) ;
 	    
@@ -140,7 +141,7 @@ trait Page_comm{
     	    }
 	    }
 	    
-	    $this->TNst_renderTree($datas['base']);
+	    if( !empty($datas['base']) ) $this->TNst_renderTree($datas['base']);
 	    
 	    
 	    //$a = $this->TNst_jsTree($datas['base']) ;
@@ -189,8 +190,7 @@ trait Page_comm{
 		    static::$TABLE = $prev_table ; // 이전에 사용하던 테이블로 재선언
 	    }
 	    
-	    
-	    array_splice($datas['base'],0, 1) ;
+	    if( !empty($datas['base']) ) array_splice($datas['base'],0, 1) ;
 	    
 	    $this->_get_nodes($datas, 'serial', (int)$serial) ;
 	    
@@ -273,13 +273,14 @@ trait Page_comm{
 	 */
 	protected function menu_display_apply($mcode=0, $conditions=array())
 	{
-		if( !class_exists('Display') ) return false ;
+		if( !class_exists('Display', false) ) return false ;
+		
 		/**
 		 * 사이트 메뉴 정보 가져오기
 		 */
 		if($mcode){
 			
-			if( !class_exists('WebAppService') ) $this->WebAppService->assign(array('error'=>'WebAppService 선언해주세요.'));
+			//if( !class_exists('WebAppService') ) $this->WebAppService->assign(array('error'=>'WebAppService 선언해주세요.'));
 			
 			self::$menu_datas = $this->get_menu('menu', (int) $mcode, $conditions);
 			//if( !empty(self::$menu_datas['childs']) ) $this->TNst_renderTree(self::$menu_datas['childs']);

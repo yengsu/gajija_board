@@ -1,3 +1,9 @@
+<?php 
+
+if($_POST['property'] == 'process_db'){
+	
+}
+?>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -13,10 +19,6 @@
 <!--font-awesome-->
 <link href="/dist/components/fontawesome-free-5.0.13/css/fontawesome-all.min.css" rel="stylesheet" type="text/css" media="all">
 
-<!--  Cookie -->
-<script type="text/javascript" src="/js/jquery/jquery.cookie.js"></script>
-<!--  countdown -->
-<script type="text/javascript" src="/js/jquery/jquery.countdown.min.js"></script>
 <!--  jquery common library -->
 <script type="text/javascript" src="/js/jquery/jquery.func.js?ver=0.0.2"></script>
 
@@ -24,7 +26,7 @@
 <!--  theme common library -->
 <link href="/css/reset.css" rel="stylesheet" type="text/css" media="all">
 <link href="/css/install/common.css?ver=0.0.4" rel="stylesheet" type="text/css" media="all">
-<link href="/css/install/css/app.css?ver=0.0.3" rel="stylesheet" type="text/css" media="all">
+<link href="/css/install/app.css?ver=0.0.3" rel="stylesheet" type="text/css" media="all">
 <link href="/css/install/layout.line_center.css" rel="stylesheet" type="text/css" media="all">
 
 <!-- 상단메뉴 -->
@@ -65,51 +67,50 @@
 		
 	<!--body Start-->
 	<main class="row">
-		<article id="body" class="flex1">
+
+		<article id="block-db" class="flex1">
 			<div class="container h-center v-center-items height-100">
 				
 			<!--  ####################### -->
-    			<div class="join-container col">
+    			<div class="col p-30" style="border: 2px solid #ccc;">
 		      		<div class="join">
     		      
-    		        <form id="formWrite" name="formWrite" action="{Doc["baseURL"]}/{Doc["Action"]}{? Doc["CODE"]}/{Doc["CODE"]}{/}{Doc["queryString"]}" method="post" enctype="multipart/form-data">
-    					
+    		        <form id="formWrite" name="formWrite" method="post" enctype="multipart/form-data">
+    					<input type="hidden" name="property" value="process_db">
     						<div class="form-inline">
-    				            <label for="frm_writer" class="column title">아이디</label>
+    				            <label for="frm_writer" class="column title">호스트명</label>
     				            <div class="data">
     				            	<div class="grow1">
-    					            	<input type="text" class="InputAddOn-field" id="muserid" name="muserid" placeholder="이메일 주소" required autocomplete="off">
+    					            	<input type="text" class="InputAddOn-field" id="muserid" name="muserid" placeholder="호스트명을 입력하세요." required style="width: 200px;" autocomplete="off">
     					            </div>
     				            </div>
     						</div>
-    						<div id="Auth-block" class="form-inline hide">
-    							<label class="col-form-label col-sm-4"></label>
-    							<div class="data">
-    								<div class="input-group">
-    				            		<input type="text"  style="border: 2px solid #e28a8a;" id="MAuthCode" name="MAuthCode" placeholder="인증번호" autocomplete="off">
-    				            		<div class="input-group-append">
-    				            			<a href="#" id="btn-AuthConfirm" class="btn btn-default" style="padding:9px 10px; border: 1px solid #e28a8a; background: #e28a8a; color: #fff;">확인</a>
-    									</div>
-    									<div class="join-time "  style="border:0;">남은시간 <span id="Lifetime-count" style="color:red;font-weight:bold;"></span></div>
-    								</div>
-    							</div>
-    						</div>
     			           <div class="form-inline">
-    				            <label for="frm_writer" class="title">비밀번호</label>
+    				            <label for="frm_writer" class="title">DB 아이디</label>
     				            <div class="data">
-    				            	<input type="password" data-minlength="6" id="muserpw" name="muserpw" placeholder="비밀번호 영문,숫자,특수문자 6~15자" autocomplete="off" required>
+    				            	<input type="password" data-minlength="6" id="muserpw" name="muserpw" placeholder="DB 아이디를 입력하세요." style="width: 200px;" autocomplete="off" required>
+    				            </div>
+    						</div>
+    						<div class="form-inline">
+    				            <label for="frm_writer" class="title">DB 비밀번호</label>
+    				            <div class="data">
+    				            	<input type="password" data-minlength="6" id="muserpw" name="muserpw" placeholder="DB 비밀번호를 입력하세요." style="width: 200px;" autocomplete="off" required>
+    				            </div>
+    						</div>
+    						<div class="form-inline m-t-20">
+    				            <div class="data flex1">
+    				            	<input type="button" class="btn btn-dark" style="width:100%;" value="등록">
     				            </div>
     						</div>
     						
     				</form>
+    				
     				</div>
 				</div>
 
-
-
-
 			</div>
 		</article>
+
 	</main>
 					
 	<footer class="flex0">

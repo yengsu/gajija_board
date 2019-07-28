@@ -33,6 +33,14 @@
 
 <script type="text/javascript" src="/theme/{C.THEME}/js/app.js"></script>
 
+<style type="text/css">
+
+.title {
+    width: 110px;
+}
+
+</style>
+
 </head>
 <body class="col">
 	
@@ -59,7 +67,47 @@
 	<main class="row">
 		<article id="body" class="flex1">
 			<div class="container h-center v-center-items height-100">
-				fdsafdsafasfasf
+				
+			<!--  ####################### -->
+    			<div class="join-container col">
+		      		<div class="join">
+    		      
+    		        <form id="formWrite" name="formWrite" action="{Doc["baseURL"]}/{Doc["Action"]}{? Doc["CODE"]}/{Doc["CODE"]}{/}{Doc["queryString"]}" method="post" enctype="multipart/form-data">
+    					
+    						<div class="form-inline">
+    				            <label for="frm_writer" class="column title">아이디</label>
+    				            <div class="data">
+    				            	<div class="grow1">
+    					            	<input type="text" class="InputAddOn-field" id="muserid" name="muserid" placeholder="이메일 주소" required autocomplete="off">
+    					            </div>
+    				            </div>
+    						</div>
+    						<div id="Auth-block" class="form-inline hide">
+    							<label class="col-form-label col-sm-4"></label>
+    							<div class="data">
+    								<div class="input-group">
+    				            		<input type="text"  style="border: 2px solid #e28a8a;" id="MAuthCode" name="MAuthCode" placeholder="인증번호" autocomplete="off">
+    				            		<div class="input-group-append">
+    				            			<a href="#" id="btn-AuthConfirm" class="btn btn-default" style="padding:9px 10px; border: 1px solid #e28a8a; background: #e28a8a; color: #fff;">확인</a>
+    									</div>
+    									<div class="join-time "  style="border:0;">남은시간 <span id="Lifetime-count" style="color:red;font-weight:bold;"></span></div>
+    								</div>
+    							</div>
+    						</div>
+    			           <div class="form-inline">
+    				            <label for="frm_writer" class="title">비밀번호</label>
+    				            <div class="data">
+    				            	<input type="password" data-minlength="6" id="muserpw" name="muserpw" placeholder="비밀번호 영문,숫자,특수문자 6~15자" autocomplete="off" required>
+    				            </div>
+    						</div>
+    						
+    				</form>
+    				</div>
+				</div>
+
+
+
+
 			</div>
 		</article>
 	</main>

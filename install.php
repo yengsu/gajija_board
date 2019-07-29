@@ -25,12 +25,12 @@ if($_POST['property'] == 'process_db'){
 
 <!--  theme common library -->
 <link href="/css/reset.css" rel="stylesheet" type="text/css" media="all">
-<link href="/css/install/common.css?ver=0.0.4" rel="stylesheet" type="text/css" media="all">
-<link href="/css/install/app.css?ver=0.0.3" rel="stylesheet" type="text/css" media="all">
-<link href="/css/install/layout.line_center.css" rel="stylesheet" type="text/css" media="all">
+<link href="/css/base/common.css?ver=0.0.4" rel="stylesheet" type="text/css" media="all">
+<link href="/css/base/app.css?ver=0.0.3" rel="stylesheet" type="text/css" media="all">
+<link href="/css/base/layout.line_center.css" rel="stylesheet" type="text/css" media="all">
 
 <!-- 상단메뉴 -->
-<link href="/css/install/top.menu.css?ver=0.0.1" rel="stylesheet" type="text/css" media="all">
+<link href="/css/base/top.menu.css?ver=0.0.1" rel="stylesheet" type="text/css" media="all">
 
 
 <script type="text/javascript" src="/theme/{C.THEME}/js/app.js"></script>

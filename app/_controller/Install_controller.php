@@ -96,7 +96,8 @@ class Install_controller extends CommNest_service
 				)
 		)) ;
 		
-		$this->WebAppService->Output( Display::getTemplate("install.html"), "main");
+		$this->WebAppService->Output( Display::getTemplate("install.html"), "install");
+		//echo '<pre>';print_r($this->WebAppService->Display) ;
 		$this->WebAppService->printAll();
 	}
 	

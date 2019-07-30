@@ -1,0 +1,514 @@
+{*
+작성자 : 이영수
+설명 : 1차메뉴 클릭하면 자식메뉴들을 출력
+*}
+
+
+<style type="text/css">
+nav#TOP-MENU > ul { position:relative;}
+nav#TOP-MENU > ul li  { position:static; display: list-item;line-height: initial; }
+nav#TOP-MENU > ul > li > ul{ 
+	position:absolute; width:100%;left:0;z-index:100;background-color:#444444; /* padding:0px 10px;  */
+    border-bottom: 1px solid #3e3e3e;
+}
+
+nav#TOP-MENU > ul > li ul {
+	flex-direction:row;
+	align-items: stretch;
+}
+nav#TOP-MENU > ul > li ul li {
+	min-width:160px;
+}
+
+/* 웹버전: 서브메뉴 줄마다 4번째 항목의  가로테두리 제거 */
+nav#TOP-MENU > ul > li > ul > li:nth-child(4n+4) {
+	border-right: 0px;
+}
+nav#TOP-MENU > ul > li > ul > li {
+    border-right: 1px solid #313131;
+    border-bottom: 1px solid #313131;
+    flex-basis: 25%;
+    /* flex: 0 25%; */
+}
+
+nav#TOP-MENU > ul > li > ul li *{ color:#fff; }
+
+/* 3차 서브메뉴부터 왼쪽패딩(여백) 줌 */
+nav#TOP-MENU > ul > li > ul li ul li {
+   	padding-left: 20px;
+}
+
+nav#TOP-MENU > ul > li > ul > li ul{
+	/* position: absolute; */
+	left: 160px;
+	top: 0px;
+	/* height: 100%; */
+	display: flex;
+	/* align-items: center; */
+	flex-direction: column;
+	/* flex-wrap: wrap; */
+	min-width: 160px;
+	/* text-align: left; */
+	flex-grow:1;
+	flex-wrap: wrap;
+	flex: 1;
+	background: #5d5c5c;
+	/* border-right: 1px solid #696969; */
+}
+
+/* 1차 메뉴항목 마다 구분선 지정 */
+nav#TOP-MENU > ul > li:not(:first-of-type):before {
+	content: "";
+	position: absolute;
+    top: 25%;
+    width: 1px;
+    height: 20px;
+    border-left: 1px dotted #d4d4d4;
+}
+
+/* ◀ */
+nav#TOP-MENU ul > li > ul > li label.active:after {
+	/* content: "\f104";  */
+}
+/* ▶ */
+nav#TOP-MENU  ul > li > ul > li label.deactive:after{
+    /* content: "\f105"; */  
+}
+
+/* 마이너스 - */
+nav#TOP-MENU ul > li > ul > li label.active:after {
+	/* content: "\f068"; */
+}
+/* 플러스 + */
+nav#TOP-MENU  ul > li > ul > li label.deactive:after{
+    /* content: "\f067"; */
+}
+
+
+nav#TOP-MENU ul > li label.active:after {
+	content: "\f106"; /* ▲ */
+}
+nav#TOP-MENU ul > li label.deactive:after{
+    content: "\f107"; /* ▼ */
+}
+
+nav#TOP-MENU .item { padding:10px; }
+
+nav#TOP-MENU label{
+    font-family: Font Awesome\ 5 Free;
+    font-style: normal;
+    font-weight: normal;
+    line-height: inherit;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-weight: 900;
+    display: inline-block;
+    font-size: 1.4em;/* inherit; */
+    padding:0px 6px;
+}
+nav#TOP-MENU li a.active {
+    color: #f06288;
+}
+
+/* ========================================= */
+
+nav#TOP-MENU li input:checked ~ ul {
+  max-height: 999px; /* Just give a big enough height for animation */
+}
+
+/* 모바일 메뉴버튼 */
+.openSidebarMenu { display:none; }
+
+
+/* ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
+					■ 메인메뉴 - 모바일 반응형 ■
+   ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ */
+@media  (max-width: 908px) {
+	
+	* {
+	    -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+       -khtml-user-select: none; /* Konqueror HTML */
+         -moz-user-select: none; /* Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+              user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome and Opera */
+	}
+	
+	main.row-flex {
+		-webkit-box-orient: vertical !important; 
+	    -webkit-box-direction: normal !important; 
+	    -webkit-flex-direction: column !important; 
+	    -ms-flex-direction: column !important; 
+	    flex-direction: column !important; 
+	}
+	main #main-container {
+		-webkit-box-orient: vertical !important; 
+	    -webkit-box-direction: normal !important; 
+	    -webkit-flex-direction: column !important; 
+	    -ms-flex-direction: column !important; 
+	    flex-direction: column !important; 
+		margin:0;
+		border-right:0;
+		
+		display: flex;
+    	flex-grow: 1  !important;
+	}
+	
+	main #main-left { border:0  !important; }
+	
+	.header-top-right { display: block; padding-top:13px; margin-right: 70px;}
+	
+	.wrapper-center { width: auto;}
+	
+	nav#TOP-MENU {
+		overflow:auto;
+	}
+	nav#TOP-MENU ul{
+		flex-direction: column !important;
+		    /* height: 100%;
+		    width: 85%;
+		    background: #fff;
+		    border-right: 1px solid #ccc;
+		    position: fixed; */
+		    z-index: 1000;
+	}
+	nav#TOP-MENU > ul > li > ul{
+		position:initial !important;
+	}
+	nav#TOP-MENU > ul li  { width:100%; }
+	
+	nav#TOP-MENU li a.active{ color: #fff !important; font-size:large;}
+	    
+	/* ###################################### */
+	
+	nav#TOP-MENU {
+	    height: 100%;
+	    position: fixed;
+	    top: 0;
+	    left: 0;
+	    width: calc(100% - 65px);/* 250px; */
+	    /* margin-top: 60px; */
+	    transform: translateX(-100%);/* translateX(-250px); */
+	    transition: transform 0ms ease-in-out;
+	    /* background: linear-gradient(180deg, #FC466B 0%, #3F5EFB 100%); */
+	    background: linear-gradient(180deg, #dd4b39 0%, #3F5EFB 100%);
+	    
+	    z-index:1000;
+	}
+	nav#TOP-MENU > ul{
+	    margin:0;
+	    padding:0;
+	}
+	
+	nav#TOP-MENU > ul li{
+		/* border-bottom: 1px solid rgba(255, 255, 255, 0.10); */
+		line-height: 26px !important;
+	}
+	nav#TOP-MENU > ul li:last-child{
+	    border-bottom: 0px;
+	}
+	nav#TOP-MENU > ul li .item {
+    	border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+	}
+	nav#TOP-MENU > ul li span{
+	    display: block;
+	    font-size: 14px;
+	    color: rgba(255, 255, 255, 0.50);
+	}
+	nav#TOP-MENU > ul > li > ul > li ul{
+		position:initial !important;
+		width: inherit !important;
+		height:inherit !important;
+		border-right:0px !important;
+	}
+	nav#TOP-MENU > ul > li > ul li ul li {
+    	padding-left: 20px;
+	}
+	nav#TOP-MENU ul > li > ul > li label.active:after {
+		content: "\f068" !important; /* 마이너스 - */
+	}
+	nav#TOP-MENU  ul > li > ul > li label.deactive:after{
+	    content: "\f067" !important;  /* 플러스 + */
+	}
+	
+	/*   + -   */
+	nav#TOP-MENU ul > li label{
+		position: absolute;
+	    right: 10px;
+	     z-index: 99;
+	    font-size: xx-large !important;
+	}
+	/*  ▲ ▼  */
+	nav#TOP-MENU ul > li > ul > li label{
+		position: absolute;
+	    right: 10px;
+	     z-index: 99;
+	    font-size: large !important;
+	}
+	
+	nav#TOP-MENU > ul > li {
+    	color: #000;
+	}
+	nav#TOP-MENU > ul li a{
+	    color: #fff;
+	    /* text-transform: uppercase; */
+	    font-weight: bold;
+	    cursor: pointer;
+	    text-decoration: none;
+        width: 90%;
+	}
+	
+	nav#TOP-MENU > ul > li:not(:first-of-type):before{ border-left:0px !important; }
+	/*
+	--------------------------- 
+	모바일 메뉴 아이콘 관련 Start
+	---------------------------
+	*/
+				input[type="checkbox"]#openSidebarMenu:checked ~ #TOP-MENU {
+				    transform: translateX(0);
+				}
+				
+				input[type=checkbox]#openSidebarMenu {
+				    transition: all 0.3s;
+				    box-sizing: border-box;
+				    display: none;
+				}
+				.sidebarIconToggle {
+				    transition: all 0.3s;
+				    box-sizing: border-box;
+				    cursor: pointer;
+				    position: fixed;
+				    z-index: 1000;
+				    height: 100%;
+				    width: 100%;
+				    top: 17px; /* 22px; *//* 상단줄 제거로 위치바뀜 */
+				    right: 15px;
+				    height: 22px;
+				    width: 32px;
+				}
+				.sidebarIconToggle .spinner {
+				    transition: all 0.3s;
+				    box-sizing: border-box;
+				    position: absolute;
+				    height: 3px;
+				    width: 100%;
+				    background-color: #ff0047;
+				}
+				.sidebarIconToggle .horizontal {
+				    transition: all 0.3s;
+				    box-sizing: border-box;
+				    position: relative;
+				    float: left;
+				    margin-top: 3px;
+				}
+				.sidebarIconToggle .diagonal.part-1 {
+				    position: relative;
+				    transition: all 0.3s;
+				    box-sizing: border-box;
+				    float: left;
+				}
+				.sidebarIconToggle .diagonal.part-2 {
+				    transition: all 0.3s;
+				    box-sizing: border-box;
+				    position: relative;
+				    float: left;
+				    margin-top: 3px;
+				}
+				
+				input[type=checkbox]#openSidebarMenu:checked ~ .sidebarIconToggle > .horizontal {
+				    transition: all 0.3s;
+				    box-sizing: border-box;
+				    opacity: 0;
+				}
+				input[type=checkbox]#openSidebarMenu:checked ~ .sidebarIconToggle > .diagonal.part-1 {
+				    transition: all 0.3s;
+				    box-sizing: border-box;
+				    transform: rotate(135deg);
+				    margin-top: 8px;
+				}
+				input[type=checkbox]#openSidebarMenu:checked ~ .sidebarIconToggle > .diagonal.part-2 {
+				    transition: all 0.3s;
+				    box-sizing: border-box;
+				    transform: rotate(-135deg);
+				    margin-top: -9px;
+				}
+				/* main메뉴 아이콘위치를 원상복귀 */
+				input[type=checkbox]#openSidebarMenu:not(:checked) ~ .sidebarIconToggle {
+					position:absolute;
+				}
+				
+				input[type=checkbox]#openSidebarMenu:checked ~ #cover-defence{ display:block !important; }
+				
+				/* input[type=checkbox]:checked + body {
+					position:fixed;
+					width:100%;
+					z-index:10;
+				} */
+	/*
+	--------------------------- 
+	모바일 메뉴 아이콘 관련 End
+	---------------------------
+	*/
+
+	.wrap-top-menu { border-top:0px !important;}
+	/* ###################################### */
+
+ }
+</style>
+<script type="text/javascript">
+$(function(){
+
+	var context = $('#TOP-MENU') ;
+	
+	context.find('label').bind('click', function(e){
+		(e.preventDefault) ? e.preventDefault() : e.returnValue = false;
+		
+		/**
+		* 자신의 노드외에 모두 숨기기
+		*/
+		var idx = $(this).closest('li').index() ;
+		$(this).closest('ul').children('li:not(:eq('+idx+'))').find('ul').addClass('hide') ;
+		$(this).closest('ul').children('li:not(:eq('+idx+'))').find('label').removeClass("active").addClass('deactive') ;
+
+		if( $(this).hasClass("active") ) $(this).removeClass("active").addClass("deactive");
+		else $(this).removeClass("deactive").addClass("active");
+
+		//if( $(this).hasClass('indent1') ) context.find('ul > li ul').addClass('hide') ;
+		//else $(this).closest('li').find('ul').addClass('hide') ;
+		 
+		
+
+		if( $(this).hasClass("indent1") )
+		{
+			$(this).closest('li').find('label').not(this).removeClass("deactive").addClass("active");
+			
+			if( $(this).closest('li').children('ul').hasClass('hide') ) $(this).closest('li').find('ul').removeClass('hide') ;
+			else $(this).closest('li').find('ul').addClass('hide') ;
+		}
+		else{
+			if( $(this).closest('li').children('ul').hasClass('hide') ) $(this).closest('li').children('ul').removeClass('hide') ;
+			else $(this).closest('li').children('ul').addClass('hide') ;
+		}
+	});
+	
+	/*context.find('ul > li > ul li').bind('mousein', function(e){
+		(e.preventDefault) ? e.preventDefault() : e.returnValue = false;
+		console.log($(this).children('.item').children('label')) ;
+	
+		$(this).children('.item').children('label').triggerHandler('click');
+	}); */
+	/* $('#TOP-MENU label.indent1').bind('click', function(e){
+		(e.preventDefault) ? e.preventDefault() : e.returnValue = false;
+		
+		var idx = $(this).closest('li').index() ;
+		$(this).closest('ul').children('li:not(:eq('+idx+'))').find('ul').addClass('hide') ;
+		
+		if( $(this).closest('li').children('ul').hasClass('hide') ) $(this).closest('li').find('ul').removeClass('hide') ;
+		else $(this).closest('li').find('ul').addClass('hide') ;
+	}); */
+	/**
+	* 메뉴 숨기기
+	*/
+	$(document).bind('click', function(e){
+		//(e.preventDefault) ? e.preventDefault() : e.returnValue = false;
+		var visible_mnu = $('#TOP-MENU > ul > li > ul').not('.hide') ;
+		
+		var mobileMnu_val = $('#openSidebarMenu').is(":checked") ;
+		
+		/**
+		* 선택된 엘리먼트가 메뉴가 아니고
+		* 		활성화된 메뉴 있거나 
+		* 		모바일 메뉴 활성화(체크박스 체크인) 아니고
+		*/
+		if( !$(e.target).closest('#TOP-CONTAINER').length && (visible_mnu.length || mobileMnu_val) ){
+			visible_mnu.closest('li').children('.item').children('label').triggerHandler('click');
+		}
+	})
+}) ;
+</script>
+
+<nav id="TOP-MENU">
+{? MNU.base}
+		{@MNU.base}
+              		<!--{? .tag_close_d // li 닫기}-->
+              		        </li>
+              		<!--{: .tag_start_g // ol 열기}-->
+              			<ul  class="{? .indent==1}row wrap {: .indent == 2}wrapper-center wrap row v-top-items{/} {? .indent > 1}hide{/}">
+              		<!--{: .tag_close_dg //li ol 닫기}-->
+              			<!--{@ (range(1, .tag_close_dg)) //li ol 닫기}-->
+              				</li>
+              			</ul>
+              			<!--{/}-->
+              			</li>
+              		<!--{/}-->
+              		{? .index_==0}
+              			<li>
+              				<div class="row v-center-items item" style="font-weight: 700;"><a href="/">HOME</a></div>
+              			</li>
+              		{/}
+              			<li>
+              				<div class="row v-center-items item">
+              					<a {? .url}href='{.url}{:}#{/}' {? MNU.path[0]['serial'] == .serial}class="active"{/}>{.title}</a>
+								{? .is_branch==1}<label class="indent{.indent} deactive d-flex"></label>{/}
+							</div>
+
+              		<!--{? .tag_end_close_dg // 맨마지막 li ul 닫기}-->
+              			<!--{@ (range(1, .tag_end_close_dg)) // 맨마지막 li ol 닫기}-->
+
+              					</li>
+              				{? .indent != 2 || ..value_!=2}
+              				</ul>
+              				{/}
+              			<!--{/}-->
+              			</li>
+              		<!--{/}-->
+              		<!--{? .tag_end_close_g // 맨마지막 ul 닫기}-->
+              		<!--{/}-->
+		{/}
+
+{:}
+
+{/}
+<!-- 
+			<ul class="col wrap h-between">
+				
+				<li class="">
+					<input type="checkbox" id="aaaa1">
+					<label class="col" for="aaaa1">aaaa1</label>
+					<ul class="">
+						<li class="">aaaa1-1</li>
+						<li class="">aaaa1-2</li>
+						<li class="">aaaa1-3</li>
+					</ul>
+				</li>
+				
+				<li class="">
+					<input type="checkbox" id="bbb">
+					<label class="col" for="bbb">bbb</label>
+					<ul class="">
+						<li class="">bbb-1</li>
+						<li class="">bbb-2</li>
+						<li class="">bbb-3</li>
+					</ul>
+				</li>
+				
+				<li class="">
+					<input type="checkbox" id="cccc">
+					<label class="col" for="cccc">cccc</label>
+					<ul class="">
+						<li class="">cccc-1</li>
+						<li class="">
+							<input type="checkbox" id="ccccc-2">
+							<label class="col" for="ccccc-2">ccccc-2</label>
+							<ul class="">
+								<li class="">ccccc-1</li>
+								<li class="">ccccc-2</li>
+								<li class="">ccccc-3</li>
+							</ul>	
+						</li>
+						<li class="">bbb-3</li>
+					</ul>
+				</li>
+			</ul> -->
+</nav>

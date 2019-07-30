@@ -1,0 +1,82 @@
+<script type="text/javascript">
+$(function(){
+
+	var context = $('#LEFT_MENU') ;
+	
+	context.find('label').bind('click', function(e){
+		(e.preventDefault) ? e.preventDefault() : e.returnValue = false;
+		
+		/**
+		* 자신의 노드외에 모두 숨기기
+		*/
+		var idx = $(this).closest('li').index() ;
+		$(this).closest('ul').children('li:not(:eq('+idx+'))').find('ul').addClass('hide') ;
+		$(this).closest('ul').children('li:not(:eq('+idx+'))').find('label').removeClass("active").addClass('deactive') ;
+
+		if( $(this).hasClass("active") ) $(this).removeClass("active").addClass("deactive");
+		else $(this).removeClass("deactive").addClass("active");
+
+		//if( $(this).hasClass('indent1') ) context.find('ul > li ul').addClass('hide') ;
+		//else $(this).closest('li').find('ul').addClass('hide') ;
+		 
+		
+
+		if( $(this).hasClass("indent1") )
+		{
+			$(this).closest('li').find('label').not(this).removeClass("deactive").addClass("active");
+			
+			if( $(this).closest('li').children('ul').hasClass('hide') ) $(this).closest('li').find('ul').removeClass('hide') ;
+			else $(this).closest('li').find('ul').addClass('hide') ;
+		}
+		else{
+			if( $(this).closest('li').children('ul').hasClass('hide') ) $(this).closest('li').children('ul').removeClass('hide') ;
+			else $(this).closest('li').children('ul').addClass('hide') ;
+		}
+	});
+}) ;
+</script>
+
+
+						<nav id="LEFT_MENU" >
+{? MNU.childs}
+		{@MNU.childs}
+              		<!--{? .tag_close_d // li 닫기}-->
+              		        </li>
+              		<!--{: .tag_start_g // ol 열기}-->
+              			<ul  class="{? .indent==1}row wrap {: .indent == 2}wrapper-center wrap row v-top-items{/} {? .indent > 1}hide{/}">
+              		<!--{: .tag_close_dg //li ol 닫기}-->
+              			<!--{@ (range(1, .tag_close_dg)) //li ol 닫기}-->
+              				</li>
+              			</ul>
+              			<!--{/}-->
+              			</li>
+              		<!--{/}-->
+              		{? .index_==0}
+              			<li>
+              				<div class="row v-center-items item" style="font-weight: 700;"><a href="/">HOME</a></div>
+              			</li>
+              		{/}
+              			<li>
+              				<div class="row v-center-items item">
+              					<a {? .url}href='{.url}{:}#{/}' {? MNU.path[0]['serial'] == .serial}class="active"{/}>{.title}</a>
+								{? .is_branch==1}<label class="indent{.indent} deactive d-flex"></label>{/}
+							</div>
+
+              		<!--{? .tag_end_close_dg // 맨마지막 li ul 닫기}-->
+              			<!--{@ (range(1, .tag_end_close_dg)) // 맨마지막 li ol 닫기}-->
+
+              					</li>
+              				{? .indent != 2 || ..value_!=2}
+              				</ul>
+              				{/}
+              			<!--{/}-->
+              			</li>
+              		<!--{/}-->
+              		<!--{? .tag_end_close_g // 맨마지막 ul 닫기}-->
+              		<!--{/}-->
+		{/}
+
+{:}
+
+{/}
+						</nav>

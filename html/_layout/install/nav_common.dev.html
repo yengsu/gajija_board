@@ -1,0 +1,215 @@
+<style type="text/css">
+nav#TOP-MENU > ul { position:relative;}
+nav#TOP-MENU > ul li  { position:static; display: list-item;line-height: initial; }
+nav#TOP-MENU > ul > li > ul{ 
+	position:absolute; width:100%;left:0;z-index:100;background-color:#383838; /* padding:0px 10px;  */
+    border-bottom: 1px solid #3e3e3e;
+}
+
+nav#TOP-MENU > ul > li > ul li *{ color:#fff; }
+nav#TOP-MENU .item { padding:10px; }
+
+nav#TOP-MENU > ul > li > ul li ul li {
+    /* padding-left: 20px; */
+}
+
+nav#TOP-MENU li input:checked ~ ul {
+  max-height: 999px; /* Just give a big enough height for animation */
+}
+
+
+/* ◀ */
+nav#TOP-MENU ul > li > ul > li label.active:before {
+	/* content: "\f104";  */
+}
+/* ▶ */
+nav#TOP-MENU  ul > li > ul > li label.deactive:before{
+    /* content: "\f105"; */  
+}
+
+/* 마이너스 - */
+nav#TOP-MENU ul > li > ul > li label.active:before {
+	content: "\f068";
+}
+/* 플러스 + */
+nav#TOP-MENU  ul > li > ul > li label.deactive:before{
+    content: "\f067";
+}
+
+
+
+nav#TOP-MENU ul > li label.active:before {
+	content: "\f106"; /* ▲ */
+}
+nav#TOP-MENU ul > li label.deactive:before{
+    content: "\f107"; /* ▼ */
+}
+
+nav#TOP-MENU label{
+    font-family: Font Awesome\ 5 Free;
+    font-style: normal;
+    font-weight: normal;
+    line-height: inherit;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-weight: 900;
+    display: inline-block;
+    font-size: inherit;
+    padding:0px 7px;
+}
+nav#TOP-MENU li a.active {
+    color: #f06288;
+}
+
+/* ========================================= */
+nav#TOP-MENU > ul > li > ul {
+	flex-direction:column;
+}
+nav#TOP-MENU > ul > li ul li {
+	min-width:160px;
+}
+nav#TOP-MENU > ul > li > ul > li ul{
+	position: absolute;
+	left: 160px;
+	top: 0px;
+	height: 100%;
+	display: flex;
+	/* align-items: center; */
+	flex-direction: column;
+	/* flex-wrap: wrap; */
+	min-width: 160px;
+	/* text-align: left; */
+	flex-grow:1;
+	flex-wrap: wrap;
+	flex: 1;
+	background: #5d5c5c;
+	border-right: 1px solid #696969;
+}
+nav#TOP-MENU > ul > li > ul {
+	background: #444444;
+}
+
+</style>
+<script type="text/javascript">
+$(function(){
+	var context = $('#TOP-MENU') ;
+	context.find('label').bind('click', function(e){
+		(e.preventDefault) ? e.preventDefault() : e.returnValue = false;
+		
+		
+		if( $(this).hasClass("active") ) $(this).removeClass("active").addClass("deactive");
+		else $(this).removeClass("deactive").addClass("active");
+		
+		//if( $(this).hasClass('indent1') ) context.find('ul > li ul').addClass('hide') ;
+		/* else $(this).closest('li').find('ul').addClass('hide') ;
+		 */
+		var idx = $(this).closest('li').index() ;
+		$(this).closest('ul').children('li:not(:eq('+idx+'))').find('ul').addClass('hide') ;
+
+		$(this).closest('ul').children('li:not(:eq('+idx+'))').find('label').removeClass("active").addClass('deactive') ;
+		
+		if( $(this).closest('li').children('ul').hasClass('hide') ) $(this).closest('li').children('ul').removeClass('hide') ;
+		else $(this).closest('li').children('ul').addClass('hide') ;
+	});
+	
+	/* $('body > *').not( $('nav#TOP-MENU *')).bind('click', function(e){
+		//(e.preventDefault) ? e.preventDefault() : e.returnValue = false;
+		console.log( e );
+	
+		
+			$('#TOP-MENU > ul > li > ul').addClass('hide');
+		//$('#TOP-MENU > ul > li > ul').addClass('hide');
+	}) ; */
+	context.find('ul > li > ul li').bind('mousein', function(e){
+		(e.preventDefault) ? e.preventDefault() : e.returnValue = false;
+		console.log($(this).children('.item').children('label')) ;
+	
+		$(this).children('.item').children('label').triggerHandler('click');
+	});
+}) ;
+</script>
+
+<nav id="TOP-MENU">
+{? MNU.base}
+		{@MNU.base}
+              		<!--{? .tag_close_d // li 닫기}-->
+              		        </li>
+              		<!--{: .tag_start_g // ol 열기}-->
+              			<ul  class="{? .indent==1}row wrap {: .indent == 2}wrapper-center row v-top-items{/} {? .indent > 1}hide{/}">
+              		<!--{: .tag_close_dg //li ol 닫기}-->
+              			<!--{@ (range(1, .tag_close_dg)) //li ol 닫기}-->
+              				</li>
+              			</ul>
+              			<!--{/}-->
+              			</li>
+              		<!--{/}-->
+              		{? .index_==0}
+              			<li>
+              				<div class="row v-center-items item" style="font-weight: 700;"><a href="/">HOME</a></div>
+              			</li>
+              		{/}
+              			<li>
+              				<div class="row v-center-items item">
+              					<a {? .url}href='{.url}{:}#{/}' {? MNU.path[0]['serial'] == .serial}class="active"{/}>{.title}</a>
+								{? .is_branch==1}<label class="indent{.indent} deactive d-flex"></label>{/}
+							</div>
+
+              		<!--{? .tag_end_close_dg // 맨마지막 li ul 닫기}-->
+              			<!--{@ (range(1, .tag_end_close_dg)) // 맨마지막 li ol 닫기}-->
+
+              					</li>
+              				{? .indent != 2 || ..value_!=2}
+              				</ul>
+              				{/}
+              			<!--{/}-->
+              			</li>
+              		<!--{/}-->
+              		<!--{? .tag_end_close_g // 맨마지막 ul 닫기}-->
+              		<!--{/}-->
+		{/}
+
+{:}
+
+{/}
+<!-- 
+			<ul class="col wrap h-between">
+				
+				<li class="">
+					<input type="checkbox" id="aaaa1">
+					<label class="col" for="aaaa1">aaaa1</label>
+					<ul class="">
+						<li class="">aaaa1-1</li>
+						<li class="">aaaa1-2</li>
+						<li class="">aaaa1-3</li>
+					</ul>
+				</li>
+				
+				<li class="">
+					<input type="checkbox" id="bbb">
+					<label class="col" for="bbb">bbb</label>
+					<ul class="">
+						<li class="">bbb-1</li>
+						<li class="">bbb-2</li>
+						<li class="">bbb-3</li>
+					</ul>
+				</li>
+				
+				<li class="">
+					<input type="checkbox" id="cccc">
+					<label class="col" for="cccc">cccc</label>
+					<ul class="">
+						<li class="">cccc-1</li>
+						<li class="">
+							<input type="checkbox" id="ccccc-2">
+							<label class="col" for="ccccc-2">ccccc-2</label>
+							<ul class="">
+								<li class="">ccccc-1</li>
+								<li class="">ccccc-2</li>
+								<li class="">ccccc-3</li>
+							</ul>	
+						</li>
+						<li class="">bbb-3</li>
+					</ul>
+				</li>
+			</ul> -->
+</nav>

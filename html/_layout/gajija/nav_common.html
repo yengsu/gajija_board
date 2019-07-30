@@ -1,0 +1,220 @@
+{*
+작성자 : 이영수
+설명 : 데스크탑:메뉴클릭하면 전체메뉴 들을 출력 / 모바일:메뉴클릭하면 해당메뉴만 출력
+*}
+
+<script type="text/javascript">
+
+var TOP_MENU_context = '#TOP-MENU' ;
+
+/**
+* 상단 메인메뉴 리사이즈 이벤트
+*/
+var mainMenu_resize_evnt = function() {
+	var win = $(window); //this = window
+	var mobile_size = 922 ; // 모바일 전환 가로사이즈
+	
+	if (win.width() <= mobile_size) 
+	{
+		$(TOP_MENU_context).find('label').unbind('click').bind('click', mobile_mainMenu_handler);
+	}
+	else{
+		$(TOP_MENU_context).find('label').unbind('click').bind('click', web_mainMenu_handler);
+
+		/*
+		모바일에서 데스크탑으로 반응되었을때
+			모바일에서 메뉴 하나라도 열려있으면 
+			데스크탑에서는 모든 메뉴를 모두 보이게 처리
+		*/
+		/* var menu_cnts = $(TOP_MENU_context + ' > ul > li ul').length ;
+		console.log( menu_cnts ,  $(TOP_MENU_context + ' > ul > li ul.hide').length ) ;
+		if( menu_cnts != $(TOP_MENU_context + ' > ul > li ul.hide').length ){
+			$(TOP_MENU_context + ' > ul > li .indent1').eq(0).triggerHandler('click') ;
+		} */
+			
+	}
+};
+
+/**
+ * 초기화: 메인메뉴중 서브메뉴 모두 숨기기
+ */
+ var mainMenu_close = function(){
+	 $(TOP_MENU_context + ' label').removeClass("active").addClass("deactive");
+	 $(TOP_MENU_context + ' > ul > li ul').addClass('hide') ;
+ };
+ /**
+  * 데스크탑용 : 메인메뉴 이벤트
+  
+  * @uses [액션] 전체메뉴가 펼치기,닫기 동작
+  */
+var web_mainMenu_handler = function(e){
+	(e.preventDefault) ? e.preventDefault() : e.returnValue = false;
+
+	//전체액션	
+	if( $(this).hasClass("indent1") )
+	{
+		// 전체 아이콘 액션 : 펼치기(Expand), 접기(Collapse)
+		 if( $(this).hasClass("active") ) {
+			 $(TOP_MENU_context + ' label').removeClass("active").addClass("deactive");
+			 //$(TOP_MENU_context + ' > ul > li').removeClass('tm-bgcolor'); 
+		 }
+		else {
+			$(TOP_MENU_context + ' label').removeClass("deactive").addClass("active");
+			//$(TOP_MENU_context + ' > ul > li').addClass('tm-bgcolor'); 
+		}
+		
+	 	// 전체 메뉴 : 펼치기(Expand), 접기(Collapse) 
+		if( $(this).closest('li').children('ul').hasClass('hide') ) $(TOP_MENU_context + ' > ul > li ul').removeClass('hide') ;
+		else $(TOP_MENU_context + ' > ul > li ul').addClass('hide') ;
+	}
+	// 개별액션(자식메뉴에서 동작할 경우)
+	else{
+		// [자기자신] 아이콘 액션 : 펼치기(Expand), 접기(Collapse) 
+		if( $(this).hasClass("active") ) $(this).removeClass("active").addClass("deactive");
+		else $(this).removeClass("deactive").addClass("active");
+		
+		// [자기자신]의 바로 아래의 하위메뉴 : 펼치기(Expand), 접기(Collapse) 
+		if( $(this).closest('li').children('ul').hasClass('hide') ) $(this).closest('li').children('ul').removeClass('hide') ;
+		else $(this).closest('li').children('ul').addClass('hide') ;
+	}
+};
+/**
+ * 모바일용 : 메인메뉴 이벤트
+ 
+ * @uses [액션] 각 메뉴 별로 펼치기,닫기 동작
+ */
+var mobile_mainMenu_handler = function(e){
+	(e.preventDefault) ? e.preventDefault() : e.returnValue = false;
+	
+	/**
+	* 형제노드중 [자기자신]의 메뉴외에 모두 숨기기, 및 아이콘(접기,펼치기)도 마찬가지
+	*/
+	var idx = $(this).closest('li').index() ;
+	$(this).closest('ul').children('li:not(:eq('+idx+'))').find('ul').addClass('hide') ;
+	$(this).closest('ul').children('li:not(:eq('+idx+'))').find('label').removeClass("active").addClass('deactive') ;
+
+	// [자기자신]아이콘 액션 : 펼치기(Expand), 접기(Collapse) 
+	if( $(this).hasClass("active") ) $(this).removeClass("active").addClass("deactive");
+	else $(this).removeClass("deactive").addClass("active");
+
+	// 1차 카테고리를 선택한경우
+	if( $(this).hasClass("indent1") )
+	{
+		// [자기자신]을 제외한 모든 아이콘 접기(Collapse) 
+		$(this).closest('li').find('label').not(this).removeClass("deactive").addClass("active");
+		
+		// [자기자신]의 모든 하위메뉴 : 펼치기(Expand), 접기(Collapse) 
+		if( $(this).closest('li').children('ul').hasClass('hide') ) $(this).closest('li').find('ul').removeClass('hide') ;
+		else $(this).closest('li').find('ul').addClass('hide') ;
+	}
+	else{
+		//[자기자신]의 바로아래의 하위메뉴 : 펼치기(Expand), 접기(Collapse) 
+		if( $(this).closest('li').children('ul').hasClass('hide') ) $(this).closest('li').children('ul').removeClass('hide') ;
+		else $(this).closest('li').children('ul').addClass('hide') ;
+	}	
+};
+
+$(function(){
+//$( document ).ready(function() {
+	
+	// 최초 초기화(강제)
+	//mainMenu_close();
+	/* var isTouchDevice = OFUNC.isTouchDevice() ;
+	var event_click =  isTouchDevice ? 'touchstart' : 'click'; */
+	/**
+	* 메인메뉴 컨텍스트(Context) 숨기기 이벤트
+	*/
+	$(document.body).bind('click', function(e){
+		//(e.preventDefault) ? e.preventDefault() : e.returnValue = false;
+		var visible_top_mnu = $(TOP_MENU_context + ' > ul > li > ul').not('.hide') ;
+		
+		var mobileMnu_val = $('#openSidebarMenu').is(":checked") ;
+		
+		/**
+		* 선택된 엘리먼트가 메뉴가 아니고
+		* 		활성화된 메뉴 있거나 
+		* 		모바일 메뉴 활성화(체크박스 체크인) 아니고
+		*/
+		if( !$(e.target).closest('#TOP-CONTAINER').length && (visible_top_mnu.length || mobileMnu_val) ){
+			visible_top_mnu.closest('li').children('.item').children('label').triggerHandler('click');
+		}
+		
+		/**
+		* 왼쪽메뉴(서브메뉴)
+		*
+		* @uses  left_menu.html 파일참조 ( 변수사용 : LEFT_MENU_context ) 
+		*
+		* 선택된 엘리먼트가 메뉴가 아니고
+		* 		활성화된 메뉴 있거나 
+		* 		모바일 메뉴 활성화(체크박스 체크인) 아니고
+		*/
+		if( $(LEFT_MENU_context).hasClass('mobile') )
+		{
+			var visible_left_mnu = $(LEFT_MENU_context + ' > ul > li > ul').not('.hide') ;
+			if( !$(e.target).closest(LEFT_MENU_context).length && (visible_left_mnu.length) ){
+				leftMenu_close() ;
+			}
+		}
+	});
+
+{? IS_MOBILE //모바일이면}
+
+	$(TOP_MENU_context).find('label').unbind('click').bind('click', mobile_mainMenu_handler);
+	
+	//mainMenu_resize_evnt.call($(window));
+	$( window ).resize(mainMenu_resize_evnt);
+	
+{:}
+	$(TOP_MENU_context).find('label').unbind('click').bind('click', web_mainMenu_handler);
+{/}
+
+}) ;
+</script>
+
+<nav id="TOP-MENU" class="wrapper-center row v-stretch-items">
+	<div class="nav-Home row v-center-items" style="width: 80px; align-items: center; height: 40px; justify-content: center; font-weight: 700;"><a href="/">HOME</a></div>
+    
+    <ul  class="row wrap flex1 v-stretch-items">
+		<li class="home hide">
+			<div class="row v-center-items item" style="font-weight: 700;"><a href="/">HOME</a></div>
+		</li>
+{? MNU.base}
+		{@MNU.base}
+              		<!--{? .tag_close_d // li 닫기}-->
+              		        </li>
+              		<!--{: .tag_start_g // ol 열기}-->
+	              		<!-- <ul  class="{? .indent==1}row wrap flex1 v-stretch-items{: .indent == 2}wrapper-center col v-top-items{/} {? .indent > 1}hide{/}"> -->
+              			{? .indent > 1}	
+              				<ul  class="{? .indent == 2}wrapper-center col v-top-items{/} {? .indent > 1}hide{/}">
+              			{/}
+              		<!--{: .tag_close_dg //li ol 닫기}-->
+              			<!--{@ (range(1, .tag_close_dg)) //li ol 닫기}-->
+              				</li>
+              			</ul>
+              			<!--{/}-->
+              			</li>
+              		<!--{/}-->
+              		{? .index_==0}
+              		{/}
+              			<li>
+              				<div class="row v-center-items item">
+              					<a {? .url}href='{.url}{:}#{/}' {? MNU.path[0]['serial'] == .serial}class="active"{/}>{.title}</a>
+								{? .is_branch==1}<label class="indent{.indent} deactive d-flex"></label>{/}
+							</div>
+
+              		<!--{? .tag_end_close_dg // 맨마지막 li ul 닫기}-->
+              			<!--{@ (range(1, .tag_end_close_dg)) // 맨마지막 li ol 닫기}-->
+
+              					</li>
+              				</ul>
+              			<!--{/}-->
+              			<!-- </li> -->
+              		<!--{/}-->
+              		<!--{? .tag_end_close_g // 맨마지막 ul 닫기}-->
+              		<!--{/}-->
+		{/}
+
+{:}
+
+{/}
+</nav>

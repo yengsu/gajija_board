@@ -79,10 +79,16 @@ trait DB_NestedSet_Trait
 	 */
 	protected function TNst_add( $put_data, $parent_code )
 	{
-		$this->TNst_Validation(array(
+		/* $this->TNst_Validation(array(
 				"parent"
-		)) ;
-		
+		)) ; */
+		if( !empty($parent_code) ){
+			if( ! (int)$parent_code ){
+				$this->WebAppService->assign(array(
+						"error" => '부모코드를 정확히 입력해주세요.'
+				));
+			}
+		}
 		if( empty($put_data) || !is_array($put_data) ){
 			$this->WebAppService->assign(array(
 					"error" => $error
@@ -507,6 +513,8 @@ trait DB_NestedSet_Trait
 			);
 			//$insert_id = $this->dataAdd($put_data) ;
 			$insert_id = $this->dataAddFamily($put_data) ;
+			
+			return $insert_id ;
 		}
 	}
 	

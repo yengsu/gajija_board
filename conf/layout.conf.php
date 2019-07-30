@@ -58,12 +58,12 @@ NAV_COMMON = "@_layout/gajija/nav_common.html"; 공통메뉴
 FOOTER = "@_layout/gajija/footer.html" ;상단메뉴 영역
 
 [install]
-LAYOUT = "_layout/gajija/one/layout_one.html"
-HEAD_COMMON_INC = "_layout/gajija/head_common.html" ;head의 css, javascript include 영역
-HEAD_MAIN_INC = "_layout/gajija/head_main.html" ;상단메뉴 영역
-TOP_COMMON_INC = "_layout/gajija/top_common.html" ;상단메뉴 영역
-NAV_COMMON = "_layout/gajija/nav_common.html"; 공통메뉴
-FOOTER = "_layout/gajija/footer.html" ;상단메뉴 영역
+LAYOUT = "_layout/install/layout_one.html"
+HEAD_COMMON_INC = "_layout/install/head_common.html" ;head의 css, javascript include 영역
+HEAD_MAIN_INC = "_layout/install/head_main.html" ;상단메뉴 영역
+TOP_COMMON_INC = "_layout/install/top_common.html" ;상단메뉴 영역
+NAV_COMMON = "_layout/install/nav_common.html"; 공통메뉴
+FOOTER = "_layout/install/footer.html" ;상단메뉴 영역
 ;##################################################
 ;관리자페이지 레이아웃
 [adm]

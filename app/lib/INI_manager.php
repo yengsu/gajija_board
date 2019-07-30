@@ -159,7 +159,7 @@ class INI_manager
       public function save_ini( $path )
       {
             $fileCONTENTS = "" ;
-            //echo '11<pre>';print_r($this->bi_a);exit;
+           	//echo '11<pre>';print_r($this->bi_a);exit;
             $c1 = 0 ;
             if ( is_array( $this->bi_a ) )
             {
@@ -177,12 +177,14 @@ class INI_manager
                             	$fileCONTENTS .= "[".$i."]".PHP_EOL.$n."=".$value['VALUE'] ;
                             	if( isset($value['COMMENT']) ) $fileCONTENTS .= "\t;".$value['COMMENT'];
                             	$fileCONTENTS .= PHP_EOL ;
-                            }else if ( strlen( $value['VALUE'] ) != 0 ){
-                            	 
-                            	$fileCONTENTS .= $n."=".$value['VALUE'] ;
+                            }
+                            else{// if ( strlen( $value['VALUE'] ) != 0 ){
+                            	$value['VALUE'] = str_replace("\"", "", $value['VALUE']);
+                            	$fileCONTENTS .= $n."=\"".$value['VALUE']."\"" ;
                             	if( isset($value['COMMENT']) ) $fileCONTENTS .= "\t;".$value['COMMENT'];
                             	$fileCONTENTS .= PHP_EOL ;
                             }
+                            
                             
                             $c2++;
                         }
@@ -190,8 +192,10 @@ class INI_manager
                         $fileCONTENTS .= PHP_EOL ;
                     }
                 }
-                //echo '<pre>';print_r($fileCONTENTS) ;exit;
+                
+                //echo '<pre>';print_r($this->bi_a) ;exit;
                 $fileCONTENTS = ";<?".PHP_EOL.";die();".PHP_EOL.";/*".PHP_EOL. trim($fileCONTENTS).PHP_EOL."*/".PHP_EOL.";?>";
+                //echo '22<pre>';print_r($fileCONTENTS);exit;
                 //echo '<pre>';print_r($fileCONTENTS) ;exit;
                 self::writeUTF8File($path, $fileCONTENTS);
 /*
@@ -354,7 +358,7 @@ class INI_manager
             $this->filePATH = $path ;
             
             $INIarray = $this->parse_ini_file( $path );
-            //echo '11<pre>';print_r($INIarray);exit;
+            //echo '66<pre>';print_r($INIarray);exit;
             $this->bi_a = array();
 
             if ( is_array( $INIarray ) )
@@ -370,8 +374,7 @@ class INI_manager
                                 $this->bi_a[$i][$n]['VALUE'] = $entryVALUE ;
                                 if( !empty($entryCOMMENT) ) $this->bi_a[$i][$n]['COMMENT'] = $entryCOMMENT ;
                             }
-                            else
-                            {
+                            else{
                                 $this->bi_a[$i][$n]['VALUE'] = $a[$n] ;
                                 //$this->bi_a[$i][$n]['COMMENT'] = $entryCOMMENT ;
                             } 
@@ -379,7 +382,7 @@ class INI_manager
                     }
                 }
             }
-            
+          //echo '11<pre>';print_r($this->bi_a);exit;
           $this->save_ini( $path );
       }
 

@@ -1,3 +1,7 @@
+DROP TABLE IF EXISTS `member_sns`;
+DROP TABLE IF EXISTS `member`;
+DROP TABLE IF EXISTS `member_grade`;
+
 DROP TABLE IF EXISTS `board`;
 CREATE TABLE `board` (
   `serial` int(11) unsigned NOT NULL AUTO_INCREMENT,

@@ -238,9 +238,17 @@ class Install_controller extends CommNest_service
 		if( !empty($insert_id) ){
 			
 			//#############
+			// 게시판 & 댓글 생성
+			//#############
+			// 게시판 생성
+			$this->set_board_append() ;
+			// 댓글 생성
+			$this->set_comments_append() ;
+			
+			//#############
 			// 기본메뉴 등록
 			//#############
-			$this->menu_append() ;
+			$this->set_menu_append() ;
 			
 			header('Location:/') ;
 			exit;
@@ -250,14 +258,266 @@ class Install_controller extends CommNest_service
 		}
 	}
 	/**
+	 * 게시판 생성
+	 */
+	private function set_board_append()
+	{
+		$put_data = array() ;
+		
+		//자유게시판
+		$put_data[0] = array(
+				"oid" => (int) OID,
+				"bid" => 'free',
+				"skin_grp" => "base",
+				"skin_name" => "default",
+				"title" => "자유게시판",
+				"table_name" => "board",
+				"listscale" => 10,
+				"pagescale" => 10,
+				"indent" => 1,
+				"comments" => 1,
+				"sec_pwd" => 1,
+				"mbr_type" => 1,
+				"editor" => 1,
+				"regdate" => time()
+		);
+		//질문과 답변
+		$put_data[1] = array(
+				"oid" => (int) OID,
+				"bid" => 'qna',
+				"skin_grp" => "base",
+				"skin_name" => "default",
+				"title" => "질문과 답변",
+				"table_name" => "board",
+				"listscale" => 10,
+				"pagescale" => 10,
+				"indent" => 1,
+				"comments" => 1,
+				"sec_pwd" => 1,
+				"mbr_type" => 1,
+				"editor" => 1,
+				"regdate" => time()
+		);
+		//사진게시판
+		$put_data[2] = array(
+				"oid" => (int) OID,
+				"bid" => 'photo',
+				"skin_grp" => "photo",
+				"skin_name" => "default",
+				"title" => "사진게시판",
+				"table_name" => "board",
+				"listscale" => 10,
+				"pagescale" => 10,
+				//"title_len" => (int) $_POST["title_len"],
+				"comments" => 1,
+				"sec_pwd" => 1,
+				"mbr_type" => 1,
+				"editor" => 1,
+				"upload_file_cnt" => 1,
+				"regdate" => time()
+		);
+		//자료실
+		$put_data[3] = array(
+				"oid" => (int) OID,
+				"bid" => 'datas',
+				"skin_grp" => "base",
+				"skin_name" => "default",
+				"title" => "자료실",
+				"table_name" => "board",
+				"listscale" => 10,
+				"pagescale" => 10,
+				//"title_len" => (int) $_POST["title_len"],
+				"comments" => 1,
+				"sec_pwd" => 1,
+				"mbr_type" => 1,
+				"editor" => 1,
+				"upload_file_cnt" => 3,
+				"regdate" => time()
+		);
+		try
+		{
+			$this->setTableName("board_info");
+			foreach($put_data as $board)
+			{
+				$insert_id = $this->dataAdd( $board ) ;
+			}
+		}
+		catch (BaseException $e) {
+			$e->printException('controller');
+		}
+		catch (Exception $e) {
+			$this->WebAppService->assign( array(
+					"error" => $e->getMessage(),
+					"error_code" => $e->getCode()
+			));
+			exit;
+		}
+	}
+	/**
+	 * 게시판 생성
+	 */
+	private function set_comments_append()
+	{
+		$put_data = array() ;
+		
+		//자유게시판
+		$put_data[0] = array(
+				"oid" => (int) OID,
+				"bid" => 'free',
+				"skin_grp" => "base",
+				"skin_name" => "scroll",
+				"title" => "[댓글]자유게시판",
+				"table_name" => "comments",
+				"listscale" => 10,
+				"pagescale" => 10,
+				"indent" => 1,
+				"sec_pwd" => 1,
+				"mbr_type" => 1,
+				"editor" => 1,
+				"regdate" => time()
+		);
+		//질문과 답변
+		$put_data[1] = array(
+				"oid" => (int) OID,
+				"bid" => 'qna',
+				"skin_grp" => "base",
+				"skin_name" => "scroll",
+				"title" => "[댓글]질문과 답변",
+				"table_name" => "comments",
+				"listscale" => 10,
+				"pagescale" => 10,
+				"indent" => 1,
+				"sec_pwd" => 1,
+				"mbr_type" => 1,
+				"editor" => 1,
+				"regdate" => time()
+		);
+		//사진게시판
+		$put_data[2] = array(
+				"oid" => (int) OID,
+				"bid" => 'photo',
+				"skin_grp" => "photo",
+				"skin_name" => "scroll",
+				"title" => "[댓글]사진게시판",
+				"table_name" => "comments",
+				"listscale" => 10,
+				"pagescale" => 10,
+				"sec_pwd" => 1,
+				"mbr_type" => 1,
+				"editor" => 1,
+				"upload_file_cnt" => 1,
+				"regdate" => time()
+		);
+		//자료실
+		$put_data[3] = array(
+				"oid" => (int) OID,
+				"bid" => 'datas',
+				"skin_grp" => "base",
+				"skin_name" => "scroll",
+				"title" => "[댓글]자료실",
+				"table_name" => "comments",
+				"listscale" => 10,
+				"pagescale" => 10,
+				"sec_pwd" => 1,
+				"mbr_type" => 1,
+				"editor" => 1,
+				"upload_file_cnt" => 3,
+				"regdate" => time()
+		);
+		try
+		{
+			$this->setTableName("comments_info");
+			foreach($put_data as $comments)
+			{
+				$insert_id = $this->dataAdd( $comments ) ;
+			}
+		}
+		catch (BaseException $e) {
+			$e->printException('controller');
+		}
+		catch (Exception $e) {
+			$this->WebAppService->assign( array(
+					"error" => $e->getMessage(),
+					"error_code" => $e->getCode()
+			));
+			exit;
+		}
+	}
+	/**
 	 * 기본메뉴 등록
 	 */
-	private function menu_append()
+	private function set_menu_append()
 	{
 		$this->setTableName("menu") ;
 		
 		// home 등록
 		$home_insertid = $this->TNst_hasData() ;
+		
+		//=====================================
+		//  자유게시판 (depth-2)
+		//=====================================
+		$put_data = array(
+				"oid" => (int) OID,
+				"title" => "자유게시판",
+				"layout" => "sub",
+				"used" => 1,
+				"imp" => 1
+		);
+		$insert_id = $this->TNst_add($put_data, $home_insertid);
+		//----------------
+		$res = $this->dataUpdate(
+				array("url" => "/board/BoardComm/lst?bid=free&mcode=".$insert_id),
+				array("serial" => $insert_id)
+			) ;
+		//=====================================
+		//  질문과 답변 (depth-2)
+		//=====================================
+		$put_data = array(
+				"oid" => (int) OID,
+				"title" => "질문과 답변",
+				"layout" => "sub",
+				"used" => 1,
+				"imp" => 1
+		);
+		$insert_id = $this->TNst_add($put_data, $home_insertid);
+		//----------------
+		$res = $this->dataUpdate(
+				array("url" => "/board/BoardComm/lst?bid=qna&mcode=".$insert_id),
+				array("serial" => $insert_id)
+			) ;
+		//=====================================
+		//  사진게시판 (depth-2)
+		//=====================================
+		$put_data = array(
+				"oid" => (int) OID,
+				"title" => "사진게시판",
+				"layout" => "sub",
+				"used" => 1,
+				"imp" => 1
+		);
+		$insert_id = $this->TNst_add($put_data, $home_insertid);
+		//----------------
+		$res = $this->dataUpdate(
+				array("url" => "/board/BoardComm/lst?bid=photo&mcode=".$insert_id),
+				array("serial" => $insert_id)
+			) ;
+		//=====================================
+		//  자료실 (depth-2)
+		//=====================================
+		$put_data = array(
+				"oid" => (int) OID,
+				"title" => "자료실",
+				"layout" => "sub",
+				"used" => 1,
+				"imp" => 1
+		);
+		$insert_id = $this->TNst_add($put_data, $home_insertid);
+		//----------------
+		$res = $this->dataUpdate(
+				array("url" => "/board/BoardComm/lst?bid=datas&mcode=".$insert_id),
+				array("serial" => $insert_id)
+			) ;
+		
 		
 		//=====================================
 		// Mypage (depth-2)
@@ -271,7 +531,7 @@ class Install_controller extends CommNest_service
 		//----------------
 		$res = $this->dataUpdate(
 				array("url" => "/Member/edit?mcode=".$parent_id),
-				array("serial" => $insert_id)
+				array("serial" => $parent_id)
 			) ;
 		//=====================================
 		// 회원정보 변경 (depth-3)
@@ -290,7 +550,6 @@ class Install_controller extends CommNest_service
 		
 		
 		
-		//##############################
 		//=====================================
 		// 회원 (depth-2)
 		//=====================================

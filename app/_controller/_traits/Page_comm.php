@@ -177,10 +177,10 @@ trait Page_comm{
 	    	
 	    	
 	    }else{
-	    	
 	    	$prev_table = static::$TABLE ; // 이전에 선언한 테이블 정보
 	    	
 		    $this->setTableName($table);
+		    
 		    $datas['base'] = $this->dataRead(array(
 		        "columns" => "serial, parent, indent, lft, rgt, title, layout, tpl, url, url_target, used, imp, grant_read, grant_write, CASE WHEN rgt - lft > 1 THEN 1 ELSE 0 END AS is_branch",
 		        "conditions" => array_merge( array("used"=>1), $conditions ) ,

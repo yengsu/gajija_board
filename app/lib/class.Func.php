@@ -105,15 +105,18 @@ class Func
 	}
 	
 	/**
-	* @desc 파일명 변경
+	* @desc 이미지 파일명 변경
 	*
 	* @uses $fileName = $_FILES['??']['name']
 	* @uses $rename_prefix = 파일명 앞에 붙일 식별문자
 	*
+	* @return string|false 이미지가 아니면 false 반환
 	**/
-	public static function fileRename($fileName, $rename_prefix="")
+	public static function fileRename_image($fileName, $rename_prefix="")
 	{
 		$scale = getimagesize($fileName['tmp_name']);
+		
+		if( ! $this->imageType_Check($scale['mime']) ) return false ;
 		
 		preg_match('/\.([^\.]*$)/', $fileName['name'], $extension);
 		/*확장자*/$file_ext = strtolower($extension[1]);
@@ -125,7 +128,28 @@ class Func
 	
 		return $fileName ;
 	}
-	
+	/**
+	 * @desc 파일명 변경
+	 *
+	 * @uses $fileName = $_FILES['??']['name']
+	 * @uses $rename_prefix = 파일명 앞에 붙일 식별문자
+	 *
+	 * @return string
+	 **/
+	public static function fileRename($fileName, $rename_prefix="")
+	{
+		//if( ! $this->fileType_Check($fileName) ) return false ;
+		
+		preg_match('/\.([^\.]*$)/', $fileName, $extension);  // ex) array( 0 => ".gif", 1 => "gif" )
+		/*확장자*/$file_ext = strtolower($extension[1]);
+		/*파일명*/$file_name = substr($fileName, 0, ((strlen($fileName) - strlen($file_ext)))-1);
+		
+		// 파일명 재정의
+		//$rename_prefix = 'tpl'; // 파일 식별자
+		$fileName =  $rename_prefix.'_'.mt_rand(1,100).time(). '.' .$file_ext;
+		
+		return $fileName ;
+	}
 	/**
 	 * @desc 배열 같은위치에 있는 키(key)를 기준으로 정렬
 	 *  

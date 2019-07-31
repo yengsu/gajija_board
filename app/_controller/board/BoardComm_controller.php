@@ -799,6 +799,7 @@ class BoardComm_controller extends BoardCommNest_service
 			 $template = "html/board/skin/".$this->boardInfoResult["skin_grp"]."/".$this->boardInfoResult["skin_name"]."/list.html" ;
 			 $this->WebAppService->Display->define('BOARD_LIST', Display::getTemplate($template) ); */
 			//-----------------------------------------
+			//echo '<pre>';print_r($data) ;
 			$this->WebAppService->assign(array(
 							'Doc' => array(
 							    'baseURL' => WebAppService::$baseURL,
@@ -825,6 +826,10 @@ class BoardComm_controller extends BoardCommNest_service
         }
     }
     
+    /* public function download()
+    {
+    	Func::download()
+    } */
     
     /*
      * $this->boardInfoResult["comments"],
@@ -1245,6 +1250,7 @@ class BoardComm_controller extends BoardCommNest_service
      /**
       * 첨부파일 삭제
       * @param string $files (삭제파일)
+      * return void
       */
      private function attach_delete($files)
      {
@@ -1281,7 +1287,7 @@ class BoardComm_controller extends BoardCommNest_service
       */
      private function attach_upload($bid, $uploadDir, &$Files, $upload_datas=NULL)
      {
-         //echo '<pre>';print_r(func_get_args());
+         echo '<pre>';print_r(func_get_args());//exit;
          if( empty($Files) ) return false;
          
          $result = array();
@@ -1304,43 +1310,83 @@ class BoardComm_controller extends BoardCommNest_service
              /* echo '<pre>';print_r($Files);
               echo '<pre>';print_r($upload_datas);
               exit; */
-             
 		$result["file"] = array();
+		$result["original_file"] = array();
+		
+		if( !empty($upload_datas["attach_orig_files"]) ){
+			$result["file"] = $upload_datas["attach_files"] ;
+			$result["original_file"] = $upload_datas["attach_orig_files"] ;
+		}
+		
 		foreach($Files["name"] as $k => $v)
 		{
 		    if($Files['error'][$k] == 0)
 		    {
 		        if( $this->WebAppService->Func->fileType_Check($Files['name'][$k]) )
 		        {
-					$Files['name'][$k] = str_replace(' ', '', $Files['name'][$k]);
-			 
-			 $uploadFileName = \Strings::remove_fillter( basename($Files['name'][$k]) ) ;
-			 
-			 if( move_uploaded_file( $Files['tmp_name'][$k], $result["dir"] . $uploadFileName)  )
-			 {
-			     //업로드 성공
-			     
-			     if( !empty($upload_datas["attach_files"]) ){
-			         
-			         // 기존 저장되어있는 파일 삭제(주의 : 현재 업로드한 파일명 또는 폴더포함 파일명과 동일할 경우 삭제안함)
-			         if($result["dir"] . $uploadFileName != $upload_datas["attach_path"] . $upload_datas["attach_files"][$k]){
-					$this->attach_delete( $upload_datas["attach_path"] . $upload_datas["attach_files"][$k] );
-			         }
-			         
-			         // 교집합 처리 : 기존 저장된 파일 데이타 + 업로드한 파일
-			         $result["file"] = array_replace($result["file"], $upload_datas["attach_files"], array($k=>$uploadFileName)) ;
-			         // 저장된 파일 리스트(배열)에 삭제될 파일이 존재하면 모두 제거
-			         $this->WebAppService->Func->array_searchValue_remove($result["file"], $upload_datas["attach_files"][$k]);
-			     }else{
-			         // 신규등록시
-			         $result["file"][$k] = $uploadFileName ;
-			     }
-			     
-			 }
+		        	preg_match('/\.([^\.]*$)/', $Files['name'][$k], $extension);  // ex) array( 0 => ".gif", 1 => "gif" )
+		        	/*확장자*/$file_ext = strtolower($extension[1]);
+		        	/*파일명*/$file_name = substr($Files['name'][$k], 0, ((strlen($Files['name'][$k]) - strlen($file_ext)))-1);
+		        	
+		        	$file_name = str_replace(array(' ',','), '', $file_name) ;
+		        	$file_name = \Strings::remove_fillter( $file_name ) ;
+		        	$file_name = Strings::set_xss_detect($file_name) ;
+		        	$upload_originalFileName = $file_name .'.'. $file_ext ;
+		        	
+		        	$file_rename = Func::fileRename($Files['name'][$k], Strings::shuffle_alphaNum(7)) ;
+					
+		        	echo $upload_originalFileName."<br>" ;
+					echo $file_rename."<br>" ;
+					if( move_uploaded_file( $Files['tmp_name'][$k], $result["dir"] . $file_rename)  )
+					{
+					    //업로드 성공
+						//$upload_datas["attach_files"]
+					    if( !empty($upload_datas["attach_orig_files"]) ){
+					        
+					        // 기존 저장되어있는 파일 삭제(주의 : 현재 업로드한 파일명 또는 폴더포함 파일명과 동일할 경우 삭제안함)
+					    	if($result["dir"] . $upload_originalFileName != $upload_datas["attach_path"] . $upload_datas["attach_orig_files"][$k]){
+								$this->attach_delete( $upload_datas["attach_path"] . $upload_datas["attach_orig_files"][$k] );
+					        }
+					        //echo '111<pre>';print_r($result);exit;
+					        // 교집합 처리 : 기존 저장된 파일 데이타 + 업로드한 파일
+					        //$result["original_file"] = array_replace($result["original_file"], $upload_datas["attach_orig_files"], array($k=>$upload_originalFileName)) ;
+					        //$result["file"][] = $file_rename ;
+					        foreach($result["original_file"] as $okey => $original_file){
+					        	if($original_file == $upload_originalFileName){
+					        		$result["file"][$okey] = $file_rename ;
+					        		break ;
+					        	}else{
+					        		$result["file"][$k] = $file_rename ;
+					        		$result["original_file"][$k] = $upload_originalFileName ;
+					        	}
+					        	
+					        }
+					        // 저장된 파일 리스트(배열)에 삭제될 파일이 존재하면 모두 제거
+					        //$this->WebAppService->Func->array_searchValue_remove($result["original_file"], $upload_datas["attach_orig_files"][$k]);
+					        foreach($result["original_file"] as $okey => $original_file){
+					        	if($original_file == $upload_datas["attach_orig_files"][$k]){
+					        		unset($result["original_file"][$okey], $result["file"][$okey]);
+					        	}
+					        }
+					        
+					    }else{
+					        // 신규등록시
+					    	$result["file"][$k] = $file_rename ;
+					    	
+					    	$result["original_file"][$k] = $upload_originalFileName ;
+					    	// 원본파일명이 30자 넘으면 파일명명으로 변경
+					    	/* if(mb_strlen($upload_originalFileName) > 30){
+					    		$result["original_file"][$k] = $file_rename ;
+					    	}else{
+					    		$result["original_file"][$k] = $upload_originalFileName ;
+					    	} */
+					    }
+					    
+					}
 		        }
 		    }
 		}
-		//echo '<pre>';print_r($result);exit;
+		echo '111<pre>';print_r($result);exit;
 		return $result ;
      }
      /**
@@ -1448,7 +1494,6 @@ class BoardComm_controller extends BoardCommNest_service
 			    "firstdate" => time(),
 			    "regdate" => time()
 			);
-			
 			$put_data = array_merge($put_data, $put_add_data) ;
 			
 			// 업로드 파일 저장
@@ -1456,17 +1501,20 @@ class BoardComm_controller extends BoardCommNest_service
 			if( !empty($res["file"]) )
 			{
 			    $res_files = implode (",", $res["file"]) ;
+			    $res_original_files = implode (",", $res["original_file"]) ;
+			    
 			    $put_data = array_merge($put_data, array(
 			        "attach_path" => $res["dir"], // 또는 $data[0]["attach_path"]
-			        "attach_files" => $res_files
+			        "attach_files" => $res_files, // 변경된 파일명 리스트
+		    		"attach_orig_files" => $res_original_files // 원본 파일명(파일명이 길면 변경된 파일명이 저장됨[attach_upload 함수참조])
 			    ));
 			}
-
+			
 			try
 			{
 				$this->setTableName($this->boardInfoResult['table_name']);
-			   if( $this->boardInfoResult["indent"] ) $insert_id = $this->dataAdd( $put_data, $this->routeResult["code"]	) ;
-					else $insert_id = $this->dataAdd( $put_data ) ;
+			  	if( $this->boardInfoResult["indent"] ) $insert_id = $this->dataAdd( $put_data, $this->routeResult["code"]	) ;
+				else $insert_id = $this->dataAdd( $put_data ) ;
 			}
 			catch (BaseException $e) {
 			    $e->printException('controller');
@@ -2106,9 +2154,10 @@ class BoardComm_controller extends BoardCommNest_service
 			$this->setTableName($this->boardInfoResult['table_name']);
 			
 			$data = $this->dataRead(array(
-			    "columns" => "serial, bid, userid, pwd, sec, sec_pwd, attach_path, attach_files",
+			    "columns" => "serial, bid, userid, pwd, sec, sec_pwd, attach_path, attach_files, attach_orig_files",
 			    "conditions" => $where_arr
 			)) ;
+			
 			if(empty($data))
 			{
 				$this->WebAppService->assign(array('error'=>"작성자가 본인이 아니면 수정할 수 없습니다."));
@@ -2126,8 +2175,10 @@ class BoardComm_controller extends BoardCommNest_service
 			    
 			    $upload_datas = array(
 						"attach_path" => $data["attach_path"],
-						"attach_files" => explode(",", $data["attach_files"])
+						"attach_files" => explode(",", $data["attach_files"]),
+			    		"attach_orig_files" => explode(",", $data["attach_orig_files"])
 				) ;
+			    
 			}
 			
 			if( !(int) $data['serial'] )
@@ -2168,15 +2219,23 @@ class BoardComm_controller extends BoardCommNest_service
 					}
 				}
 			}
-			
 			$res = $this->attach_upload( $data['bid'], $data['attach_path'], $_FILES["frm_attachFile"], $upload_datas ) ;
 			if( !empty($res["file"]) )
 			{
-			    $res_files = implode (",", $res["file"]) ;
+			   /*  $res_files = implode (",", $res["file"]) ;
 			    $put_data = array_merge($put_data, array(
 								"attach_path" => $res["dir"], // 또는 $data[0]["attach_path"]
 								"attach_files" => $res_files
-					));
+					)); */
+			    
+			    $res_files = implode (",", $res["file"]) ;
+			    $res_original_files = implode (",", $res["original_file"]) ;
+			    
+			    $put_data = array_merge($put_data, array(
+			    		"attach_path" => $res["dir"], // 또는 $data[0]["attach_path"]
+			    		"attach_files" => $res_files, // 변경된 파일명 리스트
+			    		"attach_orig_files" => $res_original_files // 원본 파일명(파일명이 길면 변경된 파일명이 저장됨[attach_upload 함수참조])
+			    ));
 			}
 			
 			try
@@ -2347,6 +2406,9 @@ class BoardComm_controller extends BoardCommNest_service
 	    header("Location: ".WebAppService::$baseURL."/lst".WebAppService::$queryString); // 리스트 페이지 이동
 	    exit;
     }
+    /**
+     * 파일 다운로드
+     */
     public function download()
     {
         //Exception

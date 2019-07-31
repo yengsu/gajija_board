@@ -84,7 +84,7 @@ class Install_controller extends CommNest_service
 		$Dirs = array(
 				"cache/template" => array("title" => "캐쉬 디렉토리(template)", "result" => null),
 				"cache/dynamic" => array("title" => "캐쉬 디렉토리(dynamic)", "result" => null),
-				"tmp" => array("title" => "세션저장 및 기타", result => null),
+				"tmp" => array("title" => "세션저장 및 기타", "result" => null),
 				"datas" => array("title" => "사용자 템플릿 및 기타", "result" => null),
 				"html/_attach/" => array("title" => "첨부파일 저장", "result" => null),
 				"theme/template1/html/_attach/" => array("title" => "테마별 첨부파일 저장", "result" => null)

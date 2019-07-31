@@ -17,8 +17,8 @@ trait Controller_comm{
 	public function hasMemberLogin($return=false)
 	{
 	    if( ! $this->Member_service instanceof Member_service ){
-			//$this->Member_service = new Member_service();//\service\Member_service ;
-			$this->Member_service = Member_service ;
+			$this->Member_service = new Member_service();//\service\Member_service ;
+			//$this->Member_service = Member_service ;
 		}
 		//$ret = $this->Member_service->hasLogin(array('flag'=>$flag, 'queryString'=>REQUEST_URI)) ;
 		$ret = Member_service::hasLogin(array('return'=>$return, 'queryString'=>REQUEST_URI)) ;

@@ -208,7 +208,7 @@ class Install_controller extends CommNest_service
 		if( empty($_POST['adm_name']) || ctype_space($_POST['adm_name']) ) $this->WebAppService->assign(array('error'=> "관리자 이름을 입력하세요."));
 		if( empty($_POST['adm_nick']) || ctype_space($_POST['adm_nick']) ) $this->WebAppService->assign(array('error'=> "관리자 닉네임(별명)을 입력하세요."));
 		
-		Strings::set_xss_variable($_POST) ;
+		Strings::set_xss_variable( array('post' => $_POST) ) ;
 		
 		//#############
 		// 회원등급 등록
@@ -637,7 +637,7 @@ class Install_controller extends CommNest_service
 			$this->WebAppService->assign(array('error'=>self::$db_conf_file. " 파일이 없습니다."));
 		}
 		
-		Strings::set_xss_variable($_POST) ;
+		Strings::set_xss_variable( array('post' => $_POST) ) ;
 		
 		if( empty($_POST['db_host']) || ctype_space($_POST['db_host']) ) $this->WebAppService->assign(array('error'=> "DB 호스트명을 입력하세요."));
 		if( empty($_POST['db_userid']) || ctype_space($_POST['db_userid']) ) $this->WebAppService->assign(array('error'=> "DB 접속 아이디를 입력하세요."));

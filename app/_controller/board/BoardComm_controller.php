@@ -1335,8 +1335,8 @@ class BoardComm_controller extends BoardCommNest_service
 		        	
 		        	$file_rename = Func::fileRename($Files['name'][$k], Strings::shuffle_alphaNum(7)) ;
 					
-		        	echo $upload_originalFileName."<br>" ;
-					echo $file_rename."<br>" ;
+		        	//echo $upload_originalFileName."<br>" ;
+					//echo $file_rename."<br>" ;
 					if( move_uploaded_file( $Files['tmp_name'][$k], $result["dir"] . $file_rename)  )
 					{
 					    //업로드 성공
@@ -1386,7 +1386,7 @@ class BoardComm_controller extends BoardCommNest_service
 		        }
 		    }
 		}
-		echo '111<pre>';print_r($result);exit;
+		//echo '111<pre>';print_r($result);exit;
 		return $result ;
      }
      /**

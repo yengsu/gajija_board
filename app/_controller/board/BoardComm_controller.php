@@ -519,13 +519,15 @@ class BoardComm_controller extends BoardCommNest_service
 	     [0] => Array
 					     (
 						     ['exist'] => 1
-						     ['file'] => 1496ef7306.jpg
+						     ['file'] => f035dc8_1551421776.jpg
+						     ['original_file'] => 고구마.jpg
 					     )
 	     
 	     [1] => Array
 					     (
 						     ['exist'] => 0
-						     ['file'] => f035dc8de0908385f7ecc59cc7e4f6e7--korean-v-necks.jpg
+						     ['file'] => Qfsdac8_1563521784.jpg
+					         ['original_file'] => 오징어.jpg
 					     )
      )
      */
@@ -644,8 +646,6 @@ class BoardComm_controller extends BoardCommNest_service
     }
     public function view()
     {
-        //echo '<pre>';print_r(self::$menu_datas);
-        //echo '<pre>';print_r($this->routeResult);exit;
         if(REQUEST_METHOD=="GET")
         {
             //Exception
@@ -655,32 +655,6 @@ class BoardComm_controller extends BoardCommNest_service
             // 권한정보
             $this->board_access_grant( "read", $_REQUEST["bid"] );
             
-            // 회원용 / 비회원용
-            /* if($this->boardInfoResult["mbr_type"]==1)
-            {
-            	if( $this->grant_content['response']['read']['code'] != 200 )
-            	{
-                	$conditions = array("B.userid" => $_SESSION['MBRID'], "B.serial" => $this->routeResult["code"], "B.bid" => $_REQUEST["bid"]) ;
-            	}
-            	else{
-            		$conditions = array("B.serial" => $this->routeResult["code"], "B.bid" => $_REQUEST["bid"]) ;
-            	}
-            	
-                $data = $this->get_board_read($conditions);
-                if( !empty($data) ) $data = array_pop($data) ;
-            }
-            else{
-                $conditions = array( "serial" => $this->routeResult["code"], "bid" => $_REQUEST["bid"] ) ;
-                //self::$_query_debug = 1 ;
-                $data = $this->dataRead( array(
-                    "columns"=> '*',
-                    "conditions" => $conditions
-                ));
-                if( !empty($data) ) $data = $data[0] ;
-                
-                
-            } */
-
             //--------------------
             // 데이타 조회
             //--------------------
@@ -831,11 +805,6 @@ class BoardComm_controller extends BoardCommNest_service
 			$this->WebAppService->printAll();
         }
     }
-    
-    /* public function download()
-    {
-    	Func::download()
-    } */
     
     /*
      * $this->boardInfoResult["comments"],
@@ -1353,7 +1322,6 @@ class BoardComm_controller extends BoardCommNest_service
 					    	if($result["dir"] . $upload_originalFileName != $upload_datas["attach_path"] . $upload_datas["attach_orig_files"][$k]){
 								$this->attach_delete( $upload_datas["attach_path"] . $upload_datas["attach_orig_files"][$k] );
 					        }
-					        //echo '111<pre>';print_r($result);exit;
 					        // 교집합 처리 : 기존 저장된 파일 데이타 + 업로드한 파일
 					        //$result["original_file"] = array_replace($result["original_file"], $upload_datas["attach_orig_files"], array($k=>$upload_originalFileName)) ;
 					        //$result["file"][] = $file_rename ;

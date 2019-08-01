@@ -531,19 +531,23 @@ class BoardComm_controller extends BoardCommNest_service
      */
     private function read_attachfile( &$data )
     {
-        
         # 첨부파일
-        if( !empty($data["attach_files"]) ) $attach_files = explode(",", $data["attach_files"]) ;
-        
+    	if( !empty($data["attach_files"]) ) {
+    		$attach_files = explode(",", $data["attach_files"]) ;
+    		$attach_orig_files = explode(",", $data["attach_orig_files"]) ;
+    	}
+
         if( !empty($attach_files) )
         {
             $data["attachFiles"] = array();
-            for($i=0; $i<count($attach_files); $i++){
+            
+            for($i=0; $i<count($attach_files); $i++)
+            {
                 //echo $data["attach_path"].$attach_files[$i]."<br>" ;
                 if($attach_files[$i] && is_file($data["attach_path"].$attach_files[$i]))
-                    array_push($data["attachFiles"], array("exist"=>1, "file"=>$attach_files[$i]));
+                	array_push($data["attachFiles"], array("exist"=>1, "file"=>$attach_files[$i], "original_file"=>$attach_orig_files[$i]));
 				else
-					array_push($data["attachFiles"], array("exist"=>0, "file"=>$attach_files[$i]));
+					array_push($data["attachFiles"], array("exist"=>0, "file"=>$attach_files[$i], "original_file"=>$attach_orig_files[$i]));
             }
         }//echo '<pre>';print_r($data);
     }
@@ -554,11 +558,13 @@ class BoardComm_controller extends BoardCommNest_service
      * @return array|null
      */
     private function get_board_read( &$conditions ){
+    	
         $queryOption = array(
             "columns"=> 'B.*, M.serial as usercode, M.grade as m_grade, M.lev as m_lev, M.userid as m_userid, M.username as m_username, M.usernick as m_usernick',
             "conditions" => $conditions,
             "join" => "LEFT"
         );
+        $this->setTableName($this->boardInfoResult['table_name']) ;
         $data = $this->getDataAndMbr( $queryOption ) ;
         
         //if( !empty($data) ) $data = array_pop($data) ;
@@ -2422,6 +2428,7 @@ class BoardComm_controller extends BoardCommNest_service
         {
             $conditions = array("B.userid" => $_SESSION['MBRID'], "B.serial" => $this->routeResult["code"], "B.bid" => $_REQUEST["bid"]) ;
             //self::$_query_debug = 1 ;
+            
             $data = $this->get_board_read($conditions);
             //echo '<pre>';print_r(self::$_query_log);exit;
             if( !empty($data) ) $data = array_pop($data) ;
@@ -2433,9 +2440,9 @@ class BoardComm_controller extends BoardCommNest_service
                 "columns"=> '*',
                 "conditions" => $conditions
             ));
-            if( !empty($data) ) $data = array_pop($data) ;
             //echo '<pre>';print_r(self::$_query_log) ;
             //exit;
+            if( !empty($data) ) $data = array_pop($data) ;
         }
         //Exceptionn
         if( empty($data['serial']) || empty($data['bid'])){
@@ -2467,7 +2474,7 @@ class BoardComm_controller extends BoardCommNest_service
             
             if( ! (int)$data['attachFiles'][(int)$_GET['seq']]['exist'] ) $this->WebAppService->assign(array('error'=>'파일을 찾을 수 없습니다.'));
             
-            \Func::download( $download_attachFile ) ;
+            \Func::download( $download_attachFile, $data['attachFiles'][(int)$_GET['seq']]['original_file'] ) ;
             
             /* $data['attachFiles'] => Array
              (

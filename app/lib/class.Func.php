@@ -856,11 +856,12 @@ class Func
     	}
 	}
 	/**
-	 * 
+	 * 파일 다운로드
 	 * @param string $filePath
-	 * @deprecated
+	 * @param string $output_filename 다운로드시 파일명( "abc.jpg" or "abc.xlsx" or "abc.pdf" ... )
+	 * //@deprecated
 	 */
-	public static function download($filePath) 
+	public static function download($filePath, $output_filename='') 
 	{     
 	    /* echo $filePath."<br>" ;
 	    if(is_file($filePath)) echo "yes";
@@ -868,7 +869,7 @@ class Func
     if(!empty($filePath)) 
     { 
         $fileInfo = pathinfo($filePath); 
-        $fileName  = $fileInfo['basename']; 
+        $fileName = !empty($output_filename) ? $output_filename : $fileInfo['basename']; 
         $fileExtnesion   = $fileInfo['extension']; 
         $default_contentType = "application/octet-stream"; 
         //$content_types_list = mime_content_type($filePath); 

@@ -2214,26 +2214,43 @@ class BoardComm_controller extends BoardCommNest_service
 			
 			$put_data = array_merge($put_data, $put_add_data) ;
 			
-			// db에 저장된 첨부파일이 실제 존재하는지 체크
-			if($upload_datas['attach_files'])
+			// 파일 삭제 ( 삭제요청한 파일들 삭제처리 )
+			if( (int)$this->boardInfoResult['upload_file_cnt'] )
 			{
-				foreach($upload_datas['attach_files'] as &$sfile){
-					if( !empty($sfile) ){
-						if( ! is_file($upload_datas['attach_path'].$sfile) ) unset($sfile) ;
-					}else{
-						unset($sfile) ;
+				if( !empty($_POST['frm_file_del']) && is_array($_POST['frm_file_del']) )
+				{
+					foreach($_POST['frm_file_del'] as $k => $del_file)
+					{
+						if( (int)$k < (int)$this->boardInfoResult['upload_file_cnt'] && !empty($upload_datas['attach_files'][$k]) )
+						{
+							// 파일이 실제 존재하는지
+							$file = $upload_datas['attach_path'].$upload_datas['attach_files'][$k] ;
+							if( is_file($file) )
+							{
+								$this->WebAppService->File->delete($file) ;
+							}
+							unset($upload_datas['attach_files'][$k], $upload_datas['attach_orig_files'][$k]) ;
+						}
 					}
 				}
 			}
+			
+			// db에 저장된 첨부파일이 실제 존재하는지 체크
+			if( !empty($upload_datas['attach_files']) && is_array($upload_datas['attach_files']) )
+			{
+				foreach($upload_datas['attach_files'] as $k => &$sfile)
+				{
+					if( !empty($sfile) ){
+						if( ! is_file($upload_datas['attach_path'].$sfile) ) unset($sfile, $upload_datas['attach_orig_files'][$k]) ;
+					}else{
+						unset($sfile, $upload_datas['attach_orig_files'][$k]) ;
+					}
+				}
+			}
+
 			$res = $this->attach_upload( $data['bid'], $data['attach_path'], $_FILES["frm_attachFile"], $upload_datas ) ;
 			if( !empty($res["file"]) )
 			{
-			   /*  $res_files = implode (",", $res["file"]) ;
-			    $put_data = array_merge($put_data, array(
-								"attach_path" => $res["dir"], // 또는 $data[0]["attach_path"]
-								"attach_files" => $res_files
-					)); */
-			    
 			    $res_files = implode (",", $res["file"]) ;
 			    $res_original_files = implode (",", $res["original_file"]) ;
 			    
@@ -2242,6 +2259,13 @@ class BoardComm_controller extends BoardCommNest_service
 			    		"attach_files" => $res_files, // 변경된 파일명 리스트
 			    		"attach_orig_files" => $res_original_files // 원본 파일명(파일명이 길면 변경된 파일명이 저장됨[attach_upload 함수참조])
 			    ));
+			}
+			else{
+				$put_data = array_merge($put_data, array(
+						"attach_path" => '', // 또는 $data[0]["attach_path"]
+						"attach_files" => '', // 변경된 파일명 리스트
+						"attach_orig_files" => '' // 원본 파일명(파일명이 길면 변경된 파일명이 저장됨[attach_upload 함수참조])
+				));
 			}
 			
 			try

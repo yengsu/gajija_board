@@ -179,10 +179,18 @@ nhn.husky.EZCreator.createInIFrame({
 	{@ range(0,Board_conf['upload_file_cnt']-1)} 
         <div class="form-inline">
             <label for="frm_attachFile{.key_+1}" class="title">첨부파일 {.key_+1} </label>
-            <div class="data">
+            <div>
 				<input type="file" class=" frm_attach" id="frm_attachFile{.key_+1}" name="frm_attachFile[{.key_}]">
 			</div>
-			<div class="col-sm-2">{DATA.attachFiles[.key_]['file']}</div>
+		{? DATA.attachFiles[.key_]['original_file']}
+			<div class="data">
+				<div class="checkbox">
+					<input type="checkbox" class="checkbox checkbox-danger" id="frm_file_del{.key_+1}" name="frm_file_del[{.key_}]" value="1"> 
+					<label for="frm_file_del{.key_+1}" > 삭제</label>
+				</div>
+				<div class="p-l-10" style="line-height: 24px;">{DATA.attachFiles[.key_]['original_file']}</div> 
+			</div>
+		{/}
         </div>
 	{/} 
 {/}

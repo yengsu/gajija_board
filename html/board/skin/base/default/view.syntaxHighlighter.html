@@ -93,11 +93,13 @@ $(function(){
 		</div>
 		
 	{? DATA.attachFiles}
-		<div class="form-inline m-t-10 m-b-10" style="border-top:1px solid #e4e6e8;">
+		<div class="form-group m-t-10 m-b-10" style="line-height:24px;border-top:1px solid #e4e6e8;">
 			{@ DATA.attachFiles}
 				{? DATA.attachFiles[.key_]['exist'] == 1}
 					<!-- 링크 : <a href="/{DATA.attach_path}{DATA.attachFiles[.key_]['file']}" target="_blank">첨부파일{.key_+1}</a><br/> -->
+					<div>
 					첨부 : <a href="{Doc["baseURL"]}/download{? Doc["CODE"]}/{Doc["CODE"]}{/}{Doc["queryString"]}&seq={.key_+1}" target="_blank">{DATA.attachFiles[.key_]['original_file']}</a><br/>
+					</div>
 				{/}
 			{/}
 		</div>

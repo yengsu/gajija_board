@@ -84,177 +84,6 @@ class Notice_controller extends CommNest_service
 			unset($this->$k, $obj);
 		}
 	}
-	private function liveExecuteCommand($cmd, $view=0)
-	{
-		
-		while (@ ob_end_flush()); // end all output buffers if any
-		
-		$proc = popen("$cmd 2>&1 ; echo Exit status : $?", 'r');
-		//$proc = popen($cmd, 'r');
-		$live_output     = "";
-		$complete_output = "";
-		
-		while (!feof($proc))
-		{
-			$live_output     = fread($proc, 4096);
-			$complete_output = $complete_output . $live_output;
-			//echo iconv('euc-kr', 'utf-8', $live_output)."<br>";
-			if($ivew) echo $live_output."<br>" ;
-			
-			@ flush();
-		}
-		
-		pclose($proc);
-		
-		// get exit status
-		preg_match('/[0-9]+$/', $complete_output, $matches);
-		
-		// return exit status and intended output
-		/* return array (
-				'exit_status'  => intval($matches[0]),
-				'output'       => str_replace("Exit status : " . $matches[0], '', $complete_output)
-		); */
-		return array (
-		    'exit_status'  => $matches[0],
-		    'pid' => $proc,
-		    'output'       => str_replace("Exit status : " . $matches[0], '', $complete_output)
-		);
-	}
-	public function testxx(){
-		try {
-			//$result = $this->liveExecuteCommand('casperjs dev\\casperjs_test\\xls1.js');
-			$result = $this->liveExecuteCommand('casperjs dev\\casperjs_test\\timon2_server.js');
-			if(is_resource($res['pid'])) fclose($res['pid']);
-			if($result['exit_status'] === 0){
-				echo 'exit---0<br>';
-				// do something if command execution succeeds
-			} else {
-				echo 'exit---->>'.$result['exit_status'].'<br>';
-				// do something on failure
-			}
-			echo 'res--><pre>';print_r($res);
-			exit;
-			
-			//================================================
-			
-			
-			$data = array(); 
-			//exec('dev\\casperjs_test\\casperjs xls.js', $data, $ret);
-			//$output = shell_exec("dev\\casperjs_test\\casperjs xls.js");
-			$output = shell_exec("casperjs --output-encoding=utf8 --utf8 dev\\casperjs_test\\xls.js");
-			//$output = iconv("UTF-8", "EUC-KR", $output);
-			//$output = iconv("EUC-KR", "UTF-8", $output);
-			//$output = iconv("UTF-8", "CP1252", $output);
-			echo ("22＜pre＞".$output."＜/pre＞");
-			exit;
-			//sleep(5);
-			echo "<pre>";
-			if ($ret == 0) {                // check status code. if successful
-				foreach ($data as $line) {  // process array line by line
-					echo mb_detect_encoding($line, "EUC-KR, UTF-8, ASCII")." \n";
-					echo iconv('euc-kr', 'utf-8', $line)." \n";
-				}
-			} else {
-				echo "Error in command";    // if unsuccessful display error
-			}
-			echo "</pre>"; 
-			
-			exit;
-			if($result['exit_status'] === 0){
-				echo 'exit---0<br>';
-				// do something if command execution succeeds
-			} else {
-				echo 'exit---->>'.$result['exit_status'].'<br>';
-				// do something on failure
-			}
-			
-			
-			//$output = shell_exec("dev\\casperjs_test\\casperjs xls.js");
-			//echo ("22＜pre＞".$output."＜/pre＞");
-		} catch (\Exception $e) {
-			$this->WebAppService->assign( array(
-					"error" => $e->getMessage(),
-					"error_code" => $e->getCode()
-			));
-		}
-		
-	}
-	public function test_ping()
-	{
-	   /*  if($_GET['cmd'] == 'run'){
-	        $cmd = "ping -c 10 google.com";
-	        print_r(liveExecuteCommand($cmd));
-	    }elseif($_GET['cmd'] == 'kill'){
-	        fclose($_GET['pid']);
-	    } */
-	    
-	    //ini_set('output_buffering', 'off');
-	    //ini_set('zlib.output_compression', false);
-	    if (isset($_GET['domain'])) {
-	        
-	        $domain =  $_GET['domain'];
-	        $pingCmd = "ping ".$domain;
-	        //$this->liveExecuteCommand('chcp 949');//65001
-	        $res = $this->liveExecuteCommand($pingCmd);
-	        
-	        echo 'res--><pre>';print_r($res);
-	        if(is_resource($res['pid'])) fclose($res['pid']);
-	        exit;
-	    }
-	    else{
-	        echo "No post request";
-	    }
-	}
-	public function test_ping1()
-	{
-	    //ini_set('output_buffering', 'off');
-	    //ini_set('zlib.output_compression', false);
-	   // header('Content-Encoding: none;');
-	    
-	    $a = popen('ping www.gajija.com', 'r');
-	    
-	    while($b = fgets($a, 2048)) {
-	        echo $b."<br>\n";
-	        ob_flush();flush();
-	    }
-	    pclose($a); 
-	}
-	public function readDeals()
-	{
-		$this->WebAppService->assign(array(
-				'Doc' => array(
-						'baseURL' => WebAppService::$baseURL,
-						//'Action' => "write",
-						'queryString' => Func::QueryString_filter()
-						/* 'formType' => "등록" */
-						//'formType' => "add"
-				)
-		)) ;
-		
-		$this->WebAppService->Output( Display::getTemplate("html/adm/casperjs_test.html"), "admin_sub");
-		$this->WebAppService->printAll();
-	}
-	/**
-	 * @return array(
-	 * 			[exit_status] => 0
-    			[pid] => Resource id #19
-    			[output] => ""
-	 */
-	public function Req_getDeals()
-	{
-		set_time_limit(0);
-		putenv("PHANTOMJS_EXECUTABLE=/usr/local/bin/phantomjs");
-		//echo _DOC_ROOT."/dev/casperjs_test/timon_getDeals_serv.js";exit;
-		//$res = $this->liveExecuteCommand("casperjs --ignore-ssl-errors=true "._DOC_ROOT."/dev/casperjs_test/timon_getDeals_serv.js");
-		$res = $this->liveExecuteCommand("casperjs --ignore-ssl-errors=true dev/casperjs_test/timon_getDeals_serv.js");
-		//$result = json_decode($res['output'], true) ;
-		
-		//echo 'res--><pre>';print_r($result);
-		if(is_resource($res['pid'])) fclose($res['pid']);
-		
-		echo $res['output'];
-		exit;
-	}
 	public function add()
 	{
 		$this->WebAppService->assign(array(
@@ -613,9 +442,6 @@ class Notice_controller extends CommNest_service
 		//------------------------------------------
 		// 조건검색
 		//------------------------------------------
-		
-		
-		
 		//$queryString = array();
 		
 		//$search_params["withdrawal"] = 0 ;
@@ -630,34 +456,6 @@ class Notice_controller extends CommNest_service
 			$search_params["grade"] = $_REQUEST['Sgrade'] ;
 			$queryString["Sgrade"] = $_REQUEST['Sgrade'] ;
 		}
-		//총 주문건수 범위
-		/* if( isset($_REQUEST['Stotal_oea_start']) &&
-				is_numeric($_REQUEST['Stotal_oea_start']) || is_numeric($_REQUEST['Stotal_oea_end']))
-		{
-			if( !is_numeric($_REQUEST['Stotal_oea_end']) ){
-				$search_params["total_oea"] = (int) $_REQUEST['Stotal_oea_start'] ;
-				$queryString["Stotal_oea_start"] = (int) $_REQUEST['Stotal_oea_start'] ;
-			}
-			else{
-				$search_params["total_oea BETWEEN ".(int)$_REQUEST['Stotal_oea_start']." AND ".(int)$_REQUEST['Stotal_oea_end']] = '' ;
-				$queryString["Stotal_oea_start"] = (int) $_REQUEST['Stotal_oea_start'] ;
-				$queryString["Stotal_oea_end"] =  (int) $_REQUEST['Stotal_oea_end'] ;
-			}
-		}
-		//총 주문금액 범위
-		if( isset($_REQUEST['Stotal_oprice_start']) &&
-				is_numeric($_REQUEST['Stotal_oprice_start']) || is_numeric($_REQUEST['Stotal_oprice_end']))
-		{
-			if( !is_numeric($_REQUEST['Stotal_oprice_end']) ){
-				$search_params["total_oprice"] = (int) $_REQUEST['Stotal_oprice_start'] ;
-				$queryString["Stotal_oprice_start"] = (int) $_REQUEST['Stotal_oprice_start'] ;
-			}
-			else{
-				$search_params["total_oprice BETWEEN ".(int)$_REQUEST['Stotal_oprice_start']." AND ".(int)$_REQUEST['Stotal_oprice_end']] = '' ;
-				$queryString["Stotal_oprice_start"] = (int) $_REQUEST['Stotal_oprice_start'] ;
-				$queryString["Stotal_oprice_end"] =  (int) $_REQUEST['Stotal_oprice_end'] ;
-			}
-		} */
 		//총 포인트(마일리지) 범위
 		if( isset($_REQUEST['Stotal_point_start']) &&
 				is_numeric($_REQUEST['Stotal_point_start']) || is_numeric($_REQUEST['Stotal_point_end']))
@@ -775,8 +573,6 @@ class Notice_controller extends CommNest_service
 			{
 				foreach($datas as &$data)
 				{
-					$data["total_oea"] = number_format($data["total_oea"]) ;
-					$data["total_oprice"] = number_format($data["total_oprice"]) ;
 					$data["total_point"] = number_format($data["total_point"]) ;
 					//FROM_UNIXTIME(regdate, '%Y-%m-%d') as
 					if($data["sex"] == 1) $data["sex"] = 'male' ;   //남성

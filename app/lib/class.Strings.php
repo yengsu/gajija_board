@@ -1,4 +1,10 @@
 <?
+/**
+ * 문자(열) 처리
+ *
+ * @author 이영수
+ * @email yengsu@hanmail.net
+ */
 class Strings
 {
 	public static $HTMLPurifier_config ;

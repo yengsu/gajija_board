@@ -84,11 +84,10 @@ class View_controller {
 		}
 		
 		$file = "html_orig/" . $this->routeResult['folder'] . $this->routeResult['action'] . ".html";
-		if (! is_file ( $file ))
-			$file = "html/blank.html";
+		if (! is_file ( $file )) $file = "html/blank.html";
 			
-			$this->WebAppService->Output ( Display::getTemplate ( $file ), $this->routeResult["layout"]);
-			$this->WebAppService->printAll ();
+		$this->WebAppService->Output ( Display::getTemplate ( $file ), $this->routeResult["layout"]);
+		$this->WebAppService->printAll ();
 	}
 
 	

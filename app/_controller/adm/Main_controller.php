@@ -74,7 +74,6 @@ class Main_controller extends CommNest_service
 		}
 	}
 	
-	
 	public function index()
 	{
 		$this->WebAppService->assign(array(
@@ -83,39 +82,8 @@ class Main_controller extends CommNest_service
 						'queryString' => WebAppService::$queryString //Func::QueryString_filter()
 				)
 		)) ;
-		//$this->WebAppService->Output( Display::getTemplate("html/adm/board/main.html"),"admin_sub");
-		$this->WebAppService->Output( "html/adm/main.html", "admin_sub");
-		//$this->WebAppService->Display->define('MENU_SUB', Display::getTemplate("_layout/adm/adm.menu.product.html")) ;
-		$this->WebAppService->printAll();
-	}
-	public function test()
-	{
 		$this->WebAppService->Output( "html/adm/main.html", "admin_sub");
 		$this->WebAppService->printAll();
 	}
-	public function tests()
-	{
-		$this->WebAppService->Output( "html/test2.html", "blank");
-		$this->WebAppService->printAll();
-	}
-	public function testss()
-	{
-	    $this->WebAppService->Output( "html/test_flex.html", "blank");
-	    $this->WebAppService->printAll();
-	}
-	public function a(){
-		/* $ini = WebApp::singleton('INI_manager');
-		$conf = $ini->show_ini("conf/layout.conf.php");
-		echo '<pre>';print_r($conf) ; */
-		
-		$conf_file = "conf/layout.conf.php" ;
-		$ini = new INI_manager;
-		//$ini->add_entry($conf_file,'sub','SOS','@_layout/main/main.SOS.html','주석이네유^^');
-		$conf = $ini->get_ini_array($conf_file);
-		//$b = $ini->get_entry($conf_file, 'sub', 'TOP_COMMON_INC');
-		echo '<pre>';print_r($conf) ;
-	}
-	
-	
 	
 }

@@ -1,6 +1,6 @@
 <?php
 /****************
-* 작성일: 
+* 
 * 작성자: 이영수(youngsu lee)
 * email: yengsu@hanmail.net
 * 설   명: 

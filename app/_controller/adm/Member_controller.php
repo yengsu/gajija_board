@@ -653,34 +653,6 @@ class Member_controller extends CommNest_service
 			$search_params["grade"] = $_REQUEST['Sgrade'] ;
 			$queryString["Sgrade"] = $_REQUEST['Sgrade'] ;
 		}
-		//총 주문건수 범위
-		/* if( isset($_REQUEST['Stotal_oea_start']) &&
-				is_numeric($_REQUEST['Stotal_oea_start']) || is_numeric($_REQUEST['Stotal_oea_end']))
-		{
-			if( !is_numeric($_REQUEST['Stotal_oea_end']) ){
-				$search_params["total_oea"] = (int) $_REQUEST['Stotal_oea_start'] ;
-				$queryString["Stotal_oea_start"] = (int) $_REQUEST['Stotal_oea_start'] ;
-			}
-			else{
-				$search_params["total_oea BETWEEN ".(int)$_REQUEST['Stotal_oea_start']." AND ".(int)$_REQUEST['Stotal_oea_end']] = '' ;
-				$queryString["Stotal_oea_start"] = (int) $_REQUEST['Stotal_oea_start'] ;
-				$queryString["Stotal_oea_end"] =  (int) $_REQUEST['Stotal_oea_end'] ;
-			}
-		}
-		//총 주문금액 범위
-		if( isset($_REQUEST['Stotal_oprice_start']) &&
-				is_numeric($_REQUEST['Stotal_oprice_start']) || is_numeric($_REQUEST['Stotal_oprice_end']))
-		{
-			if( !is_numeric($_REQUEST['Stotal_oprice_end']) ){
-				$search_params["total_oprice"] = (int) $_REQUEST['Stotal_oprice_start'] ;
-				$queryString["Stotal_oprice_start"] = (int) $_REQUEST['Stotal_oprice_start'] ;
-			}
-			else{
-				$search_params["total_oprice BETWEEN ".(int)$_REQUEST['Stotal_oprice_start']." AND ".(int)$_REQUEST['Stotal_oprice_end']] = '' ;
-				$queryString["Stotal_oprice_start"] = (int) $_REQUEST['Stotal_oprice_start'] ;
-				$queryString["Stotal_oprice_end"] =  (int) $_REQUEST['Stotal_oprice_end'] ;
-			}
-		} */
 		//총 포인트(마일리지) 범위
 		if( isset($_REQUEST['Stotal_point_start']) &&
 				is_numeric($_REQUEST['Stotal_point_start']) || is_numeric($_REQUEST['Stotal_point_end']))

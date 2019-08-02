@@ -410,7 +410,7 @@ class BoardAdmin_controller extends BoardCommNest_service//BoardInfo_service
 								"attach_top" => (string) $_POST["attach_top"],
 								"attach_bottom" => (string) $_POST["attach_bottom"],
 								"noti_lev" => (int) $_POST["noti_lev"],
-								"noti_grant_apply" => (int) $_POST["noti_grant_apply"],
+								//"noti_grant_apply" => (int) $_POST["noti_grant_apply"],
 								"memo" => (string) $_POST["memo"],
 								"regdate" => time()
 						);
@@ -651,7 +651,7 @@ class BoardAdmin_controller extends BoardCommNest_service//BoardInfo_service
 									"attach_top" => (string) $_POST["attach_top"],
 									"attach_bottom" => (string) $_POST["attach_bottom"],
 									"noti_lev" => (int) $_POST["noti_lev"],
-									"noti_grant_apply" => (int) $_POST["noti_grant_apply"],
+									//"noti_grant_apply" => (int) $_POST["noti_grant_apply"],
 									"memo" => (string) $_POST["memo"]
 							),
 							array(

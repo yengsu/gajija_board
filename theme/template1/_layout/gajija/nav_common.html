@@ -148,11 +148,14 @@ $(function(){
 		* 		활성화된 메뉴 있거나 
 		* 		모바일 메뉴 활성화(체크박스 체크인) 아니고
 		*/
-		if( $(LEFT_MENU_context).hasClass('mobile') )
+		if( typeof LEFT_MENU_context !== 'undefined')
 		{
-			var visible_left_mnu = $(LEFT_MENU_context + ' > ul > li > ul').not('.hide') ;
-			if( !$(e.target).closest(LEFT_MENU_context).length && (visible_left_mnu.length) ){
-				leftMenu_close() ;
+			if( $(LEFT_MENU_context).hasClass('mobile') )
+			{
+				var visible_left_mnu = $(LEFT_MENU_context + ' > ul > li > ul').not('.hide') ;
+				if( !$(e.target).closest(LEFT_MENU_context).length && (visible_left_mnu.length) ){
+					leftMenu_close() ;
+				}
 			}
 		}
 	});

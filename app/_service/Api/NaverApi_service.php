@@ -415,14 +415,14 @@ class NaverApi_service
 	 * ■ 회원 프로필 정보 가져오기
 	 * 
 	 * 응답정보 : 
-	 * 				[id] => 14234325231
+	 * 				[id] => 14222225231
                     [nickname] => yeo****
                     [profile_image] => https://ssl.pstatic.net/static/pwe/address/img_profile.png
-                    [age] => 30-39
+                    [age] => 20-39
                     [gender] => M
                     [email] => yesssss@hanmail.net
                     [name] => 홍길동
-                    [birthday] => 08-03
+                    [birthday] => 05-03
 	 */
 	public function getUserProfile()
 	{
@@ -440,7 +440,7 @@ class NaverApi_service
 				$profile = array(
 						"provider" => "naver",
 						"email" => $result["response"]["response"]["email"],
-						"id" => $result["response"]["response"]["id"], // ex) 17465231
+						"id" => $result["response"]["response"]["id"], // ex) 13265231
 						"picture" => $result["response"]["response"]["profile_image"], // 사진 (https://ssl.pstatic.net/static/pwe/address/img_profile.png)
 						"gender" => $result["response"]["response"]["gender"], // "M" 또는 "F" [설명: 성별 male(남성) / female(여성) ]
 						"name" => $result["response"]["response"]["name"], // 이름

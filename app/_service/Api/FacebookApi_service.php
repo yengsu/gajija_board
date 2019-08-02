@@ -227,14 +227,14 @@ class FacebookApi_service
 	 * @return Array
 	 (
 	 [email] => yengsu@gmail.com
-	 [id] => 106451349300000096862
+	 [id] => 106451343232001096862
 	 [gender] => male
 	 [name] => youngsu lee
 	 [familyName] => lee
 	 [givenName] => youngsu
 	 [locale] => ko
 	 [picture] => https://lh3.googleusercontent.com/-XdUI........AAAAAAI/AAAA......v5M/photo.jpg
-	 [link] => https://plus.google.com/106451349300000096862
+	 [link] => https://plus.google.com/106451343232001096862
 	 [hd] =>
 	 [verifiedEmail] => 1
 	 )

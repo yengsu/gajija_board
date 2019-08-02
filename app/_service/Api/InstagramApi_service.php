@@ -281,9 +281,9 @@ class InstagramApi_service
 	 * 
 	 * 응답정보(oauthCallback_instagram) : 
                     {
-					    "access_token": "fb2322e77d.fd14safsd311afsda04cb3a58884d2d",
+					    "access_token": "fb2322e77d.fd14safs121264afsda04cb11884d2d",
 					    "user": {
-					        "id": "26734084",
+					        "id": "26334084",
 					        "username": "snoopdogg",
 					        "full_name": "Snoop Dogg",
 					        "profile_picture": "..."
@@ -297,7 +297,7 @@ class InstagramApi_service
 				$profile = array(
 						"provider" => "instagram",
 						//"email" => $result["response"]["email"],
-						"id" => $this->Token["user"]["id"], // ex) 1574083
+						"id" => $this->Token["user"]["id"], // ex) 13240833
 						"picture" => $this->Token["user"]["profile_picture"], // 사진 (https://ssl.pstatic.net/static/pwe/address/img_profile.png)
 						//"gender" => $result["response"]["gender"], // "M" 또는 "F" [설명: 성별 male(남성) / female(여성) ]
 						"name" => $this->Token["user"]["full_name"] // 이름

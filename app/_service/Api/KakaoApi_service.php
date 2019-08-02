@@ -404,7 +404,7 @@ class KakaoApi_service
 						"provider" => "kakao",
 						"email" => $result["response"]["kaccount_email"],
 						"id" => $result["response"]["id"], // ex) 826841730
-						"picture" => $result["response"]["properties"]["thumbnail_image"] // 사진 (http://k.kakaocdn.net/dn/abcde/xxxxxxx/Kf5sjNaK72iwnL5G7MRrl0/profile_110x110c.jpg)
+						"picture" => $result["response"]["properties"]["thumbnail_image"] // 사진 (http://k.kakaocdn.net/dn/abcde/xxxxxxx/Kf5sjN272i64231G7MRrl0/profile_110x110c.jpg)
 						//"gender" => ???, // 성별 male(남성) / female(여성)
 						//"name" => ???, // 이름(youngsu lee)
 						//"familyName" => ???, // 이름의 성(youngsu lee -> "lee")

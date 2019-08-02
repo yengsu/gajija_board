@@ -16,7 +16,7 @@ CREATE TABLE `brd#ID` (
     `sec_pwd` varchar(20) CHARACTER SET utf8 DEFAULT '' COMMENT '비밀글 비밀번호',
     `title` varchar(150) CHARACTER SET utf8 DEFAULT '' COMMENT '타이틀명',
     `usehtml` tinyint(1) DEFAULT '0' COMMENT 'html 사용유무(사용:1,미사용:0)',
-    `memo` text CHARACTER SET utf8 COMMENT '내용글',
+    `memo` longtext CHARACTER SET utf8 COMMENT '내용글',
     `noti` tinyint(1) DEFAULT '0' COMMENT '공지[알림](0:No / 1:Yes)',
     `attach_path` varchar(150) CHARACTER SET utf8 DEFAULT '' COMMENT '첨부파일 폴더',
     `attach_files` varchar(255) CHARACTER SET utf8 DEFAULT '' COMMENT '첨부파일(파일,파일,파일,파일.....)',

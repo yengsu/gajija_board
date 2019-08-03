@@ -1292,7 +1292,6 @@ class BoardComm_controller extends BoardCommNest_service
 			$result["file"] = $upload_datas["attach_files"] ;
 			$result["original_file"] = $upload_datas["attach_orig_files"] ;
 		}
-		
 		foreach($Files["name"] as $k => $v)
 		{
 		    if($Files['error'][$k] == 0)
@@ -1310,14 +1309,12 @@ class BoardComm_controller extends BoardCommNest_service
 		        	
 		        	$file_rename = Func::fileRename($Files['name'][$k], Strings::shuffle_alphaNum(7)) ;
 					
-		        	//echo $upload_originalFileName."<br>" ;
-					//echo $file_rename."<br>" ;
 					if( move_uploaded_file( $Files['tmp_name'][$k], $result["dir"] . $file_rename)  )
 					{
 					    //업로드 성공
 						//$upload_datas["attach_files"]
-					    if( !empty($upload_datas["attach_orig_files"]) ){
-					        
+					    if( !empty($upload_datas["attach_orig_files"]) )
+					    {
 					        // 기존 저장되어있는 파일 삭제(주의 : 현재 업로드한 파일명 또는 폴더포함 파일명과 동일할 경우 삭제안함)
 					    	if($result["dir"] . $upload_originalFileName != $upload_datas["attach_path"] . $upload_datas["attach_orig_files"][$k]){
 								$this->attach_delete( $upload_datas["attach_path"] . $upload_datas["attach_orig_files"][$k] );

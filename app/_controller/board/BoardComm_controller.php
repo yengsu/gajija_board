@@ -1262,7 +1262,7 @@ class BoardComm_controller extends BoardCommNest_service
       */
      private function attach_upload($bid, $uploadDir, &$Files, $upload_datas=NULL)
      {
-         echo '<pre>';print_r(func_get_args());//exit;
+         //echo '<pre>';print_r(func_get_args());//exit;
          if( empty($Files) ) return false;
          
          $result = array();

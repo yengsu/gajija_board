@@ -468,7 +468,7 @@ class BoardComm_controller extends BoardCommNest_service
 								B.serial, B.bid, B.family, B.parent, B.lft, B.rgt, B.indent, B.writer, B.title, B.noti, B.sec, B.regdate, B.viewcnt",
             "conditions" => $ResultQuery["query_condition"],
             "join" => "LEFT",
-            "order" => "B.noti DESC, B.serial" //, B.serial DESC"
+            "order" => "B.noti DESC, B.serial desc" //, B.serial DESC"
         );
         //echo '<pre>';print_r($queryOption)
         $this->setTableName($this->boardInfoResult['table_name']);
@@ -680,11 +680,11 @@ class BoardComm_controller extends BoardCommNest_service
             else{
 
             	// 게시판 [ 회원용 /  비회원용 ]
-            	if($this->boardInfoResult["mbr_type"]==1)
+            	/* if($this->boardInfoResult["mbr_type"]==1)
             	{
             		//로그인 체크
             		$this->hasMemberLogin();
-            	}
+            	} */
 
             }
 
@@ -1441,6 +1441,14 @@ class BoardComm_controller extends BoardCommNest_service
              )) ;
              if( !empty($error) ) $this->WebAppService->assign(array('error'=>$error));
              
+             /* TINYTEXT 256 bytes
+              TEXT 65,535 bytes ~64kb
+              MEDIUMTEXT 16,777,215 bytes ~16MB
+              LONGTEXT 4,294,967,295 bytes ~4GB */
+             if( $_SESSION['ADM'] != 1 ){
+             	if(mb_strwidth($_POST["frm_memo"], 'utf-8') > 65535 ) $this->WebAppService->assign(array('error'=>'내용 최대 글자수를 초과했습니다.'));
+             }
+             
              # 저장할 추가데이타
              $put_add_data = $this->get_write_variable( $this->boardInfoResult );
              
@@ -1483,7 +1491,7 @@ class BoardComm_controller extends BoardCommNest_service
 		    		"attach_orig_files" => $res_original_files // 원본 파일명(파일명이 길면 변경된 파일명이 저장됨[attach_upload 함수참조])
 			    ));
 			}
-			
+
 			try
 			{
 				$this->setTableName($this->boardInfoResult['table_name']);
@@ -1515,9 +1523,9 @@ class BoardComm_controller extends BoardCommNest_service
 			    $this->WebAppService->assign(array('error'=>'저장실패~다시입력해주세요.'));
 			    //$this->WebAppService->assign(array('error'=>'Failed to save. Please re-enter.'));
 			}
-			
+
          }
-         
+
 	}
      /**
       * 게시판 편집페이지
@@ -1532,17 +1540,17 @@ class BoardComm_controller extends BoardCommNest_service
 				!(int)$this->routeResult["code"] ) $this->WebAppService->assign(array('error'=>"해당 정보를 찾을 수 없습니다."));
 				//$this->WebAppService->assign(array('error'=>'데이타가 존재하지 않습니다.'));
 				//$this->WebAppService->assign(array('error'=>'The data does not exist.'));
-			 
+
 			if($this->boardInfoResult["mbr_type"]==1) $this->hasMemberLogin() ;
-				
+
 			// 권한정보
 			$this->board_access_grant( "update", $_REQUEST["bid"] );
-			
+
 			// 권한체크
 			if($this->grant_content['response']['update']['code'] != 200) {
 				$this->WebAppService->assign(array('error'=> $this->grant_content['response']['update']['msg'] ));
 			}
-			 
+
 			// 데이타 존재하는지 체크
 			/* $exist_data = $this->count( "serial", array("serial" => $this->routeResult["code"]) ) ;
 			if( $exist_data < 1)
@@ -1550,9 +1558,9 @@ class BoardComm_controller extends BoardCommNest_service
 				$this->WebAppService->assign(array('error'=>'데이타가 존재하지 않습니다.'));
 				//$this->WebAppService->assign(array('error'=>'The data does not exist.'));
 			} */
-			
+
 			$this->setTableName($this->boardInfoResult['table_name']);
-			
+
 			// 회원용 / 비회원용
 			if($this->boardInfoResult["mbr_type"]==1)
 			{
@@ -2959,6 +2967,13 @@ class BoardComm_controller extends BoardCommNest_service
             		"frm_memo"
             )) ;
             if( !empty($error) ) $this->WebAppService->assign(array('error'=>$error));
+            
+            /* TINYTEXT 256 bytes
+             TEXT 65,535 bytes ~64kb
+             MEDIUMTEXT 16,777,215 bytes ~16MB
+             LONGTEXT 4,294,967,295 bytes ~4GB */
+            if(mb_strwidth($_POST["frm_memo"], 'utf-8') > 65535 ) $this->WebAppService->assign(array('error'=>'댓글 최대 글자수를 초과했습니다.'));
+            
             
             // 댓글 환경정보 가져오기
             $this->get_comment_info($_REQUEST["bid"]) ;

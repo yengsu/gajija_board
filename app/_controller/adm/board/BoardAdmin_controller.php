@@ -422,19 +422,38 @@ class BoardAdmin_controller extends BoardCommNest_service//BoardInfo_service
 			try 
 			{
 				$insert_id = $this->dataAdd( $put_data	) ;
-				
+
 				if($insert_id)
-				{	
+				{
 					/* $a = file_get_contents("sql/mysql/board.sql");
 					$this->DBconn();
 					$this->DB->rawQuery($a); */
-					
+
 					//---------------------------
 					# 권한 설정
 					//---------------------------
 					$this->set_grants($_POST["bid"]) ;
 					//---------------------------
-					
+
+					if( (int) $_POST["comments"] )
+					{
+						$put_data = array(
+								"oid" => (int) OID,
+								"bid" => (string) $_POST["bid"],
+								//"skin_grp" => "base",
+								//"skin_name" => "scroll",
+								"title" => "[댓글]" . $_POST["title"],
+								//"table_name" => "comments",
+								"indent" => 1,
+								"sec_pwd" => 1,
+								"mbr_type" => 1,
+								"editor" => 1
+								//"memo" => (string) $_POST["memo"],
+						);
+						// 댓글생성
+						$this->set_comments_append( $put_data ) ;
+					}
+
 					header("Location: ".WebAppService::$baseURL."/lst".WebAppService::$queryString); // 리스트 페이지 이동
 					exit;
 				}
@@ -459,6 +478,70 @@ class BoardAdmin_controller extends BoardCommNest_service//BoardInfo_service
 
 		}
 
+	}
+	/**
+	 * 댓글
+	 * @param array $put
+	 * @return number|boolean
+	 */
+	private function set_comments_append( $put )
+	{
+		$put_data = array(
+				"oid" => (int) OID,
+				//"bid" => (string) $_POST["bid"],
+				//"mcode" => (int) $_POST["mcode"],
+				//"cate" => (int) $_POST["cate"],
+				"skin_grp" => "base",
+				"skin_name" => "scroll",
+				"title" => (string) $_POST["title"],
+				"table_name" => "comments",
+				"listscale" => 10,
+				"pagescale" => 10,
+				//"title_len" => (int) $_POST["title_len"],
+				//"indent" => (int) $_POST["indent"],
+				//"comments" => (int) $_POST["comments"],
+				//"sec" => (int) $_POST["sec"],
+				"sec_pwd" => 1,
+				"mbr_type" => 1,
+				"editor" => 1,
+				//"upload_path" => (string) $_POST["upload_path"],
+				//"upload_file_cnt" => (int) $_POST["upload_file_cnt"],
+				//"attach_path" => (string) $_POST["attach_path"],
+				//"attach_top" => (string) $_POST["attach_top"],
+				//"attach_bottom" => (string) $_POST["attach_bottom"],
+				//"noti_lev" => (int) $_POST["noti_lev"],
+				//"noti_grant_apply" => (int) $_POST["noti_grant_apply"],
+				//"memo" => (string) $_POST["memo"],
+				"regdate" => time()
+		);
+
+		$put_data = array_merge($put_data, $put) ;
+
+		try
+		{
+			$this->setTableName("comments_info") ;
+			$insert_id = $this->dataAdd( $put_data ) ;
+			
+			if($insert_id)
+			{
+				return $insert_id ;
+			}
+			else{
+				return false ;
+			}
+			
+		}catch (BaseException $e) {
+			$e->printException('controller');
+		}
+		catch (Exception $e) {
+			$this->WebAppService->assign( array(
+					"error" => $e->getMessage(),
+					"error_code" => $e->getCode()
+			));
+			exit;
+		}
+		
+		return false ;
 	}
 	/**
 	 * 게시판 편집페이지
@@ -658,6 +741,36 @@ class BoardAdmin_controller extends BoardCommNest_service//BoardInfo_service
 									"bid" => $this->routeResult["code"]
 							)
 					) ;
+
+
+					if( (int) $_POST["comments"] )
+					{
+						$this->setTableName("comments_info") ;
+						
+						$cnt = $this->count("serial", "bid='".$this->routeResult["code"]."'") ;
+						
+						if( ! (int) $cnt )
+						{
+							$put_data = array(
+									"oid" => (int) OID,
+									"bid" => (string) $_POST["bid"],
+									//"skin_grp" => "base",
+									//"skin_name" => "scroll",
+									"title" => "[댓글]" . $_POST["title"],
+									//"table_name" => "comments",
+									"indent" => 1,
+									"sec_pwd" => 1,
+									"mbr_type" => 1,
+									"editor" => 1
+									//"memo" => (string) $_POST["memo"],
+							);
+
+							// 댓글생성
+							$this->set_comments_append($put_data) ;
+						}
+					}
+
+
 			} catch (BaseException $e) {
 				$e->printException('controller');
 				/* $this->WebAppService->assign( array(
@@ -672,12 +785,12 @@ class BoardAdmin_controller extends BoardCommNest_service//BoardInfo_service
 				));
 				exit;
 			}
-			
+
 
 			header("Location: ".WebAppService::$baseURL."/lst".WebAppService::$queryString); // 리스트 페이지 이동
 			exit;
 		}
-		
+
 	}
 	/**
 	 * 게시판 - DB 삭제
@@ -688,7 +801,7 @@ class BoardAdmin_controller extends BoardCommNest_service//BoardInfo_service
 		{
 			try 
 			{
-			    
+
 			    // DB Table 선언
 			    /* $this->setTableName("board_info");
 			   $data = $this->dataRead(array(
@@ -713,7 +826,7 @@ class BoardAdmin_controller extends BoardCommNest_service//BoardInfo_service
 			            else{
 			                echo "no ==>". $data['table_name'] ;
 			            }
-			            
+
 			        }
 			        else{
 			            
@@ -721,22 +834,21 @@ class BoardAdmin_controller extends BoardCommNest_service//BoardInfo_service
 			                array(
 			                    "bid" => $this->routeResult["code"]
                         )) ;
-			            
+
 			        }
 			    } */
 				$this->setTableName(self::$table_info);
 			    $this->dataDelete(array(
 			            "bid" => $this->routeResult["code"]
                 )) ;
-			    
+
 			    $this->setTableName("grants");
 			    $this->dataDelete(array(
 			    		"oid" => (int) OID,
 			    		"group_name" => self::$table_default, // 게시판
 			    		"kind_code" => $this->routeResult["code"], // 게시판 아이디
 			    ));
-			    
-			    
+
 			}
 			catch (BaseException $e) {
 				$e->printException('controller');
@@ -772,7 +884,7 @@ class BoardAdmin_controller extends BoardCommNest_service//BoardInfo_service
 	 * @return multitype:
 	 */
 	private function get_cateNodes(){
-		
+
 		// DB Table 선언
 		//$this->setTableName("shop_cate");
 		//$this->TNst_getNodes("CateNodes");

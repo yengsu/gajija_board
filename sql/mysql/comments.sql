@@ -3,7 +3,7 @@ CREATE TABLE `comments#ID` (
   `serial` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `oid` int(11) DEFAULT '0' COMMENT '업체코드',
   `mcode` int(11) DEFAULT '0' COMMENT '메뉴(분류)코드',
-  `bid` varchar(25) CHARACTER SET utf8 DEFAULT '',
+  `bid` varchar(35) CHARACTER SET utf8 DEFAULT '',
   `cate` int(6) DEFAULT '0',
   `bserial` int(11) DEFAULT '0' COMMENT '게시판 serial',
   `parent` int(11) DEFAULT '0' COMMENT '소속된 게시글번호',
@@ -17,9 +17,8 @@ CREATE TABLE `comments#ID` (
   `title` varchar(150) CHARACTER SET utf8 DEFAULT '' COMMENT '타이틀명',
   `usehtml` tinyint(1) DEFAULT '0' COMMENT 'html 사용유무(사용:1,미사용:0)',
   `memo` text CHARACTER SET utf8 COMMENT '내용글',
-  `attach_path` varchar(150) CHARACTER SET utf8 DEFAULT '' COMMENT '첨부파일 폴더',
+  `attach_path` varchar(45) CHARACTER SET utf8 DEFAULT '' COMMENT '첨부파일 폴더',
   `attach_files` varchar(255) CHARACTER SET utf8 DEFAULT '' COMMENT '첨부파일(파일,파일,파일,파일.....)',
-  `attach_orig_files` varchar(255) CHARACTER SET utf8 DEFAULT '' COMMENT '첨부 원본파일(파일,파일,파일,파일.....)', 
   `sec` tinyint(1) DEFAULT '0' COMMENT '비밀글쓰기 사용 (사용:1/미사용:0)',
   `parent_del` tinyint(1) DEFAULT '0' COMMENT '부모글을 삭제한경우 (1:true,0:false)',
   `ip` varchar(45) CHARACTER SET utf8 DEFAULT '' COMMENT 'IP Address',
@@ -31,4 +30,4 @@ CREATE TABLE `comments#ID` (
   KEY `rgt_idx` (`rgt`),
   KEY `family_idx` (`family`),
   KEY `flr_idx` (`family`,`lft`,`rgt`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='#TITLE';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='#TITLE';

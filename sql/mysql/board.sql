@@ -3,7 +3,7 @@ CREATE TABLE `brd#ID` (
     `serial` int(11) unsigned NOT NULL AUTO_INCREMENT,
     `oid` int(11) DEFAULT '0' COMMENT '업체코드',
     `mcode` int(11) DEFAULT '0' COMMENT '메뉴(분류)코드',
-    `bid` varchar(25) CHARACTER SET utf8 DEFAULT '',
+    `bid` varchar(35) CHARACTER SET utf8 DEFAULT '',
     `cate` int(11) DEFAULT '0',
     `parent` int(11) DEFAULT '0' COMMENT '소속된 게시글번호',
     `family` int(11) DEFAULT '0' COMMENT '상위게시물코드(그룹코드)',

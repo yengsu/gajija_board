@@ -108,7 +108,7 @@ class BoardAdmin_controller extends BoardCommNest_service//BoardInfo_service
 	            'bid' => array(
 	                'label' => '보드 아이디(ID) ',
 	                //'rules' => 'required|min_char[1]|max_char[10]'
-	                'rules' => 'required|alpha_numeric|min_char[1]|max_char[10]'
+	                'rules' => 'required|alpha_numeric|min_char[1]|max_char[14]'
 	            ),
 	            'title' => array(
 	                'label' => '타이틀명 ',

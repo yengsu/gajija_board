@@ -687,7 +687,7 @@ class BoardComm_controller extends BoardCommNest_service
             	} */
 
             }
-
+            //echo '<pre>';print_r($this->grant_content);
             // 권한체크
             if($this->grant_content['response']['read']['code'] != 200) {
             	$this->WebAppService->assign(array('error'=> $this->grant_content['response']['read']['msg'] ));

@@ -89,6 +89,7 @@ CREATE TABLE `board_info` (
   `attach_top` varchar(45) CHARACTER SET utf8 DEFAULT '' COMMENT '상단 첨부파일',
   `attach_bottom` varchar(45) CHARACTER SET utf8 DEFAULT '' COMMENT '하단 첨부파일',
   `noti_lev` tinyint(1) DEFAULT '0' COMMENT '공지사항 읽기권한 적용유무',
+  `noti_grant_apply` tinyint(1) DEFAULT '0' COMMENT '공지사항 읽기권한 적용유무',
   `memo` varchar(255) CHARACTER SET utf8 DEFAULT '' COMMENT '메모',
   `regdate` int(11) DEFAULT '0' COMMENT '작성일자',
   PRIMARY KEY (`serial`),

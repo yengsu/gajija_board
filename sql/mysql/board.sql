@@ -24,7 +24,7 @@ CREATE TABLE `brd#ID` (
     `sec` tinyint(1) DEFAULT '0' COMMENT '비밀글쓰기 사용 (사용:1/미사용:0)',
     `viewcnt` int(11) DEFAULT '0' COMMENT '조회수',
     `parent_del` tinyint(1) DEFAULT '0' COMMENT '부모글을 삭제한경우 (1:true,0:false)',
-    `ip` varchar(45) CHARACTER SET utf8 DEFAULT '' COMMENT 'IP Address',
+    `ip` varchar(20) CHARACTER SET utf8 DEFAULT '' COMMENT 'IP Address',
     `firstdate` int(11) DEFAULT '0' COMMENT '최초 등록일자',
     `regdate` int(11) DEFAULT '0' COMMENT '등록/업데이트 일자',
     PRIMARY KEY (`serial`),

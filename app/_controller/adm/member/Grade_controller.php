@@ -219,8 +219,8 @@ class Grade_controller extends Member_service
 				exit;
 			}
 			else{
-			    /* WebApp::moveBack("저장실패~다시입력해주세요."); */
-			    WebApp::moveBack("Failed to save. Please re-enter.");
+			    WebApp::moveBack("저장실패~다시입력해주세요.");
+			    //WebApp::moveBack("Failed to save. Please re-enter.");
 			}
 			
 			

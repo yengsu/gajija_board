@@ -576,16 +576,40 @@ class BoardComm_controller extends BoardCommNest_service
      * 조회수 카운트 증가
      *
      * @param int $serial (게시판 TB의 P.K)
+     * @param string $group_code 그룹코드 ("board" or "comments"...)
+     * @param string $class_code 분류코드 ("qna" or "free" or "tipTech" .. )
+     * 
      * @return void
      */
-    private function set_visit_count(int $serial)
+    private function set_visit_count( int $serial, string $group_code, string $class_code="" )
     {
-        $put_data = array(
-            'viewcnt=viewcnt+1'
-        );
-        $this->dataUpdate( $put_data,	array(
-            "serial" => (int)$serial
-        )) ;
+    	try{
+	    	$res = $this->add_view_ip(array(
+	    			"group_code" => $group_code,
+	    			"class_code" => $class_code,
+	    			"serial_code" => $serial
+	    	)) ;
+    	}
+    	catch (BaseException $e) {
+    		$e->printException('controller');
+    	}
+    	catch (Exception $e) {
+    		$this->WebAppService->assign( array(
+    				"error" => $e->getMessage(),
+    				"error_code" => $e->getCode()
+    		));
+    		exit;
+    	}
+	    
+    	if( $res )
+    	{
+	        $put_data = array(
+	            'viewcnt=viewcnt+1'
+	        );
+	        $this->dataUpdate( $put_data,	array(
+	            "serial" => (int)$serial
+	        )) ;
+    	}
         
     }
     /**
@@ -707,7 +731,7 @@ class BoardComm_controller extends BoardCommNest_service
 			header("Location: ".WebAppService::$baseURL."/pwdAuthen".WebAppService::$queryString); // 리스트 페이지 이동
 			exit; */
 
-			$this->set_visit_count($this->routeResult["code"]) ;
+			$this->set_visit_count($this->routeResult["code"], "board", $_REQUEST["bid"]) ;
 
 			// 첨부파일 읽기
 			$this->read_attachfile($data);

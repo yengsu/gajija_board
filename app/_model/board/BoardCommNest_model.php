@@ -48,7 +48,40 @@ class BoardCommNest_model extends CommNest_model
 		
 		return $getInsertId ;
 	}
-	
+	/**
+	 * 일반Table - 신규추가
+	 * 
+	 * @param array $put_data
+	 *        array(
+	 *                  칼럼명=>값,
+	 *                  칼럼명=>값......
+	 *        )
+	 * @return int insert_id(P.K) 또는 결과값(1:true/0:false)
+	 * @tutorial
+	 * 			Return 값 관련정보 - 
+	 * 			Primary Key 가 Auto increment 이면 => insert id 리턴.
+	 * 														아니면 => 성공여부(1:성공 / 0:실패) 리턴
+	 */
+	public function dataAdd_base($put_data)
+	{
+		$this->DBconn();
+
+		$sql_params = self::sql_paramsProcess("insert", $put_data);
+		$sql = "
+				INSERT INTO
+					" .self::$TABLE. "
+				( ". $sql_params["columns"] ." )
+				VALUES
+				( ". $sql_params["sign_values"]." )" ;
+
+		$this->has_Trace();
+		$res = $this->DB->rawQuery($sql, $sql_params["values"]);
+		$this->Trace();
+		
+		$getInsertId = $this->DB->getInsertId();
+		
+		return $getInsertId?$getInsertId:$res ;
+	}
 	
 	/**
 	 *  게시판 카테고리+게시판+회원정보 조회

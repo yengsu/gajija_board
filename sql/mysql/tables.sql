@@ -28,7 +28,7 @@ CREATE TABLE `board` (
   `sec` tinyint(1) DEFAULT '0' COMMENT '비밀글쓰기 사용 (사용:1/미사용:0)',
   `viewcnt` int(11) DEFAULT '0' COMMENT '조회수',
   `parent_del` tinyint(1) DEFAULT '0' COMMENT '부모글을 삭제한경우 (1:true,0:false)',
-  `ip` varchar(45) CHARACTER SET utf8 DEFAULT '' COMMENT 'IP Address',
+  `ip` varchar(20) CHARACTER SET utf8 DEFAULT '' COMMENT 'IP Address',
   `firstdate` int(11) DEFAULT '0' COMMENT '최초 등록일자',
   `regdate` int(11) DEFAULT '0' COMMENT '등록/업데이트 일자',
   PRIMARY KEY (`serial`),
@@ -120,7 +120,7 @@ CREATE TABLE `comments` (
   `attach_files` varchar(255) CHARACTER SET utf8 DEFAULT '' COMMENT '첨부파일(파일,파일,파일,파일.....)',
   `sec` tinyint(1) DEFAULT '0' COMMENT '비밀글쓰기 사용 (사용:1/미사용:0)',
   `parent_del` tinyint(1) DEFAULT '0' COMMENT '부모글을 삭제한경우 (1:true,0:false)',
-  `ip` varchar(45) CHARACTER SET utf8 DEFAULT '' COMMENT 'IP Address',
+  `ip` varchar(20) CHARACTER SET utf8 DEFAULT '' COMMENT 'IP Address',
   `firstdate` int(11) DEFAULT '0' COMMENT '최초 등록일자',
   `regdate` int(11) DEFAULT '0' COMMENT '등록/업데이트 일자',
   PRIMARY KEY (`serial`),
@@ -336,3 +336,22 @@ CREATE TABLE `popups` (
   KEY `idx_title` (`title`),
   KEY `idx_oid` (`oid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='팝업관리';
+
+CREATE TABLE `viewcnt` (
+  `serial` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `oid` int(11) DEFAULT '0' COMMENT '업체코드',
+  `group_code` varchar(30) NOT NULL DEFAULT '' COMMENT '그룹코드(board,comment,member...)',
+  `class_code` varchar(45) DEFAULT '' COMMENT '분류코드',
+  `serial_code` int(11) unsigned DEFAULT '0' COMMENT '테이블의 serial코드',
+  `ip` varchar(20) NOT NULL DEFAULT '',
+  `regdate` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`serial`),
+  UNIQUE KEY `unique_col` (`oid`,`group_code`,`class_code`,`serial_code`,`ip`),
+  KEY `idx_group` (`oid`,`group_code`),
+  KEY `idx_class` (`oid`,`group_code`,`class_code`),
+  KEY `idx_serial` (`oid`,`group_code`,`class_code`,`serial_code`),
+  KEY `idx_oid` (`oid`),
+  KEY `idx_regdate` (`regdate`),
+  KEY `idx_serial2` (`oid`,`group_code`,`serial_code`),
+  KEY `idx_ip` (`ip`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='조회내역';

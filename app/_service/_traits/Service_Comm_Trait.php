@@ -1,13 +1,10 @@
 <?php
 namespace Gajija\service\_traits ;
-
 use Gajija\service\Member_service;
 
 /**
  * Service-공용 메서드
  * 
- * @author young lee
- * @email yengsu@gmail.com
   */
 trait Service_Comm_Trait
 {
@@ -111,11 +108,37 @@ trait Service_Comm_Trait
 			$msg['delete'] = "삭제권한이 없습니다." ;
 			
 			$data_grant = $this->get_grant($this->grant_content['group_name'], $this->grant_content['kind_code']) ;
-			
 			//--------------------------------
 			if( !empty($data_grant[0]) )
 			{
 				unset($data_grant[0]['grant_serial']) ; // 필요없어서 삭제
+				
+				//=================================================
+				// 등급명을 가져옴
+				//=================================================
+				/* $this->setTableName("member_grade");
+				$data_grade = $this->dataRead(array(
+						"columns"=> 'grade_code, grade_name'
+				));
+				if( !empty($data_grade) )
+				{
+					$data_grade = $data_grade[0] ;
+					foreach($data_grant[0] as $grant_name => $grant_value)
+					{
+							
+							if( strpos($grant_name, "grant_") !== FALSE )
+							{
+								echo '<pre>';print_r($grant_name) ;
+								foreach($data_grade as $grade){
+									
+								}
+							}
+							
+					}
+				} */
+				//=================================================
+				
+				
 				
 				
 				$this->grant_content['data'] = $data_grant[0] ;
@@ -162,9 +185,14 @@ trait Service_Comm_Trait
 								"msg" => $response_msg // 응답메시지
 						) ;
 						
+						/* if( !empty($type) ){
+							if($grant_type == $type) break ;
+						} */
+						
 					}
 				}
 				
+				//echo '<pre>';print_r($this->grant_content);
 			}
 			else{
 
@@ -207,8 +235,72 @@ trait Service_Comm_Trait
 	{
 		$this->grant_content['group_name'] = $group_name ;
 		$this->grant_content['kind_code'] = $kind_code ;
-		
+
 		$this->grant_getType($grant_type) ;
 		$this->grant_response($grant_type) ;
+	}
+	/**
+	 * 조회한 ip 추가
+	 * 
+	 * @param array $put
+	 * @return boolean
+	 * 
+	 * @uses db의 viewcnt 테이블 참조
+	 * 
+	 * @example $put = array(
+				"oid" => (int) OID, // 업체코드
+				"group_code" => null, // 그룹코드 ( ex: 'board' or 'page' or 'member'... ) 
+				"class_code" => null, // 분류코드 ( ex: 'qna' or 'free' ...)
+				"serial_code" => null, // 해당 DB Table 의 P.K 코드
+				"ip" => $_SERVER['REMOTE_ADDR'],
+				"regdate" => time(),
+		);
+	 */
+	
+	public function add_view_ip( array $put )
+	{
+		if( !is_array($put) || empty($put) || ctype_space($put) ) return false ;
+
+		if( empty($put['group_code']) || empty($put['serial_code']) ) return false ;
+
+
+		$conditions = array("group_code" => $put["group_code"] ) ;
+		if( !empty($put["class_code"]) ){
+			$conditions["class_code"] = $put["class_code"] ;
+		}
+		$conditions["serial_code"] = $put["serial_code"] ;
+
+		$prev_tableName = self::$TABLE ;
+		$this->setTableName("viewcnt");
+
+		$exist_data = $this->count( "serial", $conditions ) ;
+		if( (int)$exist_data ) return false ;
+
+		$put_data = array_merge(array(
+				"oid" => (int) OID, // 업체코드
+				"group_code" => null, // 그룹코드 ( ex: 'board' or 'page' or 'member'... ) 
+				"class_code" => null, // 분류코드 ( ex: 'qna' or 'free' ...)
+				"serial_code" => null, // 해당 DB Table 의 P.K 코드
+				"ip" => $_SERVER['REMOTE_ADDR'],
+				"regdate" => time(),
+		), $put) ;
+		try
+		{
+			$insert_id = $this->dataAdd_base( $put_data ) ;
+			
+			$this->setTableName($prev_tableName);
+			
+			if( (int) $insert_id ) return true ;
+		}
+		/* catch (BaseException $e) {
+			$e->printException('controller');
+		} */
+		catch (Exception $e) {
+			$this->WebAppService->assign( array(
+					"error" => $e->getMessage(),
+					"error_code" => $e->getCode()
+			));
+			exit;
+		}
 	}
 }

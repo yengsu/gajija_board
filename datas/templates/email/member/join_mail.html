@@ -1,0 +1,61 @@
+<html>
+  <head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    </head>
+  <body>
+    <div class="container" style="position: relative;width: 100%;max-width: 800px;line-height: 1;font-family: Tahoma, Verdana, Segoe, sans-serif;color: #3c3c3c">
+      <div class="wrap" style="width: 100%;margin-top: 35px;margin-bottom: 35px">
+        <h1 class="logo" style="margin-bottom: 30px;text-align: center"><a href="{HOST}" target="_blank" style="text-decoration: none;color: #3c3c3c"><img src="{HOST}/images/templates/logo.jpg" alt=""/></a></h1>
+        <div class="cont-box" style="width: 100%;background: white;text-align: center;border: 1px solid #ddd">
+          <div class="box-top" style="background-color: #7bc6b8;padding: 50px 0;margin-bottom: 35px;color: white">
+            <div class="join-img" style="display: block;margin: 0 auto;margin-bottom: 20px"><img src="{HOST}/images/templates/mail-join.png" alt=""/></div>
+            <div class="box-tl" style="text-align: center;font-size: 28px;font-weight: 600;line-height: 36px">안녕하세요. {USERNAME} 님.<br/>/div>
+            <hr style="width: 80px;border-top: 1px solid #e9e8e4;border-bottom: transparent;margin-top: 30px;margin-bottom: 30px"/>
+            <p style="font-size: 16px;font-weight: 500;white-space: pre-line;line-height: 22px;letter-spacing: 0.02em">
+            {USERNAME}님</p>
+          </div>
+
+          <div class="mail-table-wrap" style="padding-left: 40px;padding-right: 40px">
+            <h3 class="table-tl" style="text-align: left;font-size: 16px;font-weight: 500;margin-bottom: 5px">Membership information</h3>
+            <table class="mail-table2" style="width: 100%;border-top: 2px solid #7b7b7b;margin-bottom: 30px">
+                  <tr>
+                      <th style="width: 30%;font-size: 14px;font-weight: 400;padding: 7px 15px;border-right: 1px solid #e5e5e5;border-bottom: 1px solid #e5e5e5;background-color: #f7f7f7;text-align: center">회원 ID</th>
+                      <td style="width: 70%;font-size: 14px;font-weight: 400;padding: 7px 15px;border-bottom: 1px solid #e5e5e5;text-align: left">{USERID}</td>
+                  </tr>
+                  <tr>
+                      <th style="font-size: 14px;font-weight: 400;padding: 7px 15px;border-right: 1px solid #e5e5e5;border-bottom: 1px solid #e5e5e5;width: 20%;background-color: #f7f7f7;text-align: center">회원 명</th>
+                      <td style="font-size: 14px;font-weight: 400;padding: 7px 15px;border-bottom: 1px solid #e5e5e5;width: 30%;text-align: left">{USERNAME}</td>
+                  </tr>
+            </table>
+          </div>
+
+          <div class="mail-table-wrap" style="padding-left: 0;padding-right: 0">
+            <h3 class="table-tl" style="padding-left: 40px;text-align: left;font-size: 16px;font-weight: 500;margin-bottom: 5px">Membership Benefits</h3>
+            <div class="new-benefit" style="border-top: 2px solid #7b7b7b;height: 253px;border-bottom: 1px solid #e5e5e5;margin-left: 40px;margin-right: 40px;margin-bottom: 50px;padding-top: 0;padding-bottom: 40px">
+              <div class="new-item" style="width: 239px;float: left;text-align: center;border-right: 1px solid #eaeaea;margin-top: 15px">
+                <img src="{HOST}/images/templates/benefit1.png" alt="" style="width: 76%;margin-bottom: 35px;display: inline-block;text-align: center"/>
+                <span style="display: block;color: #000;font-size: 16px;font-weight: 500">10% Discount Coupon</span>
+                <p style="color: #6f6f6f;font-size: 12px;font-weight: 300;line-height: 17px">If you register, <br/>you will receive 10% discount coupon immediately.</p>
+              </div>
+              <div class="new-item" style="width: 239px;float: left;text-align: center;border-right: 1px solid #eaeaea;margin-top: 15px">
+                <img src="{HOST}/images/templates/benefit2.png" alt="" style="width: 76%;margin-bottom: 35px;display: inline-block;text-align: center"/>
+                <span style="display: block;color: #000;font-size: 16px;font-weight: 500">Birthday Coupon Benefits</span>
+                <p style="color: #6f6f6f;font-size: 12px;font-weight: 300;line-height: 17px">We will give you special coupons<br/>for your birthday, which you can use<br/>for your birthday every year.</p>
+              </div>
+              <div class="new-item" style="width: 239px;float: left;text-align: center;margin-top: 15px">
+                <img src="{HOST}/images/templates/benefit3.png" alt="" style="width: 76%;margin-bottom: 35px;display: inline-block;text-align: center"/>
+                <span style="display: block;color: #000;font-size: 16px;font-weight: 500">Earn points</span>
+                <p style="color: #6f6f6f;font-size: 12px;font-weight: 300;line-height: 17px">If you place an order, <br/>we will give you points to use as cash.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="mail-ad" style="margin: 35px 40px;border: 1px solid #ffb1b1"><a href="{HOST}/Plan/main" style="text-decoration: none;color: #3c3c3c"><img src="{HOST}/images/templates/mail-ad.jpg" alt="" style="width: 100%"/></a></div>
+
+          <div class="bt-area" style="margin-bottom: 35px"><a class="btn btn-line" href="{HOST}" target="_blank" style="text-decoration: none;color: #ff6288;border-radius: 3px;padding: 15px 0;text-align: center;display: inline-block;font-size: 15px;min-width: 200px;background-color: #fff;border: 2px solid #ff6288">YEPPU Shopping MALL</a></div>
+        </div>
+
+      </div>
+    </div>
+  </body>
+</html>

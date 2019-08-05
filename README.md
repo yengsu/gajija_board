@@ -32,17 +32,15 @@ group_concat_max_len=10240
 ## 퍼미션설정 
  
 1. html 캐쉬 디렉토리
- 
-   mkdir -R cache/dynamic
-
-   mkdir -R cache/template
    ```sh   
+   mkdir -R cache/dynamic
+   mkdir -R cache/template
    chmod -R 707 cache
    ```
 
 2. XSS방어 관련 캐쉬 디렉토리
  
-   사용안하면 성능저하가 생김(디렉토리 변경시 참조: http://htmlpurifier.org/download#toclink1)
+   (디렉토리 변경시 참조: http://htmlpurifier.org/download#toclink1)
    ```sh  
    chmod 707 app/lib/htmlpurifier/library/HTMLPurifier/DefinitionCache/Serializer
    ```
@@ -64,9 +62,10 @@ group_concat_max_len=10240
 
 ## db 설정
 
-conf/database.conf.dev.php 를
-
-conf/database.conf.php 로 변경한 후 파일내용을 수정해주세요.
+conf/database.conf.dev.php 를 conf/database.conf.php 로 파일명 변경하세요.
+```sh
+chmod 707 conf/database.conf.php
+```
 
 ## composer로 library 설치 (해당 폴더의 파일참조:  Readme) 
 

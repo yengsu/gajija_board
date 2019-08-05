@@ -200,7 +200,7 @@ class Adm_controller extends CommNest_service
 	public static function logout()
 	{
 	    unset( $_SESSION["ADMSERIAL"], $_SESSION["ADMID"], $_SESSION["ADMNAME"] );
-		//session_destroy();
+		session_destroy();
 		
 		header('Location:/Adm/manage') ;
 		exit;

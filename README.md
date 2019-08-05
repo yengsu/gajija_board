@@ -57,6 +57,7 @@ group_concat_max_len=10240
    ```
 5. html 디렉토리
    ```sh
+   chmod 707 html
    chmod -R 707 html/_attach/
    chmod -R 707 theme/template1/html/_attach/
    ```

@@ -3329,17 +3329,17 @@ class BoardComm_controller extends BoardCommNest_service
                 if($this->boardInfoResult["indent"]==1)
                 {
                     $del_data = $this->dataRead( array(
-			"columns"=> 'serial, indent, memo',
-			"conditions" => $where
+    		         "columns"=> 'serial, indent, memo',
+    		         "conditions" => $where
                     ));
                     if(!empty($del_data)) {
 			
-			$del_data = array_pop($del_data) ;
-			
-			$put_data = array( 'parent_del' => 1 );
-			$this->dataUpdate($put_data, array(
-			    'parent' => $del_data['serial']
-			));
+            			$del_data = array_pop($del_data) ;
+            			
+            			$put_data = array( 'parent_del' => 1 );
+            			$this->dataUpdate($put_data, array(
+            			    'parent' => $del_data['serial']
+            			));
                     }
                 }
                 

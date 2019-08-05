@@ -2318,7 +2318,7 @@ class BoardComm_controller extends BoardCommNest_service
 			    $res_original_files = implode (",", $res["original_file"]) ;
 			    
 			    $files_cnt = count($res["file"])-1;
-			    $res_downs = ($files_cnt > 1) ? '0'.str_repeat(',0', $files_cnt) : 0 ;
+			    $res_downs = ($files_cnt > 0) ? '0'.str_repeat(',0', $files_cnt) : 0 ;
 			    
 			    $put_data = array_merge($put_data, array(
 			    		"attach_path" => $res["dir"], // 또는 $data[0]["attach_path"]
@@ -2486,6 +2486,13 @@ class BoardComm_controller extends BoardCommNest_service
 			    	for($i=0; $i < count($del_files); $i++){
 			    		$this->attach_delete( $data[0]["attach_path"] . $del_files[$i] );
 			    	}
+
+			    	$this->setTableName("viewcnt") ;
+			    	$this->dataDelete(array(
+			    	    'group_code' => 'board',
+			    	    'class_code' => (string) $_REQUEST["bid"],
+			    	    'serial_code' => (int)$this->routeResult["code"]
+			    	));
 		    	}
 	    	}
 	    	

@@ -1053,11 +1053,6 @@ class Member_controller extends CommNest_service
 	    	$this->moveParent_win('') ;
 	    }
 	}
-	public function test()
-	{
-	    $a = new Gajija\service\Api\GoogleUrlshortenerApi_service() ;
-	    echo $a->shortURL();
-	}
 	public function login()
 	{
 		if( REQUEST_METHOD == 'GET')
@@ -1651,21 +1646,6 @@ class Member_controller extends CommNest_service
 		$this->WebAppService->Output( Display::getTemplate('member/join.html'), "one");
 		$this->WebAppService->printAll();
 
-	}
-	public function joinAdd()
-	{
-		$this->WebAppService->assign(array(
-				'Doc' => array(
-						'baseURL' => WebAppService::$baseURL,
-						'queryString' => Func::QueryString_filter(),
-						'Action' => "writeAdd"//$this->routeResult['action']
-				),
-				'MENU_TOP' => &self::$menu_datas['childs']
-		)) ;
-		$this->WebAppService->Output( 'html/yeppu/members/join_add.html', "sub");
-		
-		$this->WebAppService->printAll();
-		
 	}
 	/**
 	 * @desc CAPTCHA 인증

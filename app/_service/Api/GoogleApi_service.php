@@ -150,10 +150,10 @@ class GoogleApi_service
 	 * 
 	 * @return Array
         (
-            [access_token] => ya29.GlvsBLWOYs0pXlj-pW....
+            [access_token] => ya29.alvsgfdOYs0pXlj-pW....
             [token_type] => Bearer
             [expires_in] => 3600
-            [id_token] => eyJhbGciOiJSUzI1NiIsImtpZCI6IjZkMjJkO....
+            [id_token] => eyJhb1GciOiJS432sImtpZCI6IjZkMjJkO....
             [created] => 1508667466
         )
 	 */
@@ -196,7 +196,7 @@ class GoogleApi_service
 					    [familyName] => lee
 					    [givenName] => youngsu
 					    [locale] => ko
-					    [picture] => https://lh3.googleusercontent.com/-XdUI........AAAAAAI/AAAA......v5M/photo.jpg
+					    [picture] => https://lh3.googleusercontent.com/-sddI........AAAAAAI/AAAA......v5M/photo.jpg
 					    [link] => https://plus.google.com/106451349300000096862
 					    [hd] => 
 					    [verifiedEmail] => 1

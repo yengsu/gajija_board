@@ -79,19 +79,14 @@ class NaverApi_service
 	
 	protected static $apiKey = array(
 			
-			"eshop.kr" => array(
+			"www.test.kr" => array(
 					'clientId' => "",
 					'client_secret' => ""
 			),
-			"eshop.gajija.com" => array(
-					'clientId' => "12fRfsdafsadfsdaNP34G",
-					'client_secret' => "0fdsaf42sdahjvD6f"
+			"test.test.com" => array(
+					'clientId' => "12fRfsdsssdaNP314G",
+					'client_secret' => "0fddddd1ahjvD6f"
 			)
-			/*
-			 "yeppu.tw" => array(
-			 'app_id' => "",
-			 'app_secret' => ""
-			 ) */
 	);
 	
 	public function __construct()

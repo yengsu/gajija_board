@@ -143,9 +143,9 @@ if ( ! window.clipboardData ) document.oncopy = addLink;
 				{? DATA.attachFiles[.key_]['exist'] == 1}
 					<!-- 링크 : <a href="/{DATA.attach_path}{DATA.attachFiles[.key_]['file']}" target="_blank">첨부파일{.key_+1}</a><br/> -->
 					<div>
-					첨부 : <a href="{Doc["baseURL"]}/download{? Doc["CODE"]}/{Doc["CODE"]}{/}{Doc["queryString"]}&seq={.key_+1}" target="_blank">{DATA.attachFiles[.key_]['original_file']}</a> 
-					({DATA.attachFiles[.key_]['size']}) 
-					/ Download : {DATA.attachFiles[.key_]['down_count']}
+					첨부 : <a href="{Doc["baseURL"]}/download{? Doc["CODE"]}/{Doc["CODE"]}{/}{Doc["queryString"]}&seq={.key_+1}" target="_blank">{DATA.attachFiles[.key_]['original_file']}</a>
+					&nbsp;({DATA.attachFiles[.key_]['size']}) 
+					&nbsp;/ Download : {DATA.attachFiles[.key_]['down_count']}
 					<br/>
 					</div>
 				{/}

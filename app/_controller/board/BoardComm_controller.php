@@ -666,7 +666,7 @@ class BoardComm_controller extends BoardCommNest_service
     		}
     		
     		$put_data = array(
-    				'attach_downcnt='.$put
+    				'attach_downcnt' => $put
     		);
     		$this->dataUpdate( $put_data, array(
     				"serial" => (int)$serial
@@ -1569,7 +1569,7 @@ class BoardComm_controller extends BoardCommNest_service
 			    $res_original_files = implode (",", $res["original_file"]) ;
 			    
 			    $files_cnt = count($res["file"])-1;
-			    $res_downs = ($files_cnt > 1) ? '0'.str_repeat(',0', $files_cnt) : 0 ;
+			    $res_downs = ($files_cnt > 0) ? '0'.str_repeat(',0', $files_cnt) : 0 ;
 			    
 			    $put_data = array_merge($put_data, array(
 			        "attach_path" => $res["dir"], // 또는 $data[0]["attach_path"]
@@ -1700,7 +1700,7 @@ class BoardComm_controller extends BoardCommNest_service
 				//$data[0]["memo"] = str_replace("\n", "<br />", $data[0]["memo"]) ;
 			}
 			$this->decode_memo($data[0]["memo"], 'edit');
-			     
+			
 			$this->WebAppService->assign(array(
 					'Doc' => array(
 							'baseURL' => WebAppService::$baseURL,

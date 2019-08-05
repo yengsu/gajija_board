@@ -99,7 +99,7 @@ $(function () {
 		</div>
 		{/}
 	{/}
-	{? _SESSION['ADM']==1 || Board_conf['sec_pwd'] // 비밀글}
+	{? _SESSION['ADM']==1 || Board_conf['sec_pwd']==1 // 비밀글}
         <div class="form-inline">
         	<label for="frm_sec" class="title">비밀글</label>
             <div class="data">

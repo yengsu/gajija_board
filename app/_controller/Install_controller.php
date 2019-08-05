@@ -625,8 +625,6 @@ class Install_controller extends CommNest_service
 	 */
 	private function set_db_info()
 	{
-		//$db_conf_file = "conf/database.conf.php" ;
-		
 		if( is_file(self::$db_conf_file))
 		{
 			if (! is_writable(self::$db_conf_file)) {
@@ -663,7 +661,7 @@ class Install_controller extends CommNest_service
 			$sql_string = fread($fh, filesize(self::$sql_file));
 			fclose($fh);
 			//ob_end_clean();
-		
+			//echo '<pre>';print_r($this->DB->bindObj);exit;
 			$this->_multiQuery($sql_string) ;
 		}
 		else{

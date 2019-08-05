@@ -1,6 +1,5 @@
 <?php
 namespace Gajija\controller\_traits ;
-//use Gajija\service\Member_service;
 
 /**
  * Controller용 - 공용 메서드
@@ -8,26 +7,7 @@ namespace Gajija\controller\_traits ;
  */
 
 trait AdmController_comm{
-	//#########################################
-	// 공용 - 매직 메소드 (http://php.net/manual/kr/language.oop5.magic.php)
-	//#########################################
-	/* public function __call($name, $arguments)
-	{echo 999;
-		throw new \Exception("Method ".$name." is not supported.");
-	}
-	public static function __callStatic($name, $arguments)
-	{echo 999;
-		throw new \Exception("static Method ".$name." is not supported.");
-	}
-	public function __set($property, $value) {
-		echo 999;
-		if (property_exists($this, $property)) {
-			return $this->$property = $value;
-		}
-		//$this->{$property} = $value;
-		throw new \Exception("property ".$property." is not supported.");
-	} */
-	//#########################################
+	
 	public function adm_hasMemberLogin($flag=0)
 	{
 		//$ret = $this->Member_service->hasLogin(array('flag'=>$flag, 'queryString'=>REQUEST_URI)) ;

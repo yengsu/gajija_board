@@ -5,23 +5,26 @@
 > **Note:** PHP 7.0 이상
 
 ------------------
-Nginx 서버인 경우  (nginx.conf 설정)
+Nginx 서버인 경우 (nginx.conf 설정) - 선택사항
 ------------------
 client_max_body_size 100M;
 
 -----------------
-php.ini 설정권장
+php.ini 설정 - 선택사항
 ------------------
+>폼 전송시 변수갯수
+```
 max_input_vars = 5120
-
+```
 memory_limit = 256M
 
+>폼 데이타 및 파일업로드
+```
 post_max_size 100M
-
 upload_max_filesize 8M
-
+```
 -----------------
-my.cnf 설정권장 (DB : mysql or maria )
+my.cnf 설정 (DB : mysql or maria ) - 선택사항
 ------------------
 group_concat_max_len=10240
 
@@ -54,6 +57,7 @@ group_concat_max_len=10240
    ```
 5. html 디렉토리
    ```sh
+   chmod 707 html
    chmod -R 707 html/_attach/
    chmod -R 707 theme/template1/html/_attach/
    ```

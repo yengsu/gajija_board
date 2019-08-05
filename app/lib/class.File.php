@@ -907,6 +907,7 @@ class File{
 	 * @return string ex) 10.25 MB
 	 * 
 	 * @tutorial https://wiki.ubuntu.com/UnitsPolicy
+	 * @link https://stackoverflow.com/questions/5501427/php-filesize-mb-kb-conversion/5501447
 	 */
 	public static function format_bytes($bytes, $precision = 2) {
 		$units = array('B', 'KB', 'MB', 'GB', 'TB');

@@ -31,7 +31,7 @@ code { white-space: pre; }
 	.brd_content img{ max-width:100% !important;}
 }
 </style>
-
+<script type="text/javascript" src="/js/jquery/jquery.clipboard.js?ver=0.0.1"></script>
 <script type="text/javascript">
 $(function(){
 	//$( document ).ready(function() {
@@ -80,8 +80,58 @@ $(function(){
 			}
 		});
 	{/}
-		
 }) ;
+
+//복사 붙여넣기 출처표시
+function contents_cp() 
+{ 
+	if (window.event) 
+	{ 
+		window.event.returnValue = true; 
+		window.setTimeout('attach_kinref()', 25); 
+	} 
+} 
+function attach_kinref() 
+{
+	if (window.clipboardData) // IE 
+	{ 
+		// get data from clipboard 
+		var txt = window.clipboardData.getData('Text');
+		
+		// attach the source at the end of text 
+		txt = txt + '\r\n출처 : '+location.href+'\r\n';
+		// set data to clibboard 
+		var result = window.clipboardData.setData('Text', txt); 
+	} 
+}   
+
+function addLink() {
+	if ( ! window.clipboardData) // IE 
+	{
+	    var selection = window.getSelection();
+	
+	    var htmlDiv = document.createElement("div");
+	    for (var i = 0; i < selection.rangeCount; ++i) {
+	        htmlDiv.appendChild(selection.getRangeAt(i).cloneContents());
+	    }
+	    var selectionHTML = htmlDiv.innerHTML;
+	
+	    var pagelink = "<br/><br/>출처: "+location.href+"<br/>";
+	    var copytext = selectionHTML + pagelink;
+	    
+	    var newdiv = document.createElement('div');
+	    newdiv.style.position = 'absolute';
+	    newdiv.style.left = '-99999px';
+	    
+	    document.body.appendChild(newdiv);
+	    newdiv.innerHTML = copytext;
+	    selection.selectAllChildren(newdiv);
+	    window.setTimeout(function () { document.body.removeChild(newdiv); }, 0);
+	}
+}
+// IE 아니면
+if ( ! window.clipboardData ) document.oncopy = addLink;
+
 </script>
 <div class="container pb-5" >
 		<div class="form-inline m-t-20 p-b-30" style="border-bottom:1px solid #e4e6e8;">
@@ -102,7 +152,7 @@ $(function(){
 			{/}
 		</div>
 	{/}
-		<div class="brd_content text-break m-t-20 m-b-20" style="/* White-space : pre; *//* line-height: inherit; */">
+		<div onCopy='contents_cp();' class="brd_content text-break m-t-20 m-b-20" style="/* White-space : pre; *//* line-height: inherit; */">
 			{DATA.memo}
 		</div>
 		

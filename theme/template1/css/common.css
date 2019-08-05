@@ -53,8 +53,8 @@ body a:focus {
 	align-items: flex-start;
     flex-wrap: wrap;
     
-    flex-direction: column;
-    flex-basis: 100%; /*추가하면 new line처리됨*/
+    /* flex-direction: column; */
+    flex-basis: 100%;/*추가하면 new line처리됨*/
 }
 .form-group + .form-group {
     padding: 5px 0;

@@ -1875,6 +1875,16 @@ class Member_controller extends CommNest_service
 				WebApp::moveBack($error);
 			}
 			
+			Strings::set_xss_variable(array( 'post' => array(
+					"muserid",
+					"muserpw",
+					"muserpw_confirm",
+					"musername",
+					"musernick",
+					"mhp"
+				)
+			)) ;
+			
 			if($_POST['muserpw'] != $_POST['muserpw_confirm']){
 				WebApp::moveBack('비밀번호 확인은 비밀번호와 정확히 일치해야합니다.'); //Confirm password must be exactly equivalent to Password.
 			}
@@ -2116,6 +2126,18 @@ class Member_controller extends CommNest_service
 	{
 		if(REQUEST_METHOD=="POST")
 		{
+			Strings::set_xss_variable(array( 'post' => array(
+					"muserpw",
+					"muserpw_cur",
+					"muserpw_confirm",
+					"musernick",
+					"mhp",
+					"birth_year",
+					"birth_month",
+					"birth_day"
+				)
+			)) ;
+			
 		    $put_data = array();
 		    
 			$this->setTableName("member");

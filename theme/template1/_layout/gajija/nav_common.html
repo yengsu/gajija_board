@@ -201,7 +201,7 @@ $(function(){
               		{/}
               			<li>
               				<div class="row v-center-items item">
-              					<a {? .url}href='{.url}{:}#{/}' {? MNU.path[0]['serial'] == .serial}class="active"{/}>{.title}</a>
+              					<a href='{? .url}{.url}{:}#{/}' {? MNU.path[0]['serial'] == .serial}class="active"{/}>{.title}</a>
 								{? .is_branch==1}<label class="indent{.indent} deactive d-flex"></label>{/}
 							</div>
 

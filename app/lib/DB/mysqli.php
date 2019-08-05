@@ -280,13 +280,29 @@ class DB_mysqli extends Exception
             throw new Exception('MySQL host is not set');
         }
 
-        $this->_mysqli = @new mysqli($this->host, $this->username, $this->password, $this->db, $this->port);
+        try{
+            $this->_mysqli = @new mysqli($this->host, $this->username, $this->password, $this->db, $this->port);
         
-        if ($this->_mysqli->connect_error) {
-            //throw new Exception('Connect Error ' . $this->_mysqli->connect_errno . ': ' . $this->_mysqli->connect_error, $this->_mysqli->connect_errno);
-        	throw new Exception('DB Connect Error ' . $this->_mysqli->connect_errno, $this->_mysqli->connect_errno);
-        }
+            if ($this->_mysqli->connect_error) {
+                //throw new Exception('Connect Error ' . $this->_mysqli->connect_errno . ': ' . $this->_mysqli->connect_error, $this->_mysqli->connect_errno);
+                throw new Exception('DB Connect Error ' . $this->_mysqli->connect_error, $this->_mysqli->connect_errno);
+            }
 
+        } 
+        catch (Exception $e) {
+            if( REQUEST_WITH == 'AJAX' ){
+                //die( header('HTTP/1.0 400 '.rawurlencode($e->getMessage())) );
+                die( header('HTTP/1.0 400 '.rawurlencode($e->getMessage())) );
+            }else{
+                //echo '<pre>';print_r($e);
+                //echo $e->getMessage() ;
+                WebApp::moveBack($e->getMessage());
+                exit ;
+            }
+        }
+        
+        
+        
         if ($this->charset) {
             $this->_mysqli->set_charset($this->charset);
         }

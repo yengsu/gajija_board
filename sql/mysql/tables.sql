@@ -340,6 +340,7 @@ CREATE TABLE `popups` (
   KEY `idx_oid` (`oid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='팝업관리';
 
+DROP TABLE IF EXISTS `viewcnt`;
 CREATE TABLE `viewcnt` (
   `serial` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `oid` int(11) DEFAULT '0' COMMENT '업체코드',

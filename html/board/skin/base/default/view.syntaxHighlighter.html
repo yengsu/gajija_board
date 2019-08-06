@@ -1,3 +1,5 @@
+{ATTACH_TOP //페이지 상단내용(메뉴관리 참조)}
+
 {*
 <!-- SyntaxHighlight Start -->
 <script type="text/javascript" src="/dist/components/syntaxhighlighter/scripts/shCore.js"></script>
@@ -31,7 +33,6 @@ code { white-space: pre; }
 	.brd_content img{ max-width:100% !important;}
 }
 </style>
-<script type="text/javascript" src="/js/jquery/jquery.clipboard.js?ver=0.0.1"></script>
 <script type="text/javascript">
 $(function(){
 	//$( document ).ready(function() {
@@ -142,8 +143,8 @@ if ( ! window.clipboardData ) document.oncopy = addLink;
 			{@ DATA.attachFiles}
 				{? DATA.attachFiles[.key_]['exist'] == 1}
 					<!-- 링크 : <a href="/{DATA.attach_path}{DATA.attachFiles[.key_]['file']}" target="_blank">첨부파일{.key_+1}</a><br/> -->
-					<div>
-					첨부 : <a href="{Doc["baseURL"]}/download{? Doc["CODE"]}/{Doc["CODE"]}{/}{Doc["queryString"]}&seq={.key_+1}" target="_blank">{DATA.attachFiles[.key_]['original_file']}</a>
+					<div class="d-flex" style="flex-basis:100%;">
+					첨부 : <a href="{Doc["baseURL"]}/download{? Doc["CODE"]}/{Doc["CODE"]}{/}{Doc["queryString"]}&seq={.key_+1}" target="_blank">{DATA.attachFiles[.key_]['original_file']}</a> 
 					&nbsp;({DATA.attachFiles[.key_]['size']}) 
 					&nbsp;/ Download : {DATA.attachFiles[.key_]['down_count']}
 					<br/>
@@ -262,6 +263,8 @@ $(document).ready(function(){
 		<button type="button" id="btn_brdList" class="btn" onClick="location.href='{Doc["baseURL"]}/lst{Doc["queryString"]}';">목록보기</button>
 	</div>
 </div>
+
+{ATTACH_BOTTOM //페이지 하단내용(메뉴관리 참조)}
 
 
 {/}

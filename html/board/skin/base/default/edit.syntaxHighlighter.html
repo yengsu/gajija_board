@@ -1,3 +1,5 @@
+{ATTACH_TOP //페이지 상단내용(메뉴관리 참조)}
+
 {? Board_conf.editor == 1 //에디터 사용할 경우}
 
 	{? _SESSION['ADM'] == 1 //관리자인경우}
@@ -193,4 +195,7 @@ nhn.husky.EZCreator.createInIFrame({
         	</div>
         </div>
     </form>
+    
+    {ATTACH_BOTTOM //페이지 하단내용(메뉴관리 참조)}
+    
 </div>

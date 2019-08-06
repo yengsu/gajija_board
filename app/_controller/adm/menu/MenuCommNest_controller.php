@@ -404,7 +404,7 @@ class MenuCommNest_controller extends CommNest_service
 	protected function menu_to_file()
 	{
 		$datas = $this->dataRead(array(
-				"columns" => "serial, parent, indent, lft, rgt, title, layout, tpl, url, url_target, used, imp, grant_read, grant_write, CASE WHEN rgt - lft > 1 THEN 1 ELSE 0 END AS is_branch",
+				"columns" => "serial, parent, indent, lft, rgt, title, layout, tpl, url, url_target, used, imp, attach_basedir, attach_top, attach_bottom, grant_read, grant_write, CASE WHEN rgt - lft > 1 THEN 1 ELSE 0 END AS is_branch",
 				"conditions" => "used=1",
 				"orderby" => "lft"
 			));

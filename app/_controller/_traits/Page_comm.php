@@ -26,9 +26,7 @@ trait Page_comm{
 			\WebAppService::$queryString = \Func::QueryString_filter() ;
 			// base URL
 			\WebAppService::$baseURL = $this->routeResult["baseURL"] ;
-			
 		}
-		
 	}
 	public function __destruct()
 	{
@@ -48,6 +46,7 @@ trait Page_comm{
 		if( (int)$_SESSION['ADM'] == 1) return 200; // 관리자 인 경우
 		//else if( ! isset($_SESSION) || empty($_SESSION) ) return 401 ; // 로그인 인증이 필요
 		
+		//echo '<pre>';print_r($_SESSION);;
 		if( isset($_SESSION['MBRGRADE']) )
 		{
 			if( (int)$_SESSION['MBRGRADE'] >= (int) $grant_code )
@@ -99,22 +98,20 @@ trait Page_comm{
 	{
 		
 		if( !empty($key) && !empty($keyValue) )  $datas['self'] = \Func::array_searchKeyValue($datas['base'], $key, $keyValue) ;
-
+		
 		// 관리자 아니면 노출처리 된것만 출력
 		if( ! (int)$_SESSION['ADM'] ) {
-			if( !empty($datas['base']) )
-			{
-					for($i=0,$l=count($datas['base']); $i < $l; $i++){
-						if( !(int) $datas['base'][$i]['imp'] ) {
-							array_splice($datas["base"], $i, 1);//unset($datas["base"][$i]) ;
-							
-							$l=count($datas['base']);
-							$i-- ;
-						}
-					}
+		
+			for($i=0,$l=count($datas['base']); $i < $l; $i++){
+				if( !(int) $datas['base'][$i]['imp'] ) {
+					array_splice($datas["base"], $i, 1);//unset($datas["base"][$i]) ;
+					
+					$l=count($datas['base']);
+					$i-- ;
+				}
 			}
 		}
-		if( !empty($datas['base']) ) $datas['base'] = \Func::array_orderby($datas['base'], 'lft', SORT_ASC);
+		$datas['base'] = \Func::array_orderby($datas['base'], 'lft', SORT_ASC);
 		
 	    //if(!empty($menu['self'])) $menu['self'] = array_pop($datas['self']) ;
 	    
@@ -141,7 +138,7 @@ trait Page_comm{
     	    }
 	    }
 	    
-	    if( !empty($datas['base']) ) $this->TNst_renderTree($datas['base']);
+	    $this->TNst_renderTree($datas['base']);
 	    
 	    
 	    //$a = $this->TNst_jsTree($datas['base']) ;
@@ -150,6 +147,8 @@ trait Page_comm{
 	    
 	    //$read = Func::array_searchKeyValue($datas, 'serial', parent) ;
 	    
+	    //unset($datas['base']);
+	    //echo '11<pre>';print_r($datas) ;
 	}
 	/**
 	 * 
@@ -177,12 +176,12 @@ trait Page_comm{
 	    	
 	    	
 	    }else{
+	    	
 	    	$prev_table = static::$TABLE ; // 이전에 선언한 테이블 정보
 	    	
 		    $this->setTableName($table);
-		    
 		    $datas['base'] = $this->dataRead(array(
-		        "columns" => "serial, parent, indent, lft, rgt, title, layout, tpl, url, url_target, used, imp, grant_read, grant_write, CASE WHEN rgt - lft > 1 THEN 1 ELSE 0 END AS is_branch",
+		        "columns" => "serial, parent, indent, lft, rgt, title, layout, tpl, url, url_target, used, imp, attach_basedir, attach_top, attach_bottom, grant_read, grant_write, CASE WHEN rgt - lft > 1 THEN 1 ELSE 0 END AS is_branch",
 		        "conditions" => array_merge( array("used"=>1), $conditions ) ,
 		        "order" => "lft"
 		    ));
@@ -190,7 +189,8 @@ trait Page_comm{
 		    static::$TABLE = $prev_table ; // 이전에 사용하던 테이블로 재선언
 	    }
 	    
-	    if( !empty($datas['base']) ) array_splice($datas['base'],0, 1) ;
+	    
+	    array_splice($datas['base'],0, 1) ;
 	    
 	    $this->_get_nodes($datas, 'serial', (int)$serial) ;
 	    
@@ -237,11 +237,14 @@ trait Page_comm{
 	        $conditions = array_merge($conditions, array('imp'=>1)) ;
 	    }
 	    
+	    //self::$_query_debug = 1 ;
 		$datas =  $this->getMenu($table, array(
 				"serial" => $mcode,
 				"columns" => "serial, indent, lft, rgt, title, layout, tpl, url, url_target, used, imp, grant_read, grant_write",
 				"conditions" => $conditions
 		)) ;
+		//echo '<pre>';print_r(self::$_query_log);
+		//echo '<pre>';print_r($datas);exit;
 		
 		if( ! (int)$_SESSION['ADM'] && isset($datas['self']) && ! $datas['self']['used'] ) 
 		{
@@ -273,17 +276,21 @@ trait Page_comm{
 	 */
 	protected function menu_display_apply($mcode=0, $conditions=array())
 	{
-		if( !class_exists('Display', false) ) return false ;
-		
+		if( !class_exists('Display') ) return false ;
 		/**
 		 * 사이트 메뉴 정보 가져오기
 		 */
 		if($mcode){
 			
-			//if( !class_exists('WebAppService') ) $this->WebAppService->assign(array('error'=>'WebAppService 선언해주세요.'));
+			if( !class_exists('WebAppService') ) $this->WebAppService->assign(array('error'=>'WebAppService 선언해주세요.'));
 			
+			//self::$_query_debug = 1 ;
 			self::$menu_datas = $this->get_menu('menu', (int) $mcode, $conditions);
+			//echo '<pre>';print_r(self::$_query_log);
+			//echo '<pre>';print_r(self::$menu_datas);exit;
 			//if( !empty(self::$menu_datas['childs']) ) $this->TNst_renderTree(self::$menu_datas['childs']);
+			//echo '--------------------';
+			//if( empty(self::$menu_datas["childs"]) ){
 			if( empty(self::$menu_datas["self"]) ){
 				$this->WebAppService->assign(array('error'=>'메뉴정보를 찾을 수 없습니다.'));
 			}
@@ -300,12 +307,13 @@ trait Page_comm{
 			}
 				
 		}
-		
+		//if( class_exists('Display') ){
 		if( is_file($attach_top_file) ) $this->WebAppService->Display->define('ATTACH_TOP',  $attach_top_file) ;
 		else $this->WebAppService->Display->define('ATTACH_TOP',  '') ;
 		
 		if( is_file($attach_bottom_file) ) $this->WebAppService->Display->define('ATTACH_BOTTOM',  $attach_bottom_file) ;
 		else $this->WebAppService->Display->define('ATTACH_BOTTOM',  '') ;
+		//}
 	}
 	
 }

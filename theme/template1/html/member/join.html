@@ -1,7 +1,7 @@
 <script src="https://www.google.com/recaptcha/api.js"></script>
 <script src="/js/func/Validate.js"></script>
 <script src="/js/jquery/jquery.countdown.min.js"></script>
-<script src="/theme/{C.THEME}/js/jquery/mbr/jquery.mbr.join.js?ver=0.0.2"></script>
+<script src="/theme/{C.THEME}/js/jquery/mbr/jquery.mbr.join.js?ver=0.0.3"></script>
 <script type="text/javascript">
 var baseURL = '{Doc["baseURL"]}';
 </script>
@@ -124,7 +124,7 @@ section.members {
 		        <form id="formWrite" name="formWrite" action="{Doc["baseURL"]}/{Doc["Action"]}{? Doc["CODE"]}/{Doc["CODE"]}{/}{Doc["queryString"]}" method="post" enctype="multipart/form-data">
 					
 						<div class="form-inline">
-				            <label for="frm_writer" class="column title">아이디</label>
+				            <label for="btn-museridChk" class="column title">아이디</label>
 				            <div class="data">
 				            	<div class="InputAddOn grow1">
 					            	<input type="text" class="InputAddOn-field" id="muserid" name="muserid" placeholder="이메일 주소" required autocomplete="off">
@@ -146,33 +146,33 @@ section.members {
 							</div>
 						</div>
 			           <div class="form-inline">
-				            <label for="frm_writer" class="title">비밀번호</label>
+				            <label for="muserpw" class="title">비밀번호</label>
 				            <div class="data">
 				            	<input type="password" data-minlength="6" id="muserpw" name="muserpw" placeholder="비밀번호 영문,숫자,특수문자 6~15자" autocomplete="off" required>
 				            </div>
 						</div>
 			           
 			           <div class="form-inline">
-				            <label for="frm_writer" class="title">비밀번호 확인</label>
+				            <label for="muserpw_confirm" class="title">비밀번호 확인</label>
 				            <div class="data">
 				            	<input type="password" id="muserpw_confirm" name="muserpw_confirm" placeholder="비밀번호 확인" autocomplete="off" required>
 				            </div>
 						</div>
 			           
 			           <div class="form-inline">
-				            <label for="frm_writer" class="title">이름</label>
+				            <label for="musername" class="title">이름</label>
 				            <div class="data">
 				            	<input type="text" id="musername" name="musername" placeholder="이름" required autocomplete="off">
 				            </div>
 						</div>
-						<!-- <div class="form-inline">
-				            <label for="frm_writer" class="col-form-label col-sm-4">닉네임</label>
+						<div class="form-inline">
+				            <label for="musernick" class="title">닉네임</label>
 				            <div class="data">
 				            	<input type="text"  id="musernick" name="musernick" placeholder="닉네임(별명)" required autocomplete="off">
 				            </div>
-						</div> -->
+						</div>
 						<div class="joinSex form-inline">
-							<label for="frm_writer" class="title">성별</label>
+							<label class="title">성별</label>
 				            <div class="data" style="padding-top: 0.5em;">
 				            
 					              	<input type="radio" class="radio radio-danger" id="msex-female" name="msex" value="2" required>
@@ -184,13 +184,13 @@ section.members {
 						</div>
 						
 			           <div class="form-inline">
-				            <label for="frm_writer" class="title">휴대폰 번호</label>
+				            <label for="mhp" class="title">휴대폰 번호</label>
 				            <div class="data">
 				            	<input type="text" id="mhp" name="mhp" placeholder="휴대폰 번호" required autocomplete="off">
 				            </div>
 						</div>
 						<div class="form-inline">
-				            <label for="frm_writer" class="title">프로필 사진</label>
+				            <label for="profile_photo" class="title">프로필 사진</label>
 				            <div class="data">
 				            	<input type="file"  id="profile_photo" name="profile_photo" placeholder="프로필 사진" required autocomplete="off">
 				            </div>

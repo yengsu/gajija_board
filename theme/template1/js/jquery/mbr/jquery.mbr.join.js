@@ -245,9 +245,15 @@ $(function () {
 				}
 				
 				else if (!$('input[name="musername"]', join_authen.Frm).val().length || !validateSpecialChar( $('input[name="musername"]', join_authen.Frm).val() )  ){
-						//$('input[name="musername"]', Frm).val().indexOf(" ") >= 0) {
+					//$('input[name="musername"]', Frm).val().indexOf(" ") >= 0) {
 					alert('이름을 정확하게 입력해주세요.'); //Please enter your name correctly.
 					$('input[name="musername"]', join_authen.Frm).focus() ;
+					return false ;
+				}
+				else if (!$('input[name="musernick"]', join_authen.Frm).val().length || !validateSpecialChar( $('input[name="musernick"]', join_authen.Frm).val() )  ){
+					//$('input[name="musername"]', Frm).val().indexOf(" ") >= 0) {
+					alert('닉네임(별명)을 입력해주세요.'); //Please enter your name correctly.
+					$('input[name="musernick"]', join_authen.Frm).focus() ;
 					return false ;
 				}
 				else if ( !$('input[name="mhp"]', join_authen.Frm).val().length || !validateNumber($('input[name="mhp"]', join_authen.Frm).val()) ){

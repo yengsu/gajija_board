@@ -89,9 +89,8 @@ class Member_controller extends CommNest_service
 	
 	public function __construct($routeResult)
 	{
-		
 		$this->__constructor($routeResult);
-		
+
 		// DB Table 선언
 		$this->setTableName("member");
 
@@ -153,20 +152,20 @@ class Member_controller extends CommNest_service
 	 * @example $profile Array
 		(
 			[provider] => facebook
-		    [email] => gildong@gmail.com
-		    [id] => 10670412340421001067404
+		    [email] => yeess@gmail.com
+		    [id] => 106704340800000046404
 		    [gender] => male
-		    [name] => gildong hong
+		    [name] => youngsu lee
 		    
-			[familyName] => hong (Google용)
-			[givenName] => gildong (Google용)
+			[familyName] => lee (Google용)
+			[givenName] => youngsu (Google용)
 			
-            [first_name] => 길동 (Facebook용)
-            [last_name] => 홍 (Facebook용)
+            [first_name] => 영수 (Facebook용)
+            [last_name] => 이 (Facebook용)
             
 		    [locale] => ko
-		    [picture] => https://lh3.googleusercontent.com/-XdSEMkCX/AAAFFAAI/FSDAAAAAA/4252rsFFG43M/photo.jpg
-		    [link] => https://plus.google.com/10670412340421001067404
+		    [picture] => https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAABBAAAI/ADAACAAAAAA/4252rscbv5M/photo.jpg
+		    [link] => https://plus.google.com/106704340800000046404
 		)
 	 */
 	private function loginApi_process( $profile )
@@ -412,6 +411,7 @@ class Member_controller extends CommNest_service
 	public function oauthCallback_google(){
 		
 		$GoogleApi_service = new GoogleApi_service() ;
+		//echo '<pre>';print_r($_SESSION);exit;
 		if (isset($_GET['code'])) 
 		//if(!$_SESSION['id_token_token'])
 		{
@@ -1053,6 +1053,11 @@ class Member_controller extends CommNest_service
 	    	$this->moveParent_win('') ;
 	    }
 	}
+	public function test()
+	{
+	    $a = new Gajija\service\Api\GoogleUrlshortenerApi_service() ;
+	    echo $a->shortURL();
+	}
 	public function login()
 	{
 		if( REQUEST_METHOD == 'GET')
@@ -1647,6 +1652,21 @@ class Member_controller extends CommNest_service
 		$this->WebAppService->printAll();
 
 	}
+	public function joinAdd()
+	{
+		$this->WebAppService->assign(array(
+				'Doc' => array(
+						'baseURL' => WebAppService::$baseURL,
+						'queryString' => Func::QueryString_filter(),
+						'Action' => "writeAdd"//$this->routeResult['action']
+				),
+				'MENU_TOP' => &self::$menu_datas['childs']
+		)) ;
+		$this->WebAppService->Output( 'html/yeppu/members/join_add.html', "sub");
+		
+		$this->WebAppService->printAll();
+		
+	}
 	/**
 	 * @desc CAPTCHA 인증
 	 * 
@@ -1822,7 +1842,7 @@ class Member_controller extends CommNest_service
 	 */
 	private function nickname_validate( string $nickname )
 	{
-		if( preg_match('/(관리|운영|admin|manage|master)/i', (string)$nickname) ) return false ;
+		if( preg_match('/(관리|운영|admin|manage|master|가지자|gajija)/i', (string)$nickname) ) return false ;
 		else return true ;
 	}
 	/**
@@ -1836,11 +1856,15 @@ class Member_controller extends CommNest_service
 			if( ! $this->captcha_validate($_POST['g-recaptcha-response']) ){
 				WebApp::moveBack('로봇이 아니면 체크해주세요.');
 			}
+			
+			if( strtolower($_POST["muserid"]) == 'gajija') $this->WebAppService->assign(array('error'=>'사용할 수 없는 ID입니다.'));
+			
 			//echo '222<pre>';print_r($_POST);exit;
 			$_POST["muserid"] = trim($_POST["muserid"]);
 			$_POST["muserpw"] = trim($_POST["muserpw"]);
 			$_POST["msex"] = trim($_POST["msex"]);
 			$_POST["musername"] = trim(Strings::tag_remove($_POST["musername"]));
+			$_POST["musernick"] = trim(Strings::tag_remove($_POST["musernick"]));
 			$_POST["mhp"] = trim(Strings::tag_remove($_POST["mhp"]));
 			
 			$error = $this->getValidate( array(
@@ -2139,7 +2163,7 @@ class Member_controller extends CommNest_service
 			}
 			//$getData[0]['serial'] != $this->passwd_encrypt( (string)$_POST['muserpw_cur'] )
 			
-			$getData = array_pop($getData) ;
+			$getData = $getData[0] ;
 
 			// google, facebook login api 아니면(x)
 			if($getData['userpw'] != '')

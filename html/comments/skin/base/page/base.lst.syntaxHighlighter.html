@@ -1,0 +1,81 @@
+{@COMMENTS_LIST}
+		{?  Comments_conf['indent'] == 1 //계층형 사용유무}
+            <div class="wComments_block_{.family}_{.serial} feed-element" data-sec="{.sec}" style="{? .indent==0}border-left:3px solid rgba(108, 167, 215, 0.42);padding-left:10px;{/}{?.indent}margin-left:{?.indent < 6}{.indent*50}{:}{5*50}{/}px;{/}">
+		{:}
+            <div class="wComments_block_{.family}_{.serial} feed-element" data-sec="{.sec}" style="padding-left:10px;">
+		{/}
+                <a href="javascript:void(0);" class="float-left">
+                	<img alt="image" class="profile-photo img-circle rounded-circle" data-noimage="{.profile_not_photo}" src="{.profile_photo}">
+                    <!-- <br>{.serial} -->
+                </a>
+                <div class="media-body pl-2 pt-2">
+                    <small class="float-right">
+                    	{? _SESSION['MBRID'] != '' && Comments_conf['indent']==1 && (.sec==0 || _SESSION['ADM'] || .my_data_chk == 1)}
+						<a class="wComments-{.serial} btn btn-sm btn-white fa-xs" data-action="addComments"><i class="fa fa-reply"></i> 답글</a>
+						{/}
+						{? .my_data_chk == 1 //자신이 등록한글인지}
+                        <a class="wComments-{.serial} btn btn-sm btn-white fa-xs" data-action="readComments" ><i class="fas fa-pencil-alt"></i> 수정</a>
+                        <a class="wComments-{.serial} btn btn-sm btn-white fa-xs" data-action="deleteComments" ><i class="fas fa-times"></i> 삭제</a>
+                        {/}
+					</small>
+                    {? .lev_ico //회원레벨 icon}<i class="fa {.lev_ico} fa-lg text-danger"></i>{/} 
+                    <strong class="mr-2">{.usernick}</strong> 
+                    <small class="text-muted">
+                    	<strong class="regdate">{.regdate}</strong> <span class="regtime">{.regtime}</span> <span class="elapsed_days">{.elapsed_days}</span>
+                    </small>
+
+					<i class="sec-ico fas fa-lock fa-sm ml-2 text-danger" {? ! .sec // 비밀글이고 자신이 작성한 댓글이 아니면}style="display:none;"{/}></i>
+			{? .sec == 1// 비밀글이고 자신이 작성한 댓글이 아니면}
+                    <!-- <i class="sec-ico fas fa-lock fa-sm ml-2 text-danger"></i> -->
+			{:}
+					<!-- 
+					<br>
+					<div class="text-muted">
+                    	<a class="btn btn-sm btn-white fa-xs"><i class="far fa-thumbs-up text-danger"></i> Like </a>
+                        <a class="btn btn-sm btn-white fa-xs"><i class="far fa-thumbs-down text-default"></i> unLike</a>
+                        <a class="btn btn-sm btn-white"><i class="fab fa-facebook-f" style="color:#2E6DA4;"></i>acebook </a>
+					</div> -->
+			{/}
+			
+                    <div class="memo{.serial} well" style="word-break: break-all;{? .sec == 1 && .my_data_chk != 1 && !_SESSION['ADM']}color:#7b7a7a;background:rgba(204, 204, 204, 0.18);;{/}">
+					{? .sec != 1 || (.sec==1 && .my_data_chk ==1) || _SESSION['ADM']}
+                        {? .parent_del == 1}[삭제된 댓글의 답글] {/} 
+                        {.memo}
+                    {:}
+                    	비밀글 입니다.
+                    {/}
+                    </div>
+			
+                    <div class="pull-right text-muted">
+                        
+                    </div>
+                    <!-- <p id="wComments-{.serial}"  data-formTpl="commentsWrite" data-outputTpl="commentsOutput"  style="height:205px;display:none;"></p> -->
+                    <p id="wComments-{.serial}"  data-formTpl="commentsWrite" data-outputTpl="commentsOutput"  style="display:none;"></p>
+                </div>
+            </div>
+{/}
+		{? COMMENTS_LIST}
+            <div class="pagination-block row text-center">
+	            <div class="text-center col mt-4">
+	                <ul class="pagination pagination-sm justify-content-center">
+			
+						<li class="page-item first"><a class="page-link" href="{PAGING.first.url}" data-page="{COMMENTS_PAGING.first.num}">First</a></li>
+				{? COMMENTS_PAGING.prev.num}
+						<li class="page-item prev"><a class="page-link" href="{PAGING.prev.url}" data-page="{COMMENTS_PAGING.prev.num}">Previous</a></li>
+				{/}
+				{@COMMENTS_PAGING.no}
+					{? .current}
+						<li class="page-item page active"><a class="page-link" href="{.url}" data-page="{.num}">{.num}</a></li>
+					{:}
+						<li class="page-item page"><a class="page-link" href="{.url}" data-page="{.num}">{.num}</a></li>
+					{/}
+				{/}
+			
+				{? COMMENTS_PAGING.next.num}
+						<li class="page-item next"><a class="page-link" href="{PAGING.next.url}" data-page="{COMMENTS_PAGING.next.num}">Next</a></li>
+				{/}
+						<li class="page-item last"><a class="page-link" href="{PAGING.last.url}" data-page="{COMMENTS_PAGING.last.num}">Last</a></li>
+	                </ul>
+	            </div>
+			</div>
+		{/}

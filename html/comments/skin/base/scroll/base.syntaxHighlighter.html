@@ -62,7 +62,7 @@ $(function () {
                 <div class="media-body pl-2 pt-2">
                 	<div class="flex-column flex1 v-center-items">
 	                	<a href="javascript:void(0);" class="float-left">
-		                	<img alt="image" class="profile-photo img-circle rounded-circle" data-noimage="{.profile_not_photo}" src="{.profile_photo}">
+		                	<img alt="image" class="profile-photo img-circle rounded-circle" data-noimage="{.profile_not_photo}" src="{.profile_photo}" style="border-radius:40%;">
 		                    <!-- <br>{.serial} -->
 		                </a>
 	                    
@@ -175,41 +175,40 @@ $(function () {
 	</div>
 
 </div>
+
 <div class="tpl_commentsOutput" style="display:none;">
+
+	<!-- 등록시 바로 출력 - 댓글출력폼 시작 -->
 	
 	<div class="wComments_block_[family]_[serial] feed-element [addClass]" style="padding-left: 10px;[css_style]">
+		<div class="media-body pl-2">
+			<div class="flex-column flex1 v-center-items">
                 <a href="javascript:void(0);" class="profile-link float-left">
                     <!-- <img alt="image" class="img-circle rounded-circle" src="[profile_photo]"> -->
-                    <img alt="image" class="profile-photo img-circle rounded-circle" data-noimage="[profile_not_photo]" src="[profile_photo]">
+                    <img alt="image" class="profile-photo img-circle rounded-circle" data-noimage="[profile_not_photo]" src="[profile_photo]" style="border-radius:40%;">
                 </a>
-                <div class="media-body pl-2">
-                    <small class="float-right">
-						<a class="wComments-[serial] btn btn-sm btn-gray fa-xs" data-action="addComments" ><i class="fa fa-reply"></i>답글</a>
-                        <a class="wComments-[serial] btn btn-sm btn-gray fa-xs" data-action="readComments" ><i class="fas fa-pencil-alt"></i> 수정</a>
-                        <a class="wComments-[serial] btn btn-sm btn-gray fa-xs" data-action="deleteComments" ><i class="fas fa-times"></i> 삭제</a>
-					</small>
-                    <i class="fa [userlev] fa-lg text-danger"></i> 
-                    <strong>[usernick]</strong> 
-                    <small class="text-muted">
-                    	<strong class="regdate">[regdate]</strong> <span class="regtime">[regtime]</span> <span class="elapsed_days">[elapsed_days]</span>
-                    </small>
-                    <i class="sec-ico fas fa-lock fa-sm ml-2 text-danger"></i>
-                    <!-- 
-					<br>
-					<div class="text-muted">
-                    	<a class="btn btn-sm btn-gray fa-xs"><i class="far fa-thumbs-up text-danger"></i> Like </a>
-                        <a class="btn btn-sm btn-gray fa-xs"><i class="far fa-thumbs-down text-default"></i> unLike</a>
-                        <a class="btn btn-sm btn-gray"><i class="fab fa-facebook-f" style="color:#2E6DA4;"></i>acebook </a>
-					</div> -->
-                    <div class="memo[serial] well" style="word-break: break-all;">
-                        [memo]
-                    </div>
-                    <div class="pull-right text-muted">
-
-                    </div>
-                    <!-- <p id="wComments-[serial]"  data-formTpl="commentsWrite" data-outputTpl="commentsOutput"  style="height:205px;display:none;"></p> -->
-                </div>
-                <p id="wComments-[serial]"  data-formTpl="commentsWrite" data-outputTpl="commentsOutput"  style="display:none;"></p>
+                <i class="fa [userlev] fa-lg text-danger"></i> 
+                <strong>[usernick]</strong> 
+                <small class="text-muted">
+                	<strong class="regdate">[regdate]</strong> 
+                	<span class="regtime">[regtime]</span> 
+                	<span class="elapsed_days">[elapsed_days]</span>
+                </small>
+                <i class="sec-ico fas fa-lock fa-sm ml-2 text-danger"></i>
+			</div>
+			<div class="memo[serial] well" style="word-break: break-all;">
+				[memo]
+			</div>
+			<small class="m-t-5 m-b-5 h-right">
+				<a class="wComments-[serial] btn btn-sm btn-white fa-xs" data-action="addComments" ><i class="fa fa-reply"></i>답글</a>
+				<a class="wComments-[serial] btn btn-sm btn-white fa-xs" data-action="readComments" ><i class="fas fa-pencil-alt"></i> 수정</a>
+				<a class="wComments-[serial] btn btn-sm btn-white fa-xs" data-action="deleteComments" ><i class="fas fa-times"></i> 삭제</a>
+			</small>
+		</div>
+		<!-- <p id="wComments-[serial]"  data-formTpl="commentsWrite" data-outputTpl="commentsOutput"  style="height:205px;display:none;"></p> -->
+		<p id="wComments-[serial]"  data-formTpl="commentsWrite" data-outputTpl="commentsOutput"  style="display:none;"></p>
 	</div>
-	
+
+	<!-- 등록시 바로 출력 - 댓글출력폼 종료 -->
+
 </div>

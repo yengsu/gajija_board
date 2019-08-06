@@ -1,0 +1,56 @@
+{@COMMENTS_LIST}
+		{?  Comments_conf['indent'] == 1 //계층형 사용유무}
+            <div class="wComments_block_{.family}_{.serial} feed-element {?.indent}m-l-{?.indent < 6}{.indent*20}{:}{5*20}{/}{/}" data-sec="{.sec}" style="{? .indent==0}border-left:3px solid rgba(108, 167, 215, 0.42);padding-left:10px;{/}">
+		{:}
+            <div class="wComments_block_{.family}_{.serial} feed-element" data-sec="{.sec}" style="padding-left:10px;">
+		{/}
+                <div class="media-body pl-2 pt-2">
+                	<div class="flex-column flex1 v-center-items">
+	                	<a href="javascript:void(0);" class="float-left">
+		                	<img alt="image" class="profile-photo img-circle rounded-circle" data-noimage="{.profile_not_photo}" src="{.profile_photo}" style="border-radius:40%;">
+		                    <!-- <br>{.serial} -->
+		                </a>
+	                    
+	                    {? .lev_ico //회원레벨 icon}<i class="fa {.lev_ico} fa-lg text-danger"></i>{/} 
+	                    <strong class="m-l-10 m-r-5">{.usernick}</strong> 
+	                    <small class="text-muted">
+	                    	<strong class="regdate">{.regdate}</strong> <strong class="regtime">{.regtime}</strong> <strong class="elapsed_days">{.elapsed_days}</strong>
+	                    </small>
+
+						<i class="sec-ico fas fa-lock fa-sm ml-2 text-danger" {? !.sec}style="display:none;"{/}></i>
+			{? .sec == 1// 비밀글이고 자신이 작성한 댓글이 아니면}
+                    <!-- <i class="sec-ico fas fa-lock fa-sm ml-2 text-danger"></i> -->
+			{:}
+                    <!-- 
+					<br>
+					<div class="text-muted">
+                    	<a class="btn btn-sm btn-gray fa-xs"><i class="far fa-thumbs-up text-danger"></i> Like </a>
+                        <a class="btn btn-sm btn-gray fa-xs"><i class="far fa-thumbs-down text-default"></i> unLike</a>
+                        <a class="btn btn-sm btn-gray"><i class="fab fa-facebook-f" style="color:#2E6DA4;"></i>acebook </a>
+					</div> -->
+			{/}
+					</div>
+                    <div class="memo{.serial} well text-break m-t-0" style="word-break: break-all;{? .sec == 1 && .my_data_chk != 1 && !_SESSION['ADM']}color:#7b7a7a;background:rgba(204, 204, 204, 0.18);;{/}">
+					{? .sec != 1 || (.sec==1 && .my_data_chk ==1) || _SESSION['ADM']}
+                        {? .parent_del == 1}[삭제된 댓글의 답글] {/} 
+                        {.memo}
+                    {:}
+                    	비밀글 입니다.
+                    {/}
+                    </div>
+					
+					<small class="m-t-5 m-b-5 h-right">
+	                    	{? _SESSION['MBRID'] != '' && Comments_conf['indent']==1 && (.sec==0 || _SESSION['ADM'] || .my_data_chk == 1)}
+							<a class="wComments-{.serial} btn btn-sm" data-action="addComments"><i class="fa fa-reply"></i> 답글</a>
+							{/}
+							{? .my_data_chk == 1 //자신이 등록한글인지}
+	                        <a class="wComments-{.serial} btn btn-sm" data-action="readComments" ><i class="fas fa-pencil-alt"></i> 수정</a>
+	                        <a class="wComments-{.serial} btn btn-sm" data-action="deleteComments" ><i class="fas fa-times"></i> 삭제</a>
+	                        {/}
+						</small>
+                    
+                    <!-- <p id="wComments-{.serial}"  data-formTpl="commentsWrite" data-outputTpl="commentsOutput"  style="height:205px;display:none;"></p> -->
+                </div>
+                <p id="wComments-{.serial}"  data-formTpl="commentsWrite" data-outputTpl="commentsOutput"  style="display:none;"></p>
+            </div>
+{/}

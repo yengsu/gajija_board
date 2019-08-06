@@ -130,7 +130,8 @@ class BoardComm_controller extends BoardCommNest_service
             /**
              * bid 체크
              */
-            if( !empty($this->routeResult) && empty($this->routeResult["bid"]) )
+           
+            if( empty($this->routeResult) || empty($this->routeResult["bid"]) )
             {
                 //WebApp::redirect('/', "자료를 찾을 수 없습니다.");
                 $this->WebAppService->assign(array('error'=>'자료를 찾을 수 없습니다.'));//No data found.
@@ -142,7 +143,7 @@ class BoardComm_controller extends BoardCommNest_service
             // base URL
             WebAppService::$baseURL = $this->routeResult["baseURL"] ;
         }
-
+        
         // XSS 방어
         Strings::set_xss_variable( array(
         		"GET" => array("search_field" , "search_keyword", "bid"),
@@ -184,19 +185,18 @@ class BoardComm_controller extends BoardCommNest_service
          }
          } */
          
-         
-         
-         
          //self::$mbr_conf["profile"] = WebApp::getConf_real("member.profile");
          //self::$mbr_conf = WebApp::getConf_real("member");
          
          self::set_syntaxHighlight();
-         
+        
          if(!empty($this->boardInfoResult['table_name'])) $this->boardInfoResult['table_name'] = 'board' ;
          
          // DB Table 선언
          //$this->setTableName("board");
          $this->setTableName($this->boardInfoResult['table_name']);
+         
+         
     }
     public function __destruct()
     {
@@ -706,11 +706,11 @@ class BoardComm_controller extends BoardCommNest_service
                      'redirect'=> WebAppService::$baseURL."/pwd".WebAppService::$queryString
                      )); */
                     if($return) {
-			return false ;
+						return false ;
                     }
                     else{
-			$this->pwd();
-			exit;
+						$this->pwd();
+						exit;
                     }
                     /* header("Location: ".WebAppService::$baseURL."/pwd".WebAppService::$queryString); // 리스트 페이지 이동
                      exit; */
@@ -718,12 +718,12 @@ class BoardComm_controller extends BoardCommNest_service
                 else{
                     if( $data['sec_pwd'] != $secPwd){
 			
-			if($return) {
-			    return false ;
-			}
-			else{
-			    $this->WebAppService->assign(array('error'=>'비밀글 비밀번호가 다릅니다.'));
-			}
+						if($return) {
+						    return false ;
+						}
+						else{
+						    $this->WebAppService->assign(array('error'=>'비밀글 비밀번호가 다릅니다.'));
+						}
                     }
                 }
             }
@@ -2486,7 +2486,7 @@ class BoardComm_controller extends BoardCommNest_service
 			    	for($i=0; $i < count($del_files); $i++){
 			    		$this->attach_delete( $data[0]["attach_path"] . $del_files[$i] );
 			    	}
-
+			    	
 			    	$this->setTableName("viewcnt") ;
 			    	$this->dataDelete(array(
 			    	    'group_code' => 'board',
@@ -2518,16 +2518,20 @@ class BoardComm_controller extends BoardCommNest_service
     public function download()
     {
         //Exception
-    	if( !$this->routeResult["code"] || !(int)$_GET['seq']) $this->WebAppService->assign(array('error'=>'데이타가 존재하지 않습니다.'));
+    	if( !(int)$this->routeResult["code"] || !(int)$_GET['seq']) $this->WebAppService->assign(array('error'=>'데이타가 존재하지 않습니다.'));
         //$this->WebAppService->assign(array('error'=>'The data does not exist.'));
         
         $this->board_access_grant( "read", $_REQUEST["bid"] );
         
+        // 권한체크
+        if($this->grant_content['response']['read']['code'] != 200) {
+        	$this->WebAppService->assign(array('error'=> $this->grant_content['response']['read']['msg'] ));
+        }
+        
         // 회원용 / 비회원용
-        if($this->boardInfoResult["mbr_type"]==1)
+        /* if($this->boardInfoResult["mbr_type"]==1)
         {
             $conditions = array("B.userid" => $_SESSION['MBRID'], "B.serial" => $this->routeResult["code"], "B.bid" => $_REQUEST["bid"]) ;
-            
             $data = $this->get_board_read($conditions);
             if( !empty($data) ) $data = $data[0];
         }
@@ -2537,8 +2541,17 @@ class BoardComm_controller extends BoardCommNest_service
                 "columns"=> '*',
                 "conditions" => $conditions
             ));
-            if( !empty($data) ) $data = $data[0];
-        }
+            if( !empty($data) ) $data = array_pop($data);
+        } */
+        $conditions = array( "serial" => $this->routeResult["code"], "bid" => $_REQUEST["bid"] ) ;
+        
+        $this->setTableName($this->boardInfoResult['table_name']);
+        $data = $this->dataRead( array(
+        		"columns"=> '*',
+        		"conditions" => $conditions
+        ));
+        if( !empty($data) ) $data = array_pop($data);
+        
         //Exceptionn
         if( empty($data['serial']) || empty($data['bid'])){
             $this->WebAppService->assign(array('error'=>'데이타가 존재하지 않습니다.'));
@@ -2556,7 +2569,7 @@ class BoardComm_controller extends BoardCommNest_service
             //게시물이 비밀글인 경우
             //----------------------------
             //$secPwd = $this->sec_pwd_authen($data, $_GET['__bgp']) ;
-            $this->sec_pwd_authen($data, $_GET['__bgp']) ;
+            //$this->sec_pwd_authen($data, $_GET['__bgp']) ;
             
             //$this->set_visit_count($this->routeResult["code"]) ;
             
@@ -2951,7 +2964,7 @@ class BoardComm_controller extends BoardCommNest_service
 		// 권한정보
 		$this->board_access_grant( "delete", $_REQUEST["bid"] );
     		
-		echo '<pre>';print_r($this->grant_content) ;exit;
+		//echo '<pre>';print_r($this->grant_content) ;exit;
 		$this->setTableName($this->boardInfoResult['table_name']);
     }
     public function Req_getComments()
@@ -3336,17 +3349,17 @@ class BoardComm_controller extends BoardCommNest_service
                 if($this->boardInfoResult["indent"]==1)
                 {
                     $del_data = $this->dataRead( array(
-    		         "columns"=> 'serial, indent, memo',
-    		         "conditions" => $where
+			"columns"=> 'serial, indent, memo',
+			"conditions" => $where
                     ));
                     if(!empty($del_data)) {
 			
-            			$del_data = array_pop($del_data) ;
-            			
-            			$put_data = array( 'parent_del' => 1 );
-            			$this->dataUpdate($put_data, array(
-            			    'parent' => $del_data['serial']
-            			));
+			$del_data = array_pop($del_data) ;
+			
+			$put_data = array( 'parent_del' => 1 );
+			$this->dataUpdate($put_data, array(
+			    'parent' => $del_data['serial']
+			));
                     }
                 }
                 

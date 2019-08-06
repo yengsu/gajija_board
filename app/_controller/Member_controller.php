@@ -1940,7 +1940,7 @@ class Member_controller extends CommNest_service
 			        "userpw" => $this->WebAppService->Strings::encrypt_sha256(trim((string)$_POST['muserpw'])), //$this->passwd_encrypt( trim((string)$_POST['muserpw'])),
 					"sex" => $_POST["msex"],
 					"username" => $_POST["musername"],
-					"usernick" => $_POST["musernick"],
+					"musernick" => $_POST["musernick"],
 					"hp" => trim($_POST["mhp"]),
 					"profile_photo" => $profile_photo_file,
 			        "authen" => ($auth_data["email"] || $auth_data["phone"]) ? 1:0,

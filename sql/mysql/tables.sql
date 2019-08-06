@@ -204,7 +204,7 @@ CREATE TABLE `member` (
   `oid` int(11) DEFAULT '0' COMMENT '업체코드',
   `family` int(11) DEFAULT '0',
   `is_admin` tinyint(1) DEFAULT '0' COMMENT '관리자 (true:1, false:0)',
-  `grade` int(11) unsigned DEFAULT '0' COMMENT '회원등급 : member_grade TB의 grade_code',
+  `grade` int(11) unsigned DEFAULT '100' COMMENT '회원등급 : member_grade TB의 grade_code',
   `lev` tinyint(4) DEFAULT '0' COMMENT '회원레벨',
   `userid` varchar(40) CHARACTER SET utf8 NOT NULL DEFAULT '',
   `userpw` varchar(70) CHARACTER SET utf8 DEFAULT '',

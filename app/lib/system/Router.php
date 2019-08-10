@@ -65,7 +65,7 @@ class Router extends BikeRouter{
 	 */
 	public function routeParseUrl()
 	{
-		if( empty($this->routeRes) || !is_array($this->routeRes) || empty($this->routeRes['url']) ){
+		if( empty($this->routeRes) || !is_array($this->routeRes) || empty($this->routeRes['url']) || substr($this->routeRes['url']["action"],0,2) == "__" ){
 			$this->routeRes = array(
 						"data" => array(
 									"controller" => "main",
@@ -160,8 +160,6 @@ class Router extends BikeRouter{
 			{
 				$class_methods = get_class_methods($instance);
 				//echo '<pre>';print_r($class_methods);
-				
-				if( substr($data["action"],0,2) == "__" ) throw new Exception( get_class($instance)." is not exist ".$data["action"]." method");
 				
 				if( $class_methods[$data["action"]]) throw new Exception( get_class($instance)." is not exist ".$data["action"]." method");
 				

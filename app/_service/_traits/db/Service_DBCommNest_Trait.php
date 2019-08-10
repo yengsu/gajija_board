@@ -3,9 +3,7 @@ namespace Gajija\service\_traits\db ;
 
 /**
  * Service-데이타(DB) 공용 메서드
- *
- * @author young lee
- * @email yengsu@gmail.com
+ * 
   */
 trait Service_DBCommNest_Trait
 {
@@ -13,32 +11,32 @@ trait Service_DBCommNest_Trait
 		 *  페이지당 출력 게시물 수
 		 * @var integer ( default : 10 )
 		 */
-		public $pageScale = 0 ;
+		protected $pageScale = 0 ;
 		/**
 		 * 노출시킬 페이징 블럭수
 		 * @var integer ( default : 10 )
 		 */
-		public $pageBlock = 0 ;
+		protected $pageBlock = 0 ;
 		/**
 		 * Pagination - paging class Object
 		 * @var object
 		 */
-		public $Paging;
+		protected $Paging;
 		/**
 		 * 총 레코드 갯수(게시물 갯수)
 		 * @var integer ( default : 0 )
 		 */
-		public static $Total_cnt = 0 ;
+		protected static $Total_cnt = 0 ;
 		/**
 		 * 게시물 출력번호(총갯수)
 		 * @var integer ( default : 0 )
 		 */
-		public static $view_num = 0 ;
+		protected static $view_num = 0 ;
 		/**
 		 * 페이지 변수
 		 * @var string ( default : page )
 		 */
-		public static $pageVariable = "page" ;
+		protected static $pageVariable = "page" ;
 		
 		
 		public function __construct() 
@@ -56,7 +54,7 @@ trait Service_DBCommNest_Trait
 		 * @param array<key,value> $conditions (조건절)
 		 * @return integer 조회한 총 갯수
 		 */
-		public function count($column, $conditions=null)
+		protected function count($column, $conditions=null)
 		{
 			$this->Conditions( $conditions ) ;
 
@@ -72,7 +70,7 @@ trait Service_DBCommNest_Trait
 		 * @param integer $parent_serial
 		 * @param integer $siblind_serial
 		 */
-		public function dataNestMoveSibling($org_serial, $parent_serial, $siblind_serial)
+		protected function dataNestMoveSibling($org_serial, $parent_serial, $siblind_serial)
 		{
 			return $this->_nodeMoveSibling($org_serial, $parent_serial, $siblind_serial) ;
 		}
@@ -85,7 +83,7 @@ trait Service_DBCommNest_Trait
 		 * @param array $new_parent ( key: serial, family, parent, lft, rgt.. )
 		 * @return boolean
 		 */
-		public function dataNestMoveChild($orig, $new_parent)
+		protected function dataNestMoveChild($orig, $new_parent)
 		{
 			return $this->_nodeMoveChild($orig, $new_parent) ;
 		}
@@ -100,7 +98,7 @@ trait Service_DBCommNest_Trait
 		 * 							) ;
 		 * @return void
 		 */
-		public function dataNestMove($node)
+		protected function dataNestMove($node)
 		{
 			if( empty($node) ) return ;
 		
@@ -148,7 +146,7 @@ trait Service_DBCommNest_Trait
 		 * @return array|null
 		 * @deprecated
 		 */
-		public function dataNestMoveTable($origSerial, $refSerial)
+		protected function dataNestMoveTable($origSerial, $refSerial)
 		{
 			return $this->_nodeMoveComplex(
 					array(
@@ -184,12 +182,12 @@ trait Service_DBCommNest_Trait
 			return $res ;
 		}
 
-		public function dataNestDeleteContainChild($serial)
+		protected function dataNestDeleteContainChild($serial)
 		{
 			return $this->_nodeDeleteContainChild($serial) ;
 		}
 		
-		public function dataNestDelete($serial)
+		protected function dataNestDelete($serial)
 		{
 			return $this->_nodeDeleteSelect($serial) ;
 		}
@@ -205,7 +203,7 @@ trait Service_DBCommNest_Trait
 		 * 			Primary Key 가 Auto increment 이면 => insert id 리턴.
 		 * 														아니면 => 성공여부(1:성공 / 0:실패) 리턴
 		 */
-		public function dataAdd($put_data, $idx=NULL)
+		protected function dataAdd($put_data, $idx=NULL)
 		{
 			if( !empty($idx) && (int)$idx > 0 )
 			{
@@ -239,7 +237,7 @@ trait Service_DBCommNest_Trait
 		 * 			Primary Key 가 Auto increment 이면 => insert id 리턴.
 		 * 														아니면 => 성공여부(1:성공 / 0:실패) 리턴
 		 */
-		public function dataAddFamily($put_data, $idx=NULL)
+		protected function dataAddFamily($put_data, $idx=NULL)
 		{
 			if( !empty($idx) && (int)$idx > 0 )
 			{
@@ -267,7 +265,7 @@ trait Service_DBCommNest_Trait
 		 * @param integer $idx
 		 * @return multitype:number multitype:unknown  mixed
 		 */
-		public function dataAdjacency($idx)
+		protected function dataAdjacency($idx)
 		{
 			$parent_data = $this->dataRead(array(
 					"columns" => "serial, family, indent", 
@@ -293,7 +291,7 @@ trait Service_DBCommNest_Trait
 		 * @param array<key,value> $conditions ( 검색 조건 데이타 )
 		 * @return boolean
 		 */
-		public function dataUpdate($put_data, $conditions)
+		protected function dataUpdate($put_data, $conditions)
 		{
 			$this->Conditions($conditions) ;
 			return $this->_update($put_data) ;
@@ -304,7 +302,7 @@ trait Service_DBCommNest_Trait
 		 * @param array<key,value> $conditions ( 검색 조건 데이타 )
 		 * @return void
 		 */
-		public function dataDelete($conditions)
+		protected function dataDelete($conditions)
 		{
 			$this->Conditions($conditions) ;
 			return $this->_delete() ;
@@ -315,7 +313,7 @@ trait Service_DBCommNest_Trait
 		 * @param array $search_params
 		 * @return self::$_where
 		 */
-		public function Conditions($search_params)
+		protected function Conditions($search_params)
 		{	
 			self::$_where = NULL;
 			if( !empty($search_params) ) 
@@ -335,7 +333,7 @@ trait Service_DBCommNest_Trait
 		 * 					 				) ;
 		 * @return array 데이타
 		 */
-		public function dataRead($queryOption)
+		protected function dataRead($queryOption)
 		{
 			$this->Conditions( $queryOption["conditions"] ) ;
 			return $this->_read($queryOption["columns"], $queryOption["groupBy"], $queryOption["order"]);
@@ -353,7 +351,7 @@ trait Service_DBCommNest_Trait
 		 * @example $conditions = array( family값, serial값 )
 		 * @return boolean|multitype:
 		 */
-		public function dataLastChild( $code, $queryOption=NULL )
+		protected function dataLastChild( $code, $queryOption=NULL )
 		{
 			if( empty($code)) return false ;
 
@@ -373,7 +371,7 @@ trait Service_DBCommNest_Trait
 		 * @param boolean $comments ( 댓글 인경우 true [sorting 변경]
 		 * @return array
 		 */
-		public function dataList( $queryOption, $hierarchy=0, $comments=false) //$Columns='*', $orderByColumns="serial")
+		protected function dataList( $queryOption, $hierarchy=0, $comments=false) //$Columns='*', $orderByColumns="serial")
 		{
 			self::$_where = '';
 			self::$view_num = self::$Total_cnt = 0 ;
@@ -454,7 +452,7 @@ trait Service_DBCommNest_Trait
 		 * @param boolean $comments ( 댓글 인경우 true [sorting 변경]
 		 * @return array
 		 */
-		public function dataJoin( $queryOption, $hierarchy=0, $comments=false) //$Columns='*', $orderByColumns="serial")
+		protected function dataJoin( $queryOption, $hierarchy=0, $comments=false) //$Columns='*', $orderByColumns="serial")
 		{
 			self::$_where = '';
 			self::$view_num = self::$Total_cnt = 0 ;
@@ -531,7 +529,7 @@ trait Service_DBCommNest_Trait
 		 * @param boolean $comments ( 댓글 인경우 true [sorting 변경]
 		 * @return array
 		 */
-		public function dataListAndOid( &$queryOption, $hierarchy=0, $comments=false) //$Columns='*', $orderByColumns="serial")
+		protected function dataListAndOid( &$queryOption, $hierarchy=0, $comments=false) //$Columns='*', $orderByColumns="serial")
 		{
 			self::$_where = '';
 			self::$view_num = self::$Total_cnt = 0 ;
@@ -612,7 +610,7 @@ trait Service_DBCommNest_Trait
 		 * @param boolean $comments ( 댓글 인경우 true [sorting 변경]
 		 * @return array
 		 */
-		public function getDataAndMbr( $queryOption, $hierarchy=0, $comments=false) //$Columns='*', $orderByColumns="serial")
+		protected function getDataAndMbr( $queryOption, $hierarchy=0, $comments=false) //$Columns='*', $orderByColumns="serial")
 		{
 			self::$_where = '';
 			self::$view_num = self::$Total_cnt = 0 ;
@@ -676,7 +674,7 @@ trait Service_DBCommNest_Trait
 		 * 											"conditions" => string or array(.......)
 		 * @return array
 		 */
-		public function getNodePath( $queryOption )
+		protected function getNodePath( $queryOption )
 		{
 			if( empty($queryOption["conditions"]) || !is_array($queryOption["conditions"]) ) return false ;
 			
@@ -703,7 +701,7 @@ trait Service_DBCommNest_Trait
 		 * @param string $opt ( 최하위노드 추출시 'last'.......)
 		 * @return multitype:
 		 */
-		public function getNodeChilds($serial, $queryOption, $opt='')
+		protected function getNodeChilds($serial, $queryOption, $opt='')
 		{
 			if( !empty($queryOption["conditions"]) )
 			{
@@ -765,7 +763,7 @@ trait Service_DBCommNest_Trait
 		 * 						"path" => array,	// 최상위부터 찾으려는 위치까지의 단일노드
 		 * 					);
 		 */
-		public function getMenu( $table, $queryOption )
+		protected function getMenu( $table, $queryOption )
 		{
 			if( empty($queryOption["columns"]) ) $queryOption["columns"] = "*" ;
 			
@@ -890,7 +888,7 @@ trait Service_DBCommNest_Trait
 		 * @param integer $lastNum ( 최근 auto_increment [값이 없으면 기존 키값에서 생성] )
 		 * @return integer insert_id값
 		 */
-		public function getInsertID( $lastNum )
+		protected function getInsertID( $lastNum )
 		{  
 			return $this->_get_insertID($lastNum) ;
 		}
@@ -899,7 +897,7 @@ trait Service_DBCommNest_Trait
 		 * 
 		 * @return array $pagings
 		 */
-		public function Pagination($page, $qs='')
+		protected function Pagination($page, $qs='')
 		{
 			$this->Paging = \WebApp::singleton('Paging');
 			$this->Paging->config["pageVariable"] = self::$pageVariable ;
@@ -929,7 +927,7 @@ trait Service_DBCommNest_Trait
 		 *			skin_height=VALUES(skin_height)
 		 *			"
 		 */
-		public function dataInsertUpdate($put_data, $update_values)
+		protected function dataInsertUpdate($put_data, $update_values)
 		{
 			try {
 				return $this->_insertUpdate($put_data, $update_values) ;
@@ -952,7 +950,7 @@ trait Service_DBCommNest_Trait
 		 * 					 				) ;
 		 * @return boolean|array
 		 */
-		public function getNodeUntil( $queryOption )
+		protected function getNodeUntil( $queryOption )
 		{
 			if( empty($queryOption["conditions"]) ) return false ;
 		

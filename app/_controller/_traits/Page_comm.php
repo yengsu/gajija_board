@@ -96,8 +96,17 @@ trait Page_comm{
 	 */
 	protected function _get_nodes( &$datas, $key, $keyValue )
 	{
-		
-		if( !empty($key) && !empty($keyValue) )  $datas['self'] = \Func::array_searchKeyValue($datas['base'], $key, $keyValue) ;
+	    foreach($datas['base'] as $data){
+	        
+	        foreach($data as $k => $v){
+    	        if($key == $k && $keyValue == $v){
+    	            $datas['self'] = $data;
+    	            break ;
+    	        }
+	        }
+	        if( !empty($datas['self']) ) break ;
+	    }
+		//if( !empty($key) && !empty($keyValue) )  $datas['self'] = \Func::array_searchKeyValue($datas['base'], $key, $keyValue) ;
 		
 		// 관리자 아니면 노출처리 된것만 출력
 		if( ! (int)$_SESSION['ADM'] ) {
@@ -111,7 +120,9 @@ trait Page_comm{
 				}
 			}
 		}
+		
 		$datas['base'] = \Func::array_orderby($datas['base'], 'lft', SORT_ASC);
+		//echo '<pre>';print_r($datas) ;exit;
 		
 	    //if(!empty($menu['self'])) $menu['self'] = array_pop($datas['self']) ;
 	    
@@ -126,7 +137,6 @@ trait Page_comm{
 	    	if($datas['self']['indent'] < 2 || !isset($datas['path']) ) $Self = $datas['self'] ;
 	    	else $Self = $datas['path'][count($datas['path'])-2] ;
 	    	
-	    	
 	    	foreach( $datas['base'] as $key => $item ) // && $datas[$key]['depth']==$depth
     	    { 
     	    	/* if( $item['lft'] >= $datas['self']['lft'] &&  $item['rgt'] <= $datas['self']['rgt'] ){
@@ -137,18 +147,14 @@ trait Page_comm{
     	        }
     	    }
 	    }
+	    if( empty($datas['path']) ) $datas['path'] = array($datas['self']) ;
 	    
 	    $this->TNst_renderTree($datas['base']);
-	    
-	    
+	    //echo '<pre>';print_r($datas) ;exit;
 	    //$a = $this->TNst_jsTree($datas['base']) ;
 	    //echo '<pre>';print_r($a);
 	    if( !empty($datas['childs']) ) $this->TNst_renderTree($datas['childs']);
-	    
 	    //$read = Func::array_searchKeyValue($datas, 'serial', parent) ;
-	    
-	    //unset($datas['base']);
-	    //echo '11<pre>';print_r($datas) ;
 	}
 	/**
 	 * 
@@ -188,7 +194,6 @@ trait Page_comm{
 		    
 		    static::$TABLE = $prev_table ; // 이전에 사용하던 테이블로 재선언
 	    }
-	    
 	    
 	    array_splice($datas['base'],0, 1) ;
 	    
@@ -282,7 +287,7 @@ trait Page_comm{
 		 */
 		if($mcode){
 			
-			if( !class_exists('WebAppService') ) $this->WebAppService->assign(array('error'=>'WebAppService 선언해주세요.'));
+			if( !class_exists('WebAppService', FALSE) ) $this->WebAppService->assign(array('error'=>'WebAppService 선언해주세요.'));
 			
 			//self::$_query_debug = 1 ;
 			self::$menu_datas = $this->get_menu('menu', (int) $mcode, $conditions);
@@ -307,12 +312,13 @@ trait Page_comm{
 			}
 				
 		}
+		
 		//if( class_exists('Display') ){
 		if( is_file($attach_top_file) ) $this->WebAppService->Display->define('ATTACH_TOP',  $attach_top_file) ;
-		else $this->WebAppService->Display->define('ATTACH_TOP',  '') ;
+		else $this->WebAppService->Display->define('ATTACH_TOP',  ' ') ;
 		
 		if( is_file($attach_bottom_file) ) $this->WebAppService->Display->define('ATTACH_BOTTOM',  $attach_bottom_file) ;
-		else $this->WebAppService->Display->define('ATTACH_BOTTOM',  '') ;
+		else $this->WebAppService->Display->define('ATTACH_BOTTOM',  ' ') ;
 		//}
 	}
 	

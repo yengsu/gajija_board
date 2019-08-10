@@ -17,9 +17,6 @@ class Member_service extends Member_model
 		use Service_Comm_Trait, Service_DBCommNest_Trait ;
 		//use Singleton;
 		
-		public function __construct() 
-		{
-		}
 		
 		
 		/**

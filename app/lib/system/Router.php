@@ -158,6 +158,13 @@ class Router extends BikeRouter{
 			// instance 있으면
 			if( $instance )
 			{
+				$class_methods = get_class_methods($instance);
+				//echo '<pre>';print_r($class_methods);
+				
+				if( substr($data["action"],0,2) == "__" ) throw new Exception( get_class($instance)." is not exist ".$data["action"]." method");
+				
+				if( $class_methods[$data["action"]]) throw new Exception( get_class($instance)." is not exist ".$data["action"]." method");
+				
 				if( method_exists( $instance, $data["action"]) ) {
 				
 					$reflection = new ReflectionMethod($instance,  $data["action"]);

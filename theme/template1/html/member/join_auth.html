@@ -12,7 +12,7 @@
 *}
 <script src="/js/func/Validate.js"></script>
 <script src="/js/jquery/jquery.countdown.min.js"></script>
-<script src="/js/jquery/jquery.mbr.apiAuthen.js"></script>
+<script src="/theme/{C.THEME}/js/jquery/mbr/jquery.mbr.apiAuthen.js"></script>
 <script type="text/javascript">
 var baseURL = '{Doc["baseURL"]}';
 $(function(){
@@ -22,10 +22,17 @@ var inputValidate = [{INPUT_VAR_JS}];
 </script>
 <style>
   body, html {overflow-x: hidden; overflow-y: auto;background-color: #f6f6f6;}
+  
+	#formWrite .title{
+		width: 130px;
+		padding: 0;
+	}
+	
+  
 </style>
 <section class="facebookLogin">
-  <div class="facebook-tl">
-    YEPPU confirmation
+  <div class="p-20" style="font-size: 30px; font-weight: 700;">
+    {CNAME} - 인증 확인
   </div>
 
   <div class="facebook-agree join">
@@ -35,28 +42,28 @@ var inputValidate = [{INPUT_VAR_JS}];
 	  <!-- 회원 추가 입력란 -->
 	  <!-- ################### -->
 {? INPUT_VAR // 필수입력 사항}
-	  <div id="mbr-input-block" style="display: inline-block; width:100%; border:1px solid #f9cbcb; margin-bottom:20px; padding:10px; background:#fdf5f5;">
+	  <div id="mbr-input-block" style="width:100%; border:1px solid #f9cbcb; margin-bottom:20px; padding:10px; background:#fdf5f5;">
       {? INPUT_VAR.name==1 //이름 입력}
-      <!-- <div class="form-group pull-left join-name" style="width:60%">
-        <input type="text" class=" ios-no-shadow" id="musername" name="musername" value="{USER_PROFILE.name}" placeholder="이름을 입력해주세요." required autocomplete="off">
-      </div> -->	
-      <div class="form-group pull-left" style="display: inline-block;margin: 0px;padding: 5px;">이름:</div>
-      <div class="form-group" style="width:60%;display: inline-block;margin-bottom: 0px;">
-      	<input type="text" class=" ios-no-shadow" id="musername" name="musername" value="{USER_PROFILE.name}" placeholder="이름을 입력해주세요." required="" autocomplete="off">
-      </div>
+	      
+	      <div class="form-inline">
+		      <div class="title p-5">이름:</div>
+		      <div class="data" style="width:60%;">
+		      	<input type="text" class=" ios-no-shadow" id="musername" name="musername" value="{USER_PROFILE.name}" placeholder="이름을 입력해주세요." required="" autocomplete="off">
+		      </div>
+	      </div>
       
       {/}
       {? INPUT_VAR.gender==1 //성별 입력}
-	  <div class="joinSex form-group form-inline pull-right" style="width:39%; padding:14px 10px 0px 70px;margin-bottom: 0px;">
-        <div class="radio" style="width: 10% !important;">
-          <input type="radio" id="msex-female" name="msex" value="2" required>
-          <label for="msex-female"> 여 </label>
-        </div>
-        <div class="radio m-l-20">
-          <input type="radio" id="msex-man" name="msex" value="1" required>
-          <label for="msex-man"> 남 </label>
-        </div>
-      </div>
+		  <div class="joinSex form-inline" style="padding:14px 10px 0px 70px;margin-bottom: 0px;">
+				<div class="radio" style="width: 10% !important;">
+					<input type="radio" id="msex-female" name="msex" value="2" required>
+					<label for="msex-female"> 여 </label>
+				</div>
+				<div class="radio m-l-20">
+					<input type="radio" id="msex-man" name="msex" value="1" required>
+					<label for="msex-man"> 남 </label>
+				</div>
+	      </div>
       {/}
      </div>
 {/}
@@ -68,37 +75,35 @@ var inputValidate = [{INPUT_VAR_JS}];
 {/}
 	  </div>
 	  <!-- 이메일 인증 : userid(email) -->
-	  <div id="form-join-auth-email" class="form-group clearfix m-b-5">
-        <input type="text" class=" ios-no-shadow pull-left" style="width:70%" id="memail" name="memail" value="{USER_PROFILE.email}" placeholder="Email 주소를 입력해주세요." autocomplete="off">
-        <a href="#" id="btn-emailAuthSend" class="btn btn-default pull-right" style="width:29%; padding:9px 10px;">인증코드 받기</a>
+	  <div id="form-join-auth-email" class="InputAddOn m-b-5">
+        <input type="text" class=" InputAddOn-field" style="width:70%" id="memail" name="memail" value="{USER_PROFILE.email}" placeholder="Email 주소를 입력해주세요." autocomplete="off">
+        <a href="#" id="btn-emailAuthSend" class="InputAddOn-item">인증코드 받기</a>
       </div>
 {? INPUT_VAR.email != 1 //아이디[email] 없을경우}
       <!-- sms인증 -->
-      <div id="form-join-auth-sms" class="form-group clearfix m-b-5" style="display:none;">
-        <input type="text" class=" ios-no-shadow pull-left" style="width:70%" id="mphone" name="mphone" placeholder="폰번호를 입력해주세요." autocomplete="off">
-        <a href="#" id="btn-smsAuthSend" class="btn btn-default pull-right" style="width:29%; padding:9px 10px;">인증코드 받기</a>
+      <div id="form-join-auth-sms" class="InputAddOn m-b-5 hide">
+        <input type="text" class="InputAddOn-field" style="width:70%" id="mphone" name="mphone" placeholder="폰번호를 입력해주세요." autocomplete="off">
+        <a href="#" id="btn-smsAuthSend" class="InputAddOn-item" style="width:29%; padding:9px 10px;">인증코드 받기</a>
       </div>
 {/}
-      <div id="Auth-block" class="form-group clearfix" style="display:none;">
-        <input type="text" class=" ios-no-shadow pull-left" style="width:70%" id="MAuthCode" name="MAuthCode" placeholder="인증번호 입력" autocomplete="off">
-        <a href="#" id="btn-AuthConfirm" class="btn btn-default pull-right" style="width:29%; padding:9px 10px;">Confirm</a>
-        <span class="join-time">Count <span id="Lifetime-count" style="color:red;font-weight:bold;"></span></span>
+      <div id="Auth-block" class="InputAddOn hide">
+        <input type="text" class=" InputAddOn-field" style="width:60%" id="MAuthCode" name="MAuthCode" placeholder="인증번호 입력" autocomplete="off">
+        <a href="#" id="btn-AuthConfirm" class="InputAddOn-item" style="background-color:#ffd4d4; border: 1px solid hsla(31,15%,50%,.25);">확인</a>
+        <span class="join-time m-10">남은시간 <span id="Lifetime-count" style="color:red;font-weight:bold;"></span></span>
       </div>
-      <div class="form-group join-chk">
-        <div class="checkbox">
+      <div class="join-chk m-t-10">
+        <div class="checkbox m-5">
           <input type="checkbox" id="magree_news" name="magree_news" value="1">
-          <label for="magree_news">E-MAIL, SMS를 통한 이벤트정보 수신에 동의합니다.<!-- I agree to receive event information EMAIL or SMS from YEPPU -->.</label>
+          <label for="magree_news">E-MAIL, SMS를 통한 이벤트정보 수신에 동의합니다.</label>
         </div>
-        <div class="checkbox">
+        <div class="checkbox m-5">
           <input type="checkbox" id="magree_policy" name="magree_policy" value="1" required>
-          <label for="magree_policy">쇼핑몰의 <a href="/Customer/policy" target="_blank" class="policy-bt" data-toggle="modal" data-target="#privacyView">개인 정보 보호 정책</a> 및 <a href="/Customer/clause" target="blank" class="policy-bt" data-toggle="modal" data-target="#termView">이용 약관</a>에 동의합니다.</label>
-          <!-- <label for="magree_policy">I agree to YEPPU <a href="/view/main2/yeppu/customer/clause" class="policy-bt">Terms and Conditions</a> and <a href="/Customer/policy" class="policy-bt">Privacy Policy</a>.</label> -->
-          <!--label for="magree_policy">I agree to YEPPU <a href="#" class="policy-bt" data-toggle="modal" data-target="#policy">Terms and Conditions</a> and <a href="/">Privacy Policy</a>.</label-->
+          <label for="magree_policy">가지자의 개인 정보 보호 정책 및 이용 약관에 동의합니다.</label>
         </div>
       </div>
-      <div class="form-group m-t-20 m-b-0 join-bt text-center">
-        <button type="reset" class="bt-o">Cancel</button>
-        <button type="submit"  id="btn-submit" class="bt-o bt-pill">Create Account</button>
+      <div class="m-t-20 m-b-0 join-bt text-center">
+        <button type="reset" class="btn btn-dark">Cancel</button>
+        <button type="submit"  id="btn-submit" class="btn btn-dark">Create Account</button>
       </div>
     </form>
   </div>

@@ -45,12 +45,12 @@ $(function () {
 					$('#Lifetime-count').remove();
 					$('#MsmsAuthCode').val('') ; // 인증번호 입력란 초기화
 					$('#btn-smsAuthConfirm').unbind('click') ; // 인증확인 버튼 unbind
-					$('#smsAuth-block').hide(); // 인증폼 숨기기
+					$('#smsAuth-block').addClass('hide'); // 인증폼 숨기기
 					$('#btn-smsAuthSend').unbind('click').one('click', smsAuthSend_handler) ; // 인증번호 요청 버튼 bind
 					//----------------------------------
 					//alert(res.error_msg) ;
 
-					$('#smsAuth-block').show();
+					$('#smsAuth-block').removeClass('hide');
 					if( !$('#Lifetime-count').length){
 						$('.join-time').append( 
 								$('<span/>',{
@@ -91,7 +91,7 @@ $(function () {
 			$(this).remove();
 			$('#MsmsAuthCode').val('') ; // 인증번호 입력란 초기화
 			$('#btn-smsAuthConfirm').unbind('click') ; // 인증확인 버튼 unbind
-			$('#smsAuth-block').hide(); // 인증폼 숨기기
+			$('#smsAuth-block').addClass('hide'); // 인증폼 숨기기
 			//----------------------------------
 			$('#btn-smsAuthSend').unbind('click').one('click', smsAuthSend_handler) ; // 인증번호 요청 버튼 bind
 			alert('Authentication number input time was about 5 minute. Please request your verification number again.');
@@ -109,7 +109,7 @@ $(function () {
 				$('#Lifetime-count').remove();
 				//$('#MsmsAuthCode').val('') ; // 인증번호 입력란 초기화
 				$('#btn-smsAuthConfirm').unbind('click') ; // 인증확인 버튼 unbind
-				$('#smsAuth-block').hide(); // 인증폼 숨기기
+				$('#smsAuth-block').addClass('hide'); // 인증폼 숨기기
 				//----------------------------------
 				alert('Verified.');
 			}else{

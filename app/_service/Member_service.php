@@ -33,7 +33,7 @@ class Member_service extends Member_model
 		 * 					 				) ;
 		 * @return multitype:
 		 */
-		public function GradeMember( $queryOption, $hierarchy=false )
+		protected function GradeMember( $queryOption, $hierarchy=false )
 		{
 			self::$_where = "";
 			$this->Conditions( $queryOption["conditions"] ) ;
@@ -64,7 +64,7 @@ class Member_service extends Member_model
 		 * 					 				) ;
 		 * @return multitype:
 		 */
-		public function PointHistoryMember( $queryOption, $hierarchy=false )
+		protected function PointHistoryMember( $queryOption, $hierarchy=false )
 		{
 			if(is_numeric($_REQUEST['itemPerPage'])) $this->pageScale = $_REQUEST['itemPerPage'] ;
 			self::$_where = "";
@@ -118,7 +118,7 @@ class Member_service extends Member_model
 		 * 					 				) ;
 		 * @return multitype:
 		 */
-		public function PointMyHistory( $queryOption, $hierarchy=false )
+		protected function PointMyHistory( $queryOption, $hierarchy=false )
 		{
 			if(is_numeric($_REQUEST['itemPerPage'])) $this->pageScale = $_REQUEST['itemPerPage'] ;
 			self::$_where = "";
@@ -166,7 +166,7 @@ class Member_service extends Member_model
 		 * return값이 true이면 bool 리턴.
 		 * return값이 false 또는 로그인 페이지이동.
 		 */
-		public static function hasLogin($param=NULL)
+		protected static function hasLogin($param=NULL)
 		{
 			if($request_type == 'ajax' || REQUEST_WITH == 'AJAX' ) $param['flag'] = null ;
 
@@ -200,7 +200,7 @@ class Member_service extends Member_model
 		 *
 		 * @return void
 		 */
-		public static function logout()
+		protected static function logout()
 		{
 			unset( $_SESSION );
 		
@@ -212,7 +212,7 @@ class Member_service extends Member_model
 		 * @param int $userGrade (회원등급 코드)
 		 * @return array|null
 		 */
-		public function get_memberGrade_rate($userGrade)
+		protected function get_memberGrade_rate($userGrade)
 		{
 			$this->setTableName("member_grade");
 			$data_grade = $this->dataRead(array(
@@ -229,7 +229,7 @@ class Member_service extends Member_model
 		 * @param int $userserial (회원P.K)
 		 * @return number
 		 */
-		public function get_memberTotalPoint(int $userserial)
+		protected function get_memberTotalPoint(int $userserial)
 		{
 			$this->setTableName("member_point_history");
 			$point_usable_total = $this->dataRead(array(

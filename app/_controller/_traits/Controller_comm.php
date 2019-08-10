@@ -2,6 +2,8 @@
 namespace Gajija\controller\_traits ;
 use Gajija\service\Member_service;
 
+//use Gajija\service\Member_service;
+
 /**
  * Controller용 - 공용 메서드
  *

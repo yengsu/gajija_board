@@ -4,7 +4,7 @@ use Gajija\controller\_traits\AdmController_comm;
 use Gajija\service\CommNest_service;
 
 /**
- * 브랜드 관리자
+ * 탈퇴 관련
  * 
  * @author youngsu lee
  * @email yengsu@hanmail.net

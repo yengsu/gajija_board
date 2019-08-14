@@ -73,8 +73,6 @@ class View_controller {
 	
 	public function index()
 	{
-	    //echo '<pre>';print_r($this->routeResult) ;exit;
-	    //echo '<pre>';print_r($this) ;exit;
 		/**
 		 * [applet 사용법1] class method를 쓰는방법
 		 *
@@ -131,92 +129,6 @@ class View_controller {
 			
 		$this->WebAppService->Output ( Display::getTemplate( $file ), $this->routeResult["layout"]);
 		$this->WebAppService->printAll();
-	}
-
-	private function a(){
-
-		if($_SERVER['REQUEST_METHOD']=="GET"){
-			echo '<html>
-			<head>
-			<meta charset="utf-8" />
-			</head>
-			<body>
-			
-			<form method="post" action="/view/a" enctype="multipart/form-data">
-			
-			<input type="file" name="attach[]" multiple />
-			<input type="submit" value="Submit" />
-			
-			</form>
-			
-			</body>
-			</html>';
-		}
-		else{
-		    $recvMail = array(
-		    		"yslee@smartlab.co.kr", "yengsu@hanmail.net", "yeongsu@naver.com", "yengsu@gmail.com"
-		    		,"mylee@smartlab.co.kr", "damon25@hanmail.net"
-		    ) ;
-			//$recvMail = array("yslee@smartlab.co.kr") ;
-			$Attach = array(
-					"files" => array("images/common/logo.png", "images/adm/menu07.png"),
-					"upload" => array(
-							"dir" => "tmp/",
-							"files" => $_FILES
-							)
-			);
-			$message = '<div style="font-size:20px;font-weight:bold;color:red;">안녕하세여^^!<br>첨부파일 포함</div>' ;
-			//$res = Func::mailSend($recvMail, "manager@smartlab.co.kr", "메일 테스트", $message, $Attach, true) ;
-			$res = Func::mailSend($recvMail, "yengsu@gajija.com", "메일 테스트", $message, $Attach, true) ;
-			for($i=0; $i < count($recvMail); $i++){
-				mail($recvMail[$i], $res["subject"], $res["message"], $res["headers"]);
-			}
-		}
-	}
-	/**
-	 * 
-	 * X-PHP-Originating-Script 제거는 
-	 * /etc/php.ini의 
-	 * 		mail.add_x_header = Off
-	 * 		expose_php = Off
-	 */
-	private function m1(){
-		//$subject = "=?UTF-8?B?".base64_encode("호이짜 호이짜잘갑니까요?")."?=";
-		$filename  = "shop_20170619.zip";
-		$path      = "app/";
-		$file      = $path . $filename;
-		$file_size = filesize($file);
-		$handle    = fopen($file, "r");
-		$content   = fread($handle, $file_size);
-		fclose($handle);
-		
-		$content = chunk_split(base64_encode($content));
-		$uid     = md5(uniqid(time()));
-		$name    = basename($file);
-		
-		$eol     = PHP_EOL;
-		$subject = "Mail Out Certificate";
-		$message = '<h1>Hi i m mashpy</h1>';
-		
-		$from_name = "yengsu";
-		$from_mail = "yengsu@hanmail.net";
-		$replyto   = "yengsu@hanmail.net";
-		$mailto    = "yslee@smartlab.co.kr";
-		$header    = "From: " . $from_name . " <" . $from_mail . ">\n";
-		$header .= "Reply-To: " . $replyto . "\n";
-		$header .= "MIME-Version: 1.0\n";
-		$header .= "Content-Type: multipart/mixed; boundary=\"" . $uid . "\"\n\n";
-		$emessage = "--" . $uid . "\n";
-		$emessage .= "Content-type:text/html; charset=iso-8859-1\n";
-		$emessage .= "Content-Transfer-Encoding: 7bit\n\n";
-		$emessage .= $message . "\n\n";
-		$emessage .= "--" . $uid . "\n";
-		$emessage .= "Content-Type: application/octet-stream; name=\"" . $filename . "\"\n"; // use different content types here
-		$emessage .= "Content-Transfer-Encoding: base64\n";
-		$emessage .= "Content-Disposition: attachment; filename=\"" . $filename . "\"\n\n";
-		$emessage .= $content . "\n\n";
-		$emessage .= "--" . $uid . "--";
-		mail($mailto, $subject, $emessage, $header);
 	}
 	
 }

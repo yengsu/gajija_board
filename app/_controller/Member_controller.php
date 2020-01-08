@@ -1078,8 +1078,8 @@ class Member_controller extends CommNest_service
 				/* require_once _APP_LIB."Api/facebook/vendor/autoload.php" ;
 				$fb = new Facebook([
 				//$fb = new Facebook\Facebook([
-						'app_id' => '1553794354701126', // Replace {app-id} with your app id
-						'app_secret' => '185be3358f411170bf2e28ed5bd3ed03',
+						'app_id' => '155379431126', // Replace {app-id} with your app id
+						'app_secret' => '185be3358f4e28ed5bd3ed03',
 						'default_graph_version' => 'v2.10',
 				]);
 				

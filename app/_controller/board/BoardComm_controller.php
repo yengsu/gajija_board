@@ -145,10 +145,11 @@ class BoardComm_controller extends BoardCommNest_service
         }
         
         // XSS 방어
-        Strings::set_xss_variable( array(
+        /* Strings::set_xss_variable( array(
         		"GET" => array("search_field" , "search_keyword", "bid"),
         		"POST" => array("frm_writer", "frm_userpw", "frm_sec_pwd", "search_keyword", "bid")
-        ) );
+        ) ); */
+        Strings::set_xss_variable(array(), array("frm_memo"));
         
         // 메뉴[정보 & 접근권한]
         if( !empty($routeResult["mcode"]) ) {

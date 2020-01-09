@@ -97,8 +97,14 @@ ini_set('memory_limit','256M');
 date_default_timezone_set('Asia/Seoul');
 //ini_set("date.timezone", "UTC");
 
+if(isset($_SERVER['HTTPS'])){
+    $scheme = ($_SERVER['HTTPS'] && $_SERVER['HTTPS'] != "off") ? "https" : "http";
+}
+else{
+    $scheme = 'http';
+}
 define('REQUEST_URI', strip_tags(urldecode($_SERVER['REQUEST_URI'])));
-
+define('SCHEME', $scheme); //http | https
 define('HOST',					$_SERVER['HTTP_HOST']);
 define('REQUEST_METHOD',	$_SERVER['REQUEST_METHOD']);
 define('_DOC_ROOT',			$_SERVER['DOCUMENT_ROOT']);

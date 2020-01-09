@@ -75,7 +75,7 @@ class KakaoApi_service
 	 * 카카오 콜백 주소
 	 * @var string
 	 */
-	protected static $REDIRECT_URI = "http://".HOST."/Member/oauthCallback_kakao" ;
+	protected static $REDIRECT_URI = SCHEME."://".HOST."/Member/oauthCallback_kakao" ;
 	
 	protected static $apiKey = array(
 			

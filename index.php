@@ -1,4 +1,5 @@
 <?php
+echo 'test';
 require_once "app". DIRECTORY_SEPARATOR .
 							"lib". DIRECTORY_SEPARATOR .
 								"system". DIRECTORY_SEPARATOR .
